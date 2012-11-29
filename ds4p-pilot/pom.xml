@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.hhs.samhsa.ds4p</groupId>
-	<artifactId>ds4p-pilot</artifactId>
+	<artifactId>ds4p-sender</artifactId>
 	<version>1.0</version>
 	<name>DS4P-PILOT</name>
 	<packaging>pom</packaging>
