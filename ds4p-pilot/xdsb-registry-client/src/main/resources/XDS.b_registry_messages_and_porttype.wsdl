@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="urn:ihe:iti:xds-b:2007"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:tns="urn:ihe:iti:xds-b:2007" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract"
+	xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+	xmlns:query="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn:ihe:iti:xds-b:2007/Imports">
+			<xsd:import schemaLocation="query.xsd"
+				namespace="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" />
+				<xsd:import schemaLocation="message_body.xsd"
+				namespace="http://schemas.microsoft.com/Message" />
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="XDSRegistry_RegistryStoredQuery_InputMessage">
+		<wsdl:part name="input" element="query:AdhocQueryRequest" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_RegistryStoredQuery_OutputMessage">
+		<wsdl:part name="RegistryStoredQueryResult" element="q2:RegistryStoredQueryResult" 
+		xmlns:q2="http://schemas.microsoft.com/Message"/>
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_RegisterDocumentSet_InputMessage">
+		<wsdl:part name="input" type="q3:MessageBody"
+			xmlns:q3="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_RegisterDocumentSet_OutputMessage">
+		<wsdl:part name="RegisterDocumentSetResult" type="q4:MessageBody"
+			xmlns:q4="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_UpdateDocumentSet_InputMessage">
+		<wsdl:part name="input" type="q5:MessageBody"
+			xmlns:q5="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_UpdateDocumentSet_OutputMessage">
+		<wsdl:part name="UpdateDocumentSetResult" type="q6:MessageBody"
+			xmlns:q6="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_DeleteDocumentSet_InputMessage">
+		<wsdl:part name="input" type="q7:MessageBody"
+			xmlns:q7="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_DeleteDocumentSet_OutputMessage">
+		<wsdl:part name="DeleteDocumentSetResult" type="q8:MessageBody"
+			xmlns:q8="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_PatientRegistryRecordAdded_InputMessage">
+		<wsdl:part name="input" type="q9:MessageBody"
+			xmlns:q9="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_PatientRegistryRecordAdded_OutputMessage">
+		<wsdl:part name="PatientRegistryRecordAddedResult" type="q10:MessageBody"
+			xmlns:q10="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_PatientRegistryRecordRevised_InputMessage">
+		<wsdl:part name="input" type="q11:MessageBody"
+			xmlns:q11="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message name="XDSRegistry_PatientRegistryRecordRevised_OutputMessage">
+		<wsdl:part name="PatientRegistryRecordRevisedResult" type="q12:MessageBody"
+			xmlns:q12="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message
+		name="XDSRegistry_PatientRegistryDuplicatesResolved_InputMessage">
+		<wsdl:part name="input" type="q13:MessageBody"
+			xmlns:q13="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:message
+		name="XDSRegistry_PatientRegistryDuplicatesResolved_OutputMessage">
+		<wsdl:part name="PatientRegistryDuplicatesResolvedResult"
+			type="q14:MessageBody" xmlns:q14="http://schemas.microsoft.com/Message" />
+	</wsdl:message>
+	<wsdl:portType name="XDSRegistry">
+		<wsdl:operation name="RegistryStoredQuery">
+			<wsdl:input wsaw:Action="urn:ihe:iti:2007:RegistryStoredQuery"
+				message="tns:XDSRegistry_RegistryStoredQuery_InputMessage" />
+			<wsdl:output wsaw:Action="urn:ihe:iti:2007:RegistryStoredQueryResponse"
+				message="tns:XDSRegistry_RegistryStoredQuery_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterDocumentSet">
+			<wsdl:input wsaw:Action="urn:ihe:iti:2007:RegisterDocumentSet-b"
+				message="tns:XDSRegistry_RegisterDocumentSet_InputMessage" />
+			<wsdl:output wsaw:Action="urn:ihe:iti:2007:RegisterDocumentSet-bResponse"
+				message="tns:XDSRegistry_RegisterDocumentSet_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="UpdateDocumentSet">
+			<wsdl:input wsaw:Action="urn:ihe:iti:2010:UpdateDocumentSet"
+				message="tns:XDSRegistry_UpdateDocumentSet_InputMessage" />
+			<wsdl:output wsaw:Action="urn:ihe:iti:2010:UpdateDocumentSetResponse"
+				message="tns:XDSRegistry_UpdateDocumentSet_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="DeleteDocumentSet">
+			<wsdl:input wsaw:Action="urn:ihe:iti:2010:DeleteDocumentSet"
+				message="tns:XDSRegistry_DeleteDocumentSet_InputMessage" />
+			<wsdl:output wsaw:Action="urn:ihe:iti:2010:DeleteDocumentSetResponse"
+				message="tns:XDSRegistry_DeleteDocumentSet_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="PatientRegistryRecordAdded">
+			<wsdl:input wsaw:Action="urn:hl7-org:v3:PRPA_IN201301UV02"
+				message="tns:XDSRegistry_PatientRegistryRecordAdded_InputMessage" />
+			<wsdl:output wsaw:Action="urn:hl7-org:v3:MCCI_IN000002UV"
+				message="tns:XDSRegistry_PatientRegistryRecordAdded_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="PatientRegistryRecordRevised">
+			<wsdl:input wsaw:Action="urn:hl7-org:v3:PRPA_IN201302UV02"
+				message="tns:XDSRegistry_PatientRegistryRecordRevised_InputMessage" />
+			<wsdl:output wsaw:Action="urn:hl7-org:v3:MCCI_IN000002UV"
+				message="tns:XDSRegistry_PatientRegistryRecordRevised_OutputMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="PatientRegistryDuplicatesResolved">
+			<wsdl:input wsaw:Action="urn:hl7-org:v3:PRPA_IN201304UV02"
+				message="tns:XDSRegistry_PatientRegistryDuplicatesResolved_InputMessage" />
+			<wsdl:output wsaw:Action="urn:hl7-org:v3:MCCI_IN000002UV"
+				message="tns:XDSRegistry_PatientRegistryDuplicatesResolved_OutputMessage" />
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

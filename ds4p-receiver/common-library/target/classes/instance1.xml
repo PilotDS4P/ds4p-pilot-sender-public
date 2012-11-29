@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<XspaPatientObligations xmlns="urn:hl7-org:v3"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 file:/C:/projects/DS4P/DS4PCommonLibrary/src/main/resources/casref.xsd">
+    <XspaPatientObligation name="name1" sensitivity="sensitivity1" impliedAction="impliedAction1"/>
+    <XspaPatientObligation name="name3" sensitivity="sensitivity3" impliedAction="impliedAction3"/>
+    <XspaPatientObligation name="name5" sensitivity="sensitivity5" impliedAction="impliedAction5"/>
+    <XspaPatientObligation name="name7" sensitivity="sensitivity7" impliedAction="impliedAction7"/>
+</XspaPatientObligations>

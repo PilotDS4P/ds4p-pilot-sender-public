@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema version="1.0" targetNamespace="http://ws.ds4p.ehtac.va.gov/" xmlns:tns="http://ws.ds4p.ehtac.va.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="getProblemListThatContainsString" type="tns:getProblemListThatContainsString"/>
+
+  <xs:element name="getProblemListThatContainsStringResponse" type="tns:getProblemListThatContainsStringResponse"/>
+
+  <xs:element name="snomedproblemlist" type="tns:snomedproblemlist"/>
+
+  <xs:complexType name="getProblemListThatContainsString">
+    <xs:sequence>
+      <xs:element name="problem_name" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getProblemListThatContainsStringResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:snomedproblemlist" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="snomedproblemlist">
+    <xs:sequence>
+      <xs:element name="firstInUsage" type="xs:string" minOccurs="0"/>
+      <xs:element name="idsnomedproblemlist" type="xs:int" minOccurs="0"/>
+      <xs:element name="isRetiredFromSubset" type="xs:string" minOccurs="0"/>
+      <xs:element name="lastInSubset" type="xs:string" minOccurs="0"/>
+      <xs:element name="occurrence" type="xs:string" minOccurs="0"/>
+      <xs:element name="replacedBySnomedCid" type="xs:string" minOccurs="0"/>
+      <xs:element name="snomedCid" type="xs:string" minOccurs="0"/>
+      <xs:element name="snomedConceptStatus" type="xs:string" minOccurs="0"/>
+      <xs:element name="snomedFsn" type="xs:string" minOccurs="0"/>
+      <xs:element name="umlsCui" type="xs:string" minOccurs="0"/>
+      <xs:element name="usageType" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema version="1.0" targetNamespace="http://ws.ds4p.ehtac.va.gov/" xmlns:tns="http://ws.ds4p.ehtac.va.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="directprocessing" type="tns:directprocessing"/>
+
+  <xs:element name="getXDMObject" type="tns:getXDMObject"/>
+
+  <xs:element name="getXDMObjectListByPatientId" type="tns:getXDMObjectListByPatientId"/>
+
+  <xs:element name="getXDMObjectListByPatientIdResponse" type="tns:getXDMObjectListByPatientIdResponse"/>
+
+  <xs:element name="getXDMObjectListByProviderId" type="tns:getXDMObjectListByProviderId"/>
+
+  <xs:element name="getXDMObjectListByProviderIdResponse" type="tns:getXDMObjectListByProviderIdResponse"/>
+
+  <xs:element name="getXDMObjectResponse" type="tns:getXDMObjectResponse"/>
+
+  <xs:element name="persistXDMObject" type="tns:persistXDMObject"/>
+
+  <xs:element name="persistXDMObjectResponse" type="tns:persistXDMObjectResponse"/>
+
+  <xs:element name="unpackEnforceXDMPackage" type="tns:unpackEnforceXDMPackage"/>
+
+  <xs:element name="unpackEnforceXDMPackageResponse" type="tns:unpackEnforceXDMPackageResponse"/>
+
+  <xs:element name="unpackXDMPackage" type="tns:unpackXDMPackage"/>
+
+  <xs:element name="unpackXDMPackageResponse" type="tns:unpackXDMPackageResponse"/>
+
+  <xs:element name="updateXDMObject" type="tns:updateXDMObject"/>
+
+  <xs:element name="updateXDMObjectResponse" type="tns:updateXDMObjectResponse"/>
+
+  <xs:complexType name="unpackEnforceXDMPackage">
+    <xs:sequence>
+      <xs:element name="payload" type="xs:base64Binary" nillable="true" minOccurs="0"/>
+      <xs:element name="providerId" type="xs:string" minOccurs="0"/>
+      <xs:element name="recipientId" type="xs:string" minOccurs="0"/>
+      <xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+      <xs:element name="organizationId" type="xs:string" minOccurs="0"/>
+      <xs:element name="role" type="xs:string" minOccurs="0"/>
+      <xs:element name="purposeOfUse" type="xs:string" minOccurs="0"/>
+      <xs:element name="servicePermissions" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="sensitivityPrivileges" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="intendedPurposeOfUse" type="xs:string" minOccurs="0"/>
+      <xs:element name="intendedRecipient" type="xs:string" minOccurs="0"/>
+      <xs:element name="requiredPermission" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="requiredSensitivityPrivileges" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="requestedResource" type="xs:string" minOccurs="0"/>
+      <xs:element name="uniquePatientId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="unpackEnforceXDMPackageResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="unpackXDMPackage">
+    <xs:sequence>
+      <xs:element name="payload" type="xs:base64Binary" nillable="true" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="unpackXDMPackageResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="persistXDMObject">
+    <xs:sequence>
+      <xs:element name="xdmobjects" type="tns:directprocessing" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="directprocessing">
+    <xs:sequence>
+      <xs:element name="cdaxsl" type="xs:string" minOccurs="0"/>
+      <xs:element name="confidentiality" type="xs:string" minOccurs="0"/>
+      <xs:element name="dateProcessed" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dockey" type="xs:base64Binary" minOccurs="0"/>
+      <xs:element name="dockeyMasking" type="xs:base64Binary" minOccurs="0"/>
+      <xs:element name="document" type="xs:string" minOccurs="0"/>
+      <xs:element name="encrypteddocument" type="xs:string" minOccurs="0"/>
+      <xs:element name="facilityType" type="xs:string" minOccurs="0"/>
+      <xs:element name="faciltyTypeCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="iddirectprocessing" type="xs:int" minOccurs="0"/>
+      <xs:element name="metadata" type="xs:string" minOccurs="0"/>
+      <xs:element name="originatingFacility" type="xs:string" minOccurs="0"/>
+      <xs:element name="patientHomeCommunity" type="xs:string" minOccurs="0"/>
+      <xs:element name="patientName" type="xs:string" minOccurs="0"/>
+      <xs:element name="pou" type="xs:string" minOccurs="0"/>
+      <xs:element name="providerId" type="xs:string" minOccurs="0"/>
+      <xs:element name="refrainPolicy" type="xs:string" minOccurs="0"/>
+      <xs:element name="sendingProviderId" type="xs:string" minOccurs="0"/>
+      <xs:element name="uniquePatientId" type="xs:string" minOccurs="0"/>
+      <xs:element name="xdmfile" type="xs:base64Binary" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="persistXDMObjectResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateXDMObject">
+    <xs:sequence>
+      <xs:element name="xdmobject" type="tns:directprocessing" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateXDMObjectResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getXDMObjectListByPatientId">
+    <xs:sequence>
+      <xs:element name="patientId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getXDMObjectListByPatientIdResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:directprocessing" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getXDMObject">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getXDMObjectResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:directprocessing" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getXDMObjectListByProviderId">
+    <xs:sequence>
+      <xs:element name="providerId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getXDMObjectListByProviderIdResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:directprocessing" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

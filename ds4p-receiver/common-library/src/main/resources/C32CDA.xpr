@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="13.2">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="C32CDA.xpr">
+        <file name="datatypes.xsd"/>
+        <file name="datatypes-base.xsd"/>
+        <file name="infrastructureRoot.xsd"/>
+        <file name="medicalclassification.xsd"/>
+        <file name="NarrativeBlock.xsd"/>
+        <file name="POCD_MT000040.xsd"/>
+        <file name="voc.xsd"/>
+    </projectTree>
+</project>

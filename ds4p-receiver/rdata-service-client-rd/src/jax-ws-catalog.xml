@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/acs-services/target/classes/META-INF/DS4PReferenceData.wsdl" uri="wsdl/DS4PReferenceData.wsdl"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/acs-services/target/classes/META-INF/DS4PReferenceData_schema1.xsd" uri="wsdl/DS4PReferenceData_schema1.xsd"/>
+</catalog>

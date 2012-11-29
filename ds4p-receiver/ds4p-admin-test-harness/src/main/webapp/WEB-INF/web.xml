@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <filter>
+        <filter-name>ContextFilter</filter-name>
+        <filter-class>gov.va.ehtac.meaningfuluse.filter.AdminContextFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ContextFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>       
+    <servlet>
+        <servlet-name>VaadinApplication</servlet-name>
+        <servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+        <init-param>
+            <param-name>application</param-name>
+            <param-value>gov.va.ehtac.meaningfuluse.AESValidator</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VaadinApplication</servlet-name>
+        <url-pattern>/vaadin/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VaadinApplication</servlet-name>
+        <url-pattern>/VAADIN/*</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file/>
+    </welcome-file-list>
+</web-app>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema version="1.0" targetNamespace="http://ws.ds4p.ehtac.va.gov/" xmlns:tns="http://ws.ds4p.ehtac.va.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="enforceDirectPolicy" type="tns:enforceDirectPolicy"/>
+
+  <xs:element name="enforceDirectPolicyResponse" type="tns:enforceDirectPolicyResponse"/>
+
+  <xs:complexType name="enforceDirectPolicy">
+    <xs:sequence>
+      <xs:element name="providerId" type="xs:string" minOccurs="0"/>
+      <xs:element name="recipientId" type="xs:string" minOccurs="0"/>
+      <xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+      <xs:element name="organizationId" type="xs:string" minOccurs="0"/>
+      <xs:element name="role" type="xs:string" minOccurs="0"/>
+      <xs:element name="purposeOfUse" type="xs:string" minOccurs="0"/>
+      <xs:element name="servicePermissions" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="sensitivityPrivileges" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="intendedPurposeOfUse" type="xs:string" minOccurs="0"/>
+      <xs:element name="intendedRecipient" type="xs:string" minOccurs="0"/>
+      <xs:element name="requiredPermission" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="requiredSensitivityPrivileges" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="requestedResource" type="xs:string" minOccurs="0"/>
+      <xs:element name="uniquePatientId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="enforceDirectPolicyResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

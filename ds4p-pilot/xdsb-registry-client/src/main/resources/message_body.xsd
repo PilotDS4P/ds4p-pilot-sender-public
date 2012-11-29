@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/Message"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://schemas.microsoft.com/Message">
+	<element name="RegistryStoredQueryResult">
+		<xs:complexType>
+			<sequence>
+				<any minOccurs="0" maxOccurs="unbounded" namespace="##any" />
+			</sequence>
+		</xs:complexType>
+	</element>
+	<complexType name="MessageBody">
+		<sequence>
+			<any minOccurs="0" maxOccurs="unbounded" namespace="##any" />
+		</sequence>
+	</complexType>
+</schema>

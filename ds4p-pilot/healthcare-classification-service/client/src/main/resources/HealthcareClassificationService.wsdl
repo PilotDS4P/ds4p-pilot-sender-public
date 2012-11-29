@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.samhsa.gov/ds4ppilot/contract/HealthcareClassificationService"
+	xmlns:di="http://www.samhsa.gov/ds4ppilot/schema/HealthcareClassificationService"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="HealthcareClassificationService"
+	targetNamespace="http://www.samhsa.gov/ds4ppilot/contract/HealthcareClassificationService">
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="http://www.samhsa.gov/ds4ppilot/schema/HealthcareClassificationService">
+			<xsd:element name="assertAndExecuteClinicalFactsRequest">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="clinicalFactXmlString" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="assertAndExecuteClinicalFactsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ruleExecutionResponseContainer"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="assertAndExecuteClinicalFactsRequest">
+		<wsdl:part element="di:assertAndExecuteClinicalFactsRequest"
+			name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="assertAndExecuteClinicalFactsResponse">
+		<wsdl:part element="di:assertAndExecuteClinicalFactsResponse"
+			name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="HealthcareClassificationServicePortType">
+		<wsdl:operation name="assertAndExecuteClinicalFacts">
+			<wsdl:documentation>Takes a collection of clincalFacts, patientId,
+				and documentType and returns a .drl that enforces clinical adaptive
+				policies
+			</wsdl:documentation>
+			<wsdl:input message="tns:assertAndExecuteClinicalFactsRequest" />
+			<wsdl:output message="tns:assertAndExecuteClinicalFactsResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="HealthcareClassificationServiceBinding"
+		type="tns:HealthcareClassificationServicePortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="assertAndExecuteClinicalFacts">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="HealthcareClassificationService">
+		<wsdl:port binding="tns:HealthcareClassificationServiceBinding"
+			name="HealthcareClassificationServicePort">
+			<soap:address
+				location="http://localhost:90/HealthcareClassificationService/services/HealthcareClassificationService" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

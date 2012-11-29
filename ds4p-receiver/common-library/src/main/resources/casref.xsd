@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:hl7-org:v3"
+    xmlns="urn:hl7-org:v3" xmlns:ns1="urn:hl7-org:v3" elementFormDefault="qualified">
+    <xs:element name="Description" type="xs:string"/>
+    <xs:element name="ActUSPrivacyLaw">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ApplicableUSLaws">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ActUSPrivacyLaw"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActInformationSensitivityPolicy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ApplicableSensitivityCodes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ActInformationSensitivityPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RefrainPolicy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ApplicableRefrainPolicies">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="RefrainPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ObligationPolicy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ApplicableObligationPolicies">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ObligationPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActReason">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PurposeOfUse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ActReason"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Confidentiality">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Description"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ApplicableConfidentialities">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="Confidentiality"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ClinicalDomain">
+        <xs:complexType>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ClinicalTaggingRule">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ClinicalFact"/>
+                <xs:element ref="ActReason"/>
+                <xs:element ref="ActInformationSensitivityPolicy"/>
+                <xs:element ref="ImpliedConfidentiality"/>
+            </xs:sequence>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ClinicalFact">
+        <xs:complexType>
+            <xs:attribute name="code" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     The plain code symbol defined by the code system.
+                     For example, "784.0" is the code symbol of the ICD-9
+                     code "784.0" for headache.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystem" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     Specifies the code system that defines the code.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A common name of the coding system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="codeSystemVersion" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     If applicable, a version descriptor defined
+                     specifically for the given code system.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="displayName" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                     A name or title for the code, under which the sending
+                     system shows the code value to its users.
+                  </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ProblemListSensitivityRules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="ClinicalTaggingRule"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AllergyListSensitivityRules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="ClinicalTaggingRule"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ImmunizationsSensitivityRules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="ClinicalTaggingRule"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MedicationListSensitivityRules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="ClinicalTaggingRule"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="LabResultsSensitivityRules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ClinicalTaggingRule"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ImpliedConfidentiality">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Confidentiality"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PatientConsentConstraint"/>
+    <xs:element name="XspaPatientObligation">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string"/>
+            <xs:attribute name="sensitivity" type="xs:string"/>
+            <xs:attribute name="impliedAction" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="XspaPatientObligations">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" ref="XspaPatientObligation"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="OrganizationTaggingRules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ActReason"/>
+                <xs:element ref="ActInformationSensitivityPolicy"/>
+                <xs:element ref="PatientSensitivityConstraint"/>
+                <xs:element ref="PatientRequestedAction"/>
+                <xs:element ref="ActUSPrivacyLaw"/>
+                <xs:element ref="OrgObligationPolicyEntry"/>
+                <xs:element ref="OrgObligationPolicyDocument"/>
+                <xs:element ref="RefrainPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PatientSensitivityConstraint">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ActInformationSensitivityPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PatientRequestedAction">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ObligationPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="OrgObligationPolicyEntry">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ObligationPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="OrgObligationPolicyDocument">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ObligationPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="OrganizationPolicy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="OrganizationTaggingRules"/>
+            </xs:sequence>
+            <xs:attribute name="orgName" type="xs:string"/>
+            <xs:attribute name="homeCommunityId" type="xs:string"/>
+            <xs:attribute name="usPrivacyLaw" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

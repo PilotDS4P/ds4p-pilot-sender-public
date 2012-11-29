@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. 
+	RI's version is Metro/2.1.1-b09 (branches/2.1-6834; 2011-07-16T17:14:48+0000) 
+	JAXWS-RI/2.2.5-promoted-b04 JAXWS/2.2. -->
+<xs:schema xmlns:tns="http://ws.ds4p.ehtac.va.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	version="1.0" targetNamespace="http://ws.ds4p.ehtac.va.gov/">
+
+	<xs:element name="authLog" type="tns:authLog" />
+
+	<xs:element name="getAllAuthorizationEvent" type="tns:getAllAuthorizationEvent" />
+
+	<xs:element name="getAllAuthorizationEventResponse" type="tns:getAllAuthorizationEventResponse" />
+
+	<xs:element name="getAuthorizationByHealthCareObject" type="tns:getAuthorizationByHealthCareObject" />
+
+	<xs:element name="getAuthorizationByHealthCareObjectResponse"
+		type="tns:getAuthorizationByHealthCareObjectResponse" />
+
+	<xs:element name="getAuthorizationByStartEndDates" type="tns:getAuthorizationByStartEndDates" />
+
+	<xs:element name="getAuthorizationByStartEndDatesResponse"
+		type="tns:getAuthorizationByStartEndDatesResponse" />
+
+	<xs:element name="getAuthorizationByUId" type="tns:getAuthorizationByUId" />
+
+	<xs:element name="getAuthorizationByUIdResponse" type="tns:getAuthorizationByUIdResponse" />
+
+	<xs:element name="getAuthorizationEventByHIEMsgId" type="tns:getAuthorizationEventByHIEMsgId" />
+
+	<xs:element name="getAuthorizationEventByHIEMsgIdResponse"
+		type="tns:getAuthorizationEventByHIEMsgIdResponse" />
+
+	<xs:element name="saveAuthorizationEvent" type="tns:saveAuthorizationEvent" />
+
+	<xs:element name="saveAuthorizationEventResponse" type="tns:saveAuthorizationEventResponse" />
+
+	<xs:element name="updateAuthorizationEventWithAnnotatedDoc"
+		type="tns:updateAuthorizationEventWithAnnotatedDoc" />
+
+	<xs:element name="updateAuthorizationEventWithAnnotatedDocResponse"
+		type="tns:updateAuthorizationEventWithAnnotatedDocResponse" />
+
+	<xs:element name="updateAuthorizationEventWithDRL" type="tns:updateAuthorizationEventWithDRL" />
+
+	<xs:element name="updateAuthorizationEventWithDRLResponse"
+		type="tns:updateAuthorizationEventWithDRLResponse" />
+
+	<xs:element name="updateAuthorizationEventWithExecRules"
+		type="tns:updateAuthorizationEventWithExecRules" />
+
+	<xs:element name="updateAuthorizationEventWithExecRulesResponse"
+		type="tns:updateAuthorizationEventWithExecRulesResponse" />
+
+	<xs:complexType name="updateAuthorizationEventWithAnnotatedDoc">
+		<xs:sequence>
+			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
+			<xs:element name="doc" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateAuthorizationEventWithAnnotatedDocResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAllAuthorizationEvent">
+		<xs:sequence />
+	</xs:complexType>
+
+	<xs:complexType name="getAllAuthorizationEventResponse">
+		<xs:sequence>
+			<xs:element name="return" type="tns:authLog" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="authLog">
+		<xs:sequence>
+			<xs:element name="annotatedDoc" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="decision" type="xs:string" minOccurs="0" />
+			<xs:element name="execRules" type="xs:string" minOccurs="0" />
+			<xs:element name="genDrl" type="xs:string" minOccurs="0" />
+			<xs:element name="healthcareObject" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="hieMsgId" type="xs:string" minOccurs="0" />
+			<xs:element name="msgDate" type="xs:dateTime" minOccurs="0" />
+			<xs:element name="msgId" type="xs:int" minOccurs="0" />
+			<xs:element name="obligations" type="xs:string" minOccurs="0" />
+			<xs:element name="purposeOfUse" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="requestor" type="xs:string" minOccurs="0" />
+			<xs:element name="responseTime" type="xs:long" />
+			<xs:element name="servicingOrg" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="uniqueIdentifier" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="xacmlRequest" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="xacmlResponse" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateAuthorizationEventWithExecRules">
+		<xs:sequence>
+			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
+			<xs:element name="execRules" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateAuthorizationEventWithExecRulesResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationByUId">
+		<xs:sequence>
+			<xs:element name="uniqueId" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationByUIdResponse">
+		<xs:sequence>
+			<xs:element name="return" type="tns:authLog" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationByStartEndDates">
+		<xs:sequence>
+			<xs:element name="startdate" type="xs:string" minOccurs="0" />
+			<xs:element name="enddate" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationByStartEndDatesResponse">
+		<xs:sequence>
+			<xs:element name="return" type="tns:authLog" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="saveAuthorizationEvent">
+		<xs:sequence>
+			<xs:element name="authobj" type="tns:authLog" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="saveAuthorizationEventResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationEventByHIEMsgId">
+		<xs:sequence>
+			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationEventByHIEMsgIdResponse">
+		<xs:sequence>
+			<xs:element name="return" type="tns:authLog" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationByHealthCareObject">
+		<xs:sequence>
+			<xs:element name="healthcareobject" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getAuthorizationByHealthCareObjectResponse">
+		<xs:sequence>
+			<xs:element name="return" type="tns:authLog" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateAuthorizationEventWithDRL">
+		<xs:sequence>
+			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
+			<xs:element name="genDrl" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateAuthorizationEventWithDRLResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

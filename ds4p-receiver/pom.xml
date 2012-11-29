@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>gov.va.ds4p</groupId>
+  <artifactId>ds4p-receiver</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+  <name>ds4p-receiver</name>
+  <modules>
+    <module>common-library</module>
+    <module>acs-services</module>
+    <module>acs-service-client-au</module>
+    <module>acs-service-client-ch</module>
+    <module>acs-service-client-recvr</module>
+    <module>cas-service-client-ri</module>
+    <module>xdm-service-client-dp</module>
+    <module>rdata-service-client-rd</module>
+    <module>rxnorm-restful-client</module>
+    <module>ds4p-admin-test-harness</module>
+  </modules>
+</project>

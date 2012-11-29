@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema version="1.0" targetNamespace="http://ws.ds4p.ehtac.va.gov/" xmlns:tns="http://ws.ds4p.ehtac.va.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="clinicaltagrule" type="tns:clinicaltagrule"/>
+
+  <xs:element name="getAllOrganizationalPolicy" type="tns:getAllOrganizationalPolicy"/>
+
+  <xs:element name="getAllOrganizationalPolicyResponse" type="tns:getAllOrganizationalPolicyResponse"/>
+
+  <xs:element name="getCASRuleSetStringByPOUObligationsAndHomeCommunityId" type="tns:getCASRuleSetStringByPOUObligationsAndHomeCommunityId"/>
+
+  <xs:element name="getCASRuleSetStringByPOUObligationsAndHomeCommunityIdResponse" type="tns:getCASRuleSetStringByPOUObligationsAndHomeCommunityIdResponse"/>
+
+  <xs:element name="getClinicalDomainRule" type="tns:getClinicalDomainRule"/>
+
+  <xs:element name="getClinicalDomainRuleResponse" type="tns:getClinicalDomainRuleResponse"/>
+
+  <xs:element name="getOrganizationalPolicy" type="tns:getOrganizationalPolicy"/>
+
+  <xs:element name="getOrganizationalPolicyResponse" type="tns:getOrganizationalPolicyResponse"/>
+
+  <xs:element name="organizationalPolicy" type="tns:organizationalPolicy"/>
+
+  <xs:element name="setClinicalDomainTaggingRule" type="tns:setClinicalDomainTaggingRule"/>
+
+  <xs:element name="setClinicalDomainTaggingRuleResponse" type="tns:setClinicalDomainTaggingRuleResponse"/>
+
+  <xs:element name="setOrganizationalPolicy" type="tns:setOrganizationalPolicy"/>
+
+  <xs:element name="setOrganizationalPolicyResponse" type="tns:setOrganizationalPolicyResponse"/>
+
+  <xs:complexType name="getClinicalDomainRule">
+    <xs:sequence>
+      <xs:element name="domainLoincCode" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getClinicalDomainRuleResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:clinicaltagrule" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="clinicaltagrule">
+    <xs:sequence>
+      <xs:element name="idclinicaltagrule" type="xs:int" minOccurs="0"/>
+      <xs:element name="loincCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="loincDisplayName" type="xs:string" minOccurs="0"/>
+      <xs:element name="observationRules" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getAllOrganizationalPolicy">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="getAllOrganizationalPolicyResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:organizationalPolicy" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="organizationalPolicy">
+    <xs:sequence>
+      <xs:element name="applicableUsLaw" type="xs:string" minOccurs="0"/>
+      <xs:element name="homeCommunityId" type="xs:string" minOccurs="0"/>
+      <xs:element name="idorganizationalPolicy" type="xs:int" minOccurs="0"/>
+      <xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+      <xs:element name="organizationalRules" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getCASRuleSetStringByPOUObligationsAndHomeCommunityId">
+    <xs:sequence>
+      <xs:element name="pou" type="xs:string" minOccurs="0"/>
+      <xs:element name="obligations" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="homeCommunityId" type="xs:string" minOccurs="0"/>
+      <xs:element name="messageId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getCASRuleSetStringByPOUObligationsAndHomeCommunityIdResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getOrganizationalPolicy">
+    <xs:sequence>
+      <xs:element name="homeCommunityId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getOrganizationalPolicyResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:organizationalPolicy" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="setOrganizationalPolicy">
+    <xs:sequence>
+      <xs:element name="policy" type="tns:organizationalPolicy" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="setOrganizationalPolicyResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="setClinicalDomainTaggingRule">
+    <xs:sequence>
+      <xs:element name="taggingRule" type="tns:clinicaltagrule" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="setClinicalDomainTaggingRuleResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

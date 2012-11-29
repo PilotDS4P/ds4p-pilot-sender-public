@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="ActSecurityPolicyType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ActObligationPolicy"/>
+                <xs:element ref="ActRefrainPolicy"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActRefrainPolicy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="HL7ConceptCode"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActObligationPolicy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="HL7ConceptCode"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="HL7ConceptCode" type="xs:string"/>
+    <xs:element name="InnerPolicyControl">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Confidentiality"/>
+                <xs:element ref="ClinicalDocumentPolicyControl"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="OuterPolicyControl">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ActSecurityPolicyType"/>
+                <xs:element ref="InnerPolicyControl"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Confidentiality" type="xs:string"/>
+    <xs:element name="ClinicalDocumentPolicyControl">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element ref="ActHealthInformationPurposeOfUseReason"/>
+                <xs:element ref="ActInformationSensitivityPrivacyPolicyType"/>
+                <xs:element ref="ActPolicyType"/>
+                <xs:element ref="AESEncryptedDocumentPayload"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActHealthInformationPurposeOfUseReason">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="HL7ConceptCode"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActPolicyType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ActPrivacyPolicyType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActPrivacyPolicyType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="PolicyAttributeValueSet"/>
+            </xs:sequence>
+            <xs:attribute name="PolicyType" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AESEncryptedDocumentPayload" type="xs:string"/>
+    <xs:element name="PolicyLocatorService" type="xs:string"/>
+    <xs:element name="PolicyAttributeValueSet" type="xs:string"/>
+    <xs:element name="SecuredMedicalDocument">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="DocumentId"/>
+                <xs:element ref="DocumentType"/>
+                <xs:element name="DateDocumentGenerated" type="xs:dateTime"/>
+                <xs:element ref="OuterPolicyControl"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ActInformationSensitivityPrivacyPolicyType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="HL7ConceptCode"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DocumentId" type="xs:string"/>
+    <xs:element name="DocumentType" type="xs:string"/>
+    <xs:element name="CompositeSecuredDocumentSet">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="SecuredMedicalDocument"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

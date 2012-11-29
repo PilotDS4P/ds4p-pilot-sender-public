@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/rxnorm-restful-client/src/main/resources/rxnormrest.xsd" uri="src/main/resources/jaxb/RxNorm/rxnormrest.xsd"/>
+</catalog>

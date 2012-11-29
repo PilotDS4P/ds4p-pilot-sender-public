@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<ApplicableSensitivityCodes xmlns="urn:hl7-org:v3"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 file:/C:/projects/DS4P/DS4PCommonLibrary/src/main/resources/casref.xsd">
+ <ActInformationSensitivityPolicy code="ETH" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="ETH">
+        <Description>Substance Abuse</Description>
+    </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="GDIS" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="GDIS">
+        <Description>Description for GDIS</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="HIV" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="HIV">
+  <Description>Description for GDIS</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="HIV" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="HIV">
+  <Description>Description for HIV</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="PSY" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="PSY">
+  <Description>Mental Health Related</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="SDV" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="SDV">
+  <Description>Description for SDV</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="SEX" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="SEX">
+  <Description>Description for SEX</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="STD" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="STD">
+  <Description>Description for STD</Description>
+ </ActInformationSensitivityPolicy>
+ <ActInformationSensitivityPolicy code="TBOO" codeSystem="2.16.840.1.113883.1.11.20429" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="TBOO">
+  <Description>Description for TB00</Description>
+ </ActInformationSensitivityPolicy> 
+</ApplicableSensitivityCodes>

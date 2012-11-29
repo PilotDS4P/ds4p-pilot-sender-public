@@ -1,0 +1,7 @@
+====
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+====
+
+This is a progress note for example patient blah blah blah....
