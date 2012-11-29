@@ -9,7 +9,7 @@
 
 	<!-- List of modules. -->
 	<modules>
-		<module>common-library</module>
+		<module>common-library</module> 
 		<module>audit-service-client</module>
 
 		<module>c32-service-client</module>
