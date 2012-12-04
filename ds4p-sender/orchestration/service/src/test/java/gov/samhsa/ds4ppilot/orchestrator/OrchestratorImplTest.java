@@ -64,7 +64,7 @@ public class OrchestratorImplTest {
 		patientIdDeny = "PUI100010060006";
 		packageXdm = true;
 		senderEmailAddress = "leo.smith@direct.obhita-stage.org";
-		reciepientEmailAddress = "Duane_Decouteau@direct.healthvault.com";
+		reciepientEmailAddress = "Duane_Decouteau@direct.healthvault-stage.com";
 	}
 
 	@Ignore("This test should be configured to run as an integration test.")
