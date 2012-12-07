@@ -36,9 +36,9 @@ import javax.xml.ws.BindingProvider;
 import org.springframework.util.StringUtils;
 
 import gov.samhsa.ds4p.xdsbregistry.DocumentRegistryService;
-import gov.samhsa.schema.ds4p.xdsbregistry.message.RegistryStoredQueryResult;
 import ihe.iti.xds_b._2007.XDSRegistry;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
@@ -59,7 +59,7 @@ public class XdsbRegistryWebServiceClient {
 	}
 
 	
-	public RegistryStoredQueryResult registryStoredQuery(AdhocQueryRequest registryStoredQuery) {
+	public AdhocQueryResponse registryStoredQuery(AdhocQueryRequest registryStoredQuery) {
 		XDSRegistry port = createPort();
 
 		return port.registryStoredQuery(registryStoredQuery);
@@ -127,7 +127,8 @@ public class XdsbRegistryWebServiceClient {
         // =============================================================================================================
  
         // Create a JAXB context passing in the class of the object we want to marshal/unmarshal
-        final JAXBContext context = JAXBContext.newInstance(obj.getClass(), oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectListType.class);
+        //final JAXBContext context = JAXBContext.newInstance(obj.getClass(), oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectListType.class);
+		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
  
         // =============================================================================================================
         // Marshalling OBJECT to XML

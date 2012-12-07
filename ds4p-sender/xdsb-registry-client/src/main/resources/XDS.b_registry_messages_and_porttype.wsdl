@@ -9,7 +9,8 @@
 	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract"
 	xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
 	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
-	xmlns:query="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
+	xmlns:query="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0"
+	xmlns:message="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message">
 	<wsdl:types>
 		<xsd:schema targetNamespace="urn:ihe:iti:xds-b:2007/Imports">
 			<xsd:import schemaLocation="query.xsd"
@@ -22,58 +23,45 @@
 		<wsdl:part name="input" element="query:AdhocQueryRequest" />
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_RegistryStoredQuery_OutputMessage">
-		<wsdl:part name="RegistryStoredQueryResult" element="q2:RegistryStoredQueryResult" 
-		xmlns:q2="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message"/>
+		<wsdl:part name="RegistryStoredQueryResult" element="query:AdhocQueryResponse"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_RegisterDocumentSet_InputMessage">
-		<wsdl:part name="input" type="q3:MessageBody"
-			xmlns:q3="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="input" type="message:MessageBody"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_RegisterDocumentSet_OutputMessage">
-		<wsdl:part name="RegisterDocumentSetResult" type="q4:MessageBody"
-			xmlns:q4="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="RegisterDocumentSetResult" type="message:MessageBody"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_UpdateDocumentSet_InputMessage">
-		<wsdl:part name="input" type="q5:MessageBody"
-			xmlns:q5="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="input" type="message:MessageBody"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_UpdateDocumentSet_OutputMessage">
-		<wsdl:part name="UpdateDocumentSetResult" type="q6:MessageBody"
-			xmlns:q6="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="UpdateDocumentSetResult" type="message:MessageBody" />
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_DeleteDocumentSet_InputMessage">
-		<wsdl:part name="input" type="q7:MessageBody"
-			xmlns:q7="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="input" type="message:MessageBody" />
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_DeleteDocumentSet_OutputMessage">
-		<wsdl:part name="DeleteDocumentSetResult" type="q8:MessageBody"
-			xmlns:q8="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="DeleteDocumentSetResult" type="message:MessageBody"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_PatientRegistryRecordAdded_InputMessage">
-		<wsdl:part name="input" type="q9:MessageBody"
-			xmlns:q9="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="input" type="message:MessageBody"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_PatientRegistryRecordAdded_OutputMessage">
-		<wsdl:part name="PatientRegistryRecordAddedResult" type="q10:MessageBody"
-			xmlns:q10="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="PatientRegistryRecordAddedResult" type="message:MessageBody" />
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_PatientRegistryRecordRevised_InputMessage">
-		<wsdl:part name="input" type="q11:MessageBody"
-			xmlns:q11="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="input" type="message:MessageBody"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_PatientRegistryRecordRevised_OutputMessage">
-		<wsdl:part name="PatientRegistryRecordRevisedResult" type="q12:MessageBody"
-			xmlns:q12="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="PatientRegistryRecordRevisedResult" type="message:MessageBody" />
 	</wsdl:message>
 	<wsdl:message
 		name="XDSRegistry_PatientRegistryDuplicatesResolved_InputMessage">
-		<wsdl:part name="input" type="q13:MessageBody"
-			xmlns:q13="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="input" type="message:MessageBody" />
 	</wsdl:message>
 	<wsdl:message
 		name="XDSRegistry_PatientRegistryDuplicatesResolved_OutputMessage">
-		<wsdl:part name="PatientRegistryDuplicatesResolvedResult"
-			type="q14:MessageBody" xmlns:q14="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message" />
+		<wsdl:part name="PatientRegistryDuplicatesResolvedResult" type="message:MessageBody" />
 	</wsdl:message>
 	<wsdl:portType name="XDSRegistry">
 		<wsdl:operation name="RegistryStoredQuery">
