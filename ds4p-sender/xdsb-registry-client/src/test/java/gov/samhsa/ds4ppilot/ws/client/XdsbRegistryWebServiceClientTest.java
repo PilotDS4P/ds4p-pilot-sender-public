@@ -12,6 +12,7 @@ import javax.xml.ws.Endpoint;
 
 import junit.framework.Assert;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -22,7 +23,7 @@ public class XdsbRegistryWebServiceClientTest {
 
 	protected static Endpoint ep;
 	protected static String address;
-	private static RegistryStoredQueryResult returnedValueOfRegistryStoredQuery = new RegistryStoredQueryResult();
+	private static AdhocQueryResponse returnedValueOfRegistryStoredQuery = new AdhocQueryResponse();
 
 	@BeforeClass
 	public static void setUp() {

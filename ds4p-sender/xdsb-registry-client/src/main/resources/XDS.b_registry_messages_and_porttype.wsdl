@@ -23,7 +23,7 @@
 		<wsdl:part name="input" element="query:AdhocQueryRequest" />
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_RegistryStoredQuery_OutputMessage">
-		<wsdl:part name="RegistryStoredQueryResult" element="message:RegistryStoredQueryResult"/>
+		<wsdl:part name="RegistryStoredQueryResult" element="query:AdhocQueryResponse"/>
 	</wsdl:message>
 	<wsdl:message name="XDSRegistry_RegisterDocumentSet_InputMessage">
 		<wsdl:part name="input" type="message:MessageBody"/>

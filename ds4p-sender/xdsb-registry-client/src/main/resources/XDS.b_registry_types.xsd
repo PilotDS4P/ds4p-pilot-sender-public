@@ -9,13 +9,6 @@
 			</sequence>
 		</xs:complexType>
 	</element>
-	<element name="MessageBody">
-		<xs:complexType>
-			<sequence>
-				<any minOccurs="0" maxOccurs="unbounded" namespace="##any" />
-			</sequence>
-		</xs:complexType>
-	</element>
 	<complexType name="MessageBody">
 		<sequence>
 			<any minOccurs="0" maxOccurs="unbounded" namespace="##any" />
