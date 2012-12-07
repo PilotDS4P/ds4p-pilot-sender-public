@@ -110,6 +110,19 @@ public class XdsbRegistryWebServiceClient {
 
 		return responsePayload;
 	}
+	
+	public String revisePatientRegistryRecord(PRPAIN201302UV input)
+			throws Throwable {
+		String justPayloadXml = marshall(input);
+
+		final QName operationName = new QName("urn:ihe:iti:xds-b:2007",
+				"PatientRegistryRecordRevised");
+
+		String responsePayload = getRawResponsePayload(operationName,
+				justPayloadXml);
+
+		return responsePayload;
+	}
 
 	private XDSRegistry createPort() {
 		XDSRegistry port = new DocumentRegistryService(wsdlURL, serviceName)
@@ -278,6 +291,11 @@ public class XdsbRegistryWebServiceClient {
 		messageBody.setSender(sender);
 		
 		System.out.println(xdsService.addPatientRegistryRecord(messageBody));
+		
+		System.out.println("Run patientRegistryRecordRevised");
+		
+		addr.setCity("DC");
+		System.out.println(xdsService.revisePatientRegistryRecord(messageBody));
 	}
 
 	private static String marshall(Object obj) throws Throwable {
