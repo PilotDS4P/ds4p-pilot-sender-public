@@ -179,6 +179,15 @@ public class OrchestratorImplTest {
 		OrchestratorImpl orchestrator = new OrchestratorImpl(
 				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);
 		
+		orchestrator.setSubjectPurposeOfUse("TREAT");
+		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
+		orchestrator.setOrganization("SAMHSA");
+		orchestrator.setOrganizationId("FEiSystems");;
+		
+		orchestrator.setResourceName("NwHINDirectSend");
+		orchestrator.setResourceType("C32");
+		orchestrator.setResourceAction("Execute");
+		
 		gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse response = orchestrator.retrieveDocumentSetRequest("HC", "1.3.6.1.4.1.21367.2010.1.2.1040", "2009.9.1.2458");
 		
 		assertNotNull(response);
@@ -208,7 +217,16 @@ public class OrchestratorImplTest {
 		XdsbRegistryImpl xdsbRegistry = new XdsbRegistryImpl(xdsbRegistryEndpointAddress);
 
 		OrchestratorImpl orchestrator = new OrchestratorImpl(
-				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);
+				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);		
+		
+		orchestrator.setSubjectPurposeOfUse("TREAT");
+		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
+		orchestrator.setOrganization("SAMHSA");
+		orchestrator.setOrganizationId("FEiSystems");;
+		
+		orchestrator.setResourceName("NwHINDirectSend");
+		orchestrator.setResourceType("C32");
+		orchestrator.setResourceAction("Execute");
 		
 		RegisteryStoredQueryResponse response = orchestrator.registeryStoredQueryRequest("patientid");
 		
