@@ -1,7 +1,8 @@
 package gov.samhsa.ds4ppilot.orchestrator.xdsbregistry;
 
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
-import com.microsoft.schemas.message.RegistryStoredQueryResult;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
+
 import gov.samhsa.ds4ppilot.ws.client.XdsbRegistryWebServiceClient;
 
 public class XdsbRegistryImpl implements XdsbRegistry {
@@ -13,10 +14,9 @@ public class XdsbRegistryImpl implements XdsbRegistry {
 	}
 
 	@Override
-	public RegistryStoredQueryResult registryStoredQuery(AdhocQueryRequest input) {
+	public AdhocQueryResponse registryStoredQuery(AdhocQueryRequest input) {
 		XdsbRegistryWebServiceClient client = new XdsbRegistryWebServiceClient(endpointAddress);
-		RegistryStoredQueryResult result = client.registryStoredQuery(input);
+		AdhocQueryResponse result = client.registryStoredQuery(input);
 		return result;
 	}
-
 }

@@ -40,9 +40,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 
-import com.microsoft.schemas.message.RegistryStoredQueryResult;
-
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
@@ -256,7 +255,7 @@ public class OrchestratorImpl implements Orchestrator {
 			retrieveDocumentSetResponse = xdsbRepository
 					.retrieveDocumentSetRequest(retrieveDocumentSet);
 			try {
-				String xmlResponse = marshall(retrieveDocumentSetResponse, retrieveDocumentSetResponse.getClass());
+				String xmlResponse = marshall(retrieveDocumentSetResponse);
 				response.setReturn(xmlResponse);
 			} catch (Throwable e) {
 				throw new DS4PException(e.toString(), e);
@@ -294,12 +293,12 @@ public class OrchestratorImpl implements Orchestrator {
 		statusSlotType.setValueList(statusValueListType);
 		adhocQueryType.getSlot().add(statusSlotType);
 		
-		RegistryStoredQueryResult result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
+		AdhocQueryResponse result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
 		
 		RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
 		
 		try {
-			String xmlResponse = marshall(result, result.getClass(), oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectListType.class);
+			String xmlResponse = marshall(result);
 			response.setReturn(xmlResponse);
 		} catch (Throwable e) {
 			throw new DS4PException(e.toString(), e);
@@ -457,9 +456,9 @@ public class OrchestratorImpl implements Orchestrator {
 		xacmlResult.setSubjectPurposeOfUse(result.getPurposeOfUse());
 		return xacmlResult;
 	}
-
-	private String marshall(Object obj, Class<?>... classesToBeBound) throws Throwable {
-		JAXBContext context = JAXBContext.newInstance(classesToBeBound);
+	
+	private String marshall(Object obj) throws Throwable{
+		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 		
 		Marshaller marshaller = context.createMarshaller();
 		StringWriter stringWriter = new StringWriter();

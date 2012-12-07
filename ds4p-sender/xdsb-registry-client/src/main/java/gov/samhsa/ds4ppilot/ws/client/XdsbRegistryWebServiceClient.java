@@ -127,7 +127,6 @@ public class XdsbRegistryWebServiceClient {
         // =============================================================================================================
  
         // Create a JAXB context passing in the class of the object we want to marshal/unmarshal
-        //final JAXBContext context = JAXBContext.newInstance(obj.getClass(), oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectListType.class);
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
  
         // =============================================================================================================

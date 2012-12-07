@@ -2,13 +2,6 @@
 <schema elementFormDefault="qualified" targetNamespace="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema"
 	xmlns:tns="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message">
-	<element name="RegistryStoredQueryResult">
-		<xs:complexType>
-			<sequence>
-				<any minOccurs="0" maxOccurs="unbounded" namespace="##any" />
-			</sequence>
-		</xs:complexType>
-	</element>
 	<complexType name="MessageBody">
 		<sequence>
 			<any minOccurs="0" maxOccurs="unbounded" namespace="##any" />
