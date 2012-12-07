@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/Message"
+<schema elementFormDefault="qualified" targetNamespace="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema"
-	xmlns:tns="http://schemas.microsoft.com/Message">
+	xmlns:tns="http://schema.samhsa.gov/ds4p/XDSbRegistry/Message">
 	<element name="RegistryStoredQueryResult">
 		<xs:complexType>
 			<sequence>

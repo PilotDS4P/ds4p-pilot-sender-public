@@ -1,5 +1,6 @@
 package gov.samhsa.ds4ppilot.ws.client;
 
+import gov.samhsa.schema.ds4p.xdsbregistry.message.RegistryStoredQueryResult;
 import ihe.iti.xds_b._2007.XDSRegistry;
 
 import java.net.URL;
@@ -16,7 +17,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tempuri.DocumentRegistryService;
 
-import com.microsoft.schemas.message.RegistryStoredQueryResult;
 
 public class XdsbRegistryWebServiceClientTest {
 

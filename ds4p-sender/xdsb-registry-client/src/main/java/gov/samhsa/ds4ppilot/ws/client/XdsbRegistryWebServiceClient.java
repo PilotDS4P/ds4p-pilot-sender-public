@@ -36,15 +36,13 @@ import javax.xml.ws.BindingProvider;
 import org.springframework.util.StringUtils;
 import org.tempuri.DocumentRegistryService;
 
+import gov.samhsa.schema.ds4p.xdsbregistry.message.RegistryStoredQueryResult;
 import ihe.iti.xds_b._2007.XDSRegistry;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
-
-import com.microsoft.schemas.message.RegistryStoredQueryResult;
-
 
 
 /**
