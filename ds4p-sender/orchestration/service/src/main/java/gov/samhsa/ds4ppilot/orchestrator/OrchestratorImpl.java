@@ -53,7 +53,6 @@ import gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandler;
 import gov.samhsa.ds4ppilot.orchestrator.documentprocessor.DocumentProcessor;
 import gov.samhsa.ds4ppilot.orchestrator.xdsbregistry.XdsbRegistry;
 import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository;
-import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepositoryImpl;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
@@ -83,7 +82,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 	/** The xdsbRepository. */
 	private XdsbRepository xdsbRepository;
-	
+
 	/** The xdsbRegistry. */
 	private XdsbRegistry xdsbRegistry;
 
@@ -123,8 +122,7 @@ public class OrchestratorImpl implements Orchestrator {
 	public OrchestratorImpl(ContextHandler contextHandler, C32Getter c32Getter,
 			DocumentProcessor documentProcessor,
 			DataHandlerToBytesConverter dataHandlerToBytesConverter,
-			XdsbRepository xdsbRepository,
-			XdsbRegistry xdsbRegistry) {
+			XdsbRepository xdsbRepository, XdsbRegistry xdsbRegistry) {
 		super();
 		this.contextHandler = contextHandler;
 		this.c32Getter = c32Getter;
@@ -151,22 +149,11 @@ public class OrchestratorImpl implements Orchestrator {
 		c32Response.setPatientId(patientId);
 
 		Return result = null;
-		try {
-			EnforcePolicy.Xspasubject xspasubject = new EnforcePolicy.Xspasubject();
-			EnforcePolicy.Xsparesource xsparesource = new EnforcePolicy.Xsparesource();
-
-			xspasubject.setSubjectPurposeOfUse(subjectPurposeOfUse);
-			xspasubject.setSubjectLocality(subjectLocality);
-			xspasubject.setSubjectEmailAddress(recipientEmailAddress);
-			xspasubject.setSubjectId(recipientEmailAddress);
-			xspasubject.setOrganization(organization);
-			xspasubject.setOrganizationId(organizationId);
-			xspasubject.setMessageId(UUID.randomUUID().toString());
-
-			xsparesource.setResourceId(patientId);
-			xsparesource.setResourceName(resourceName);
-			xsparesource.setResourceType(resourceType);
-			xsparesource.setResourceAction(resourceAction);
+		try {			
+			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
+					recipientEmailAddress, UUID
+							.randomUUID().toString());
+			EnforcePolicy.Xsparesource xsparesource = setXspaResource(patientId);
 
 			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
 		} catch (Exception e) {
@@ -225,85 +212,83 @@ public class OrchestratorImpl implements Orchestrator {
 		retrieveDocumentSet.getDocumentRequest().add(documentRequest);
 
 		Return result = null;
-		/*try {
-			EnforcePolicy.Xspasubject xspasubject = new EnforcePolicy.Xspasubject();
-			EnforcePolicy.Xsparesource xsparesource = new EnforcePolicy.Xsparesource();
-
-			xspasubject.setSubjectPurposeOfUse(subjectPurposeOfUse);
-			xspasubject.setSubjectLocality(subjectLocality);
-			xspasubject
-					.setSubjectEmailAddress("Duane_Decouteau@direct.healthvault.com");
-			xspasubject.setSubjectId("Duane_Decouteau@direct.healthvault.com");
-			xspasubject.setOrganization(organization);
-			xspasubject.setOrganizationId(organizationId);
-			xspasubject.setMessageId(UUID.randomUUID().toString());
-
-			xsparesource.setResourceId("PUI100010060001");
-			xsparesource.setResourceName(resourceName);
-			xsparesource.setResourceType(resourceType);
-			xsparesource.setResourceAction(resourceAction);
+		try {
+			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
+					"Duane_Decouteau@direct.healthvault-stage.com", UUID
+							.randomUUID().toString());
+			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
 			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
-		} catch (Exception e) {
-			throw new DS4PException(e.toString(), e);
-		}*/
 
-		ihe.iti.xds_b._2007.RetrieveDocumentSetResponse retrieveDocumentSetResponse = null;
+			ihe.iti.xds_b._2007.RetrieveDocumentSetResponse retrieveDocumentSetResponse = null;
 
-		//if (result.getPdpDecision().equals(PERMIT)) {
-
-			retrieveDocumentSetResponse = xdsbRepository
-					.retrieveDocumentSetRequest(retrieveDocumentSet);
-			try {
+			if (result.getPdpDecision().equals(PERMIT)) {
+				retrieveDocumentSetResponse = xdsbRepository
+						.retrieveDocumentSetRequest(retrieveDocumentSet);
+				
 				String xmlResponse = marshall(retrieveDocumentSetResponse);
+				
 				response.setReturn(xmlResponse);
-			} catch (Throwable e) {
-				throw new DS4PException(e.toString(), e);
 			}
-		//}
+		} catch (Throwable e) {
+			throw new DS4PException(e.toString(), e);
+		}
 
 		return response;
 	}
 
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(
-			String patientId) {
+			String patientId)  {
 		AdhocQueryRequest registryStoredQuery = new AdhocQueryRequest();
-		
+
 		ResponseOptionType responseOptionType = new ResponseOptionType();
 		responseOptionType.setReturnComposedObjects(true);
 		responseOptionType.setReturnType("LeafClass");
 		registryStoredQuery.setResponseOption(responseOptionType);
-		
+
 		AdhocQueryType adhocQueryType = new AdhocQueryType();
-		adhocQueryType.setId("urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d"); // FindDocuments by patientId
+		adhocQueryType.setId("urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d"); // FindDocuments
+																				// by
+																				// patientId
 		registryStoredQuery.setAdhocQuery(adhocQueryType);
-		
+
 		SlotType1 patientIdSlotType = new SlotType1();
 		patientIdSlotType.setName("$XDSDocumentEntryPatientId");
 		ValueListType patientIdValueListType = new ValueListType();
-		patientIdValueListType.getValue().add("'24d3b01495f14e9^^^&1.3.6.1.4.1.21367.2010.1.2.300&ISO'"); // PatientId
+		patientIdValueListType.getValue().add(
+				"'24d3b01495f14e9^^^&1.3.6.1.4.1.21367.2010.1.2.300&ISO'"); // PatientId
 		patientIdSlotType.setValueList(patientIdValueListType);
 		adhocQueryType.getSlot().add(patientIdSlotType);
-		
+
 		SlotType1 statusSlotType = new SlotType1();
 		statusSlotType.setName("$XDSDocumentEntryStatus");
 		ValueListType statusValueListType = new ValueListType();
-		statusValueListType.getValue().add("('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')"); 
+		statusValueListType.getValue().add(
+				"('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')");
 		statusSlotType.setValueList(statusValueListType);
 		adhocQueryType.getSlot().add(statusSlotType);
-		
+
 		AdhocQueryResponse result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
-		
 		RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
-		
+
+		Return enforcePolicyResult = null;
 		try {
-			String xmlResponse = marshall(result);
-			response.setReturn(xmlResponse);
+			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
+					"Duane_Decouteau@direct.healthvault-stage.com", UUID
+							.randomUUID().toString());
+			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
+
+			enforcePolicyResult = contextHandler.enforcePolicy(xspasubject, xsparesource);
+
+			if (enforcePolicyResult.getPdpDecision().equals(PERMIT)) {
+				String xmlResponse = marshall(result);
+				response.setReturn(xmlResponse);
+			}
 		} catch (Throwable e) {
 			throw new DS4PException(e.toString(), e);
 		}
-		
+
 		return response;
 	}
 
@@ -441,6 +426,34 @@ public class OrchestratorImpl implements Orchestrator {
 	}
 
 	/**
+	 * @return
+	 */
+	private EnforcePolicy.Xsparesource setXspaResource(String patientId) {
+		EnforcePolicy.Xsparesource xsparesource = new EnforcePolicy.Xsparesource();
+		xsparesource.setResourceId(patientId);
+		xsparesource.setResourceName(resourceName);
+		xsparesource.setResourceType(resourceType);
+		xsparesource.setResourceAction(resourceAction);
+		return xsparesource;
+	}
+
+	/**
+	 * @return
+	 */
+	private EnforcePolicy.Xspasubject setXspaSubject(
+			String recipientEmailAddress, String messageId) {
+		EnforcePolicy.Xspasubject xspasubject = new EnforcePolicy.Xspasubject();
+		xspasubject.setSubjectPurposeOfUse(subjectPurposeOfUse);
+		xspasubject.setSubjectLocality(subjectLocality);
+		xspasubject.setSubjectEmailAddress(recipientEmailAddress);
+		xspasubject.setSubjectId(recipientEmailAddress);
+		xspasubject.setOrganization(organization);
+		xspasubject.setOrganizationId(organizationId);
+		xspasubject.setMessageId(messageId);
+		return xspasubject;
+	}
+
+	/**
 	 * Gets the XACML response.
 	 * 
 	 * @param result
@@ -459,12 +472,10 @@ public class OrchestratorImpl implements Orchestrator {
 	
 	private String marshall(Object obj) throws Throwable{
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
-		
 		Marshaller marshaller = context.createMarshaller();
+		
 		StringWriter stringWriter = new StringWriter();
 		marshaller.marshal(obj, stringWriter);
-
-		System.out.println(stringWriter.toString());
 
 		return stringWriter.toString();
 	}
