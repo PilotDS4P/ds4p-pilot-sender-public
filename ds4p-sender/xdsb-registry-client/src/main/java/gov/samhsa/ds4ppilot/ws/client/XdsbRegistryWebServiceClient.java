@@ -34,8 +34,8 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
 import org.springframework.util.StringUtils;
-import org.tempuri.DocumentRegistryService;
 
+import gov.samhsa.ds4p.xdsbregistry.DocumentRegistryService;
 import gov.samhsa.schema.ds4p.xdsbregistry.message.RegistryStoredQueryResult;
 import ihe.iti.xds_b._2007.XDSRegistry;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
@@ -68,7 +68,7 @@ public class XdsbRegistryWebServiceClient {
 	private XDSRegistry createPort() {
 		final URL WSDL_LOCATION = this.getClass().getClassLoader()
 				.getResource("XDS.b_registry.net.wsdl");
-		final QName SERVICE =  new QName("http://tempuri.org/", "DocumentRegistryService");
+		final QName SERVICE =  new QName("http://samhsa.gov/ds4p/XDSbRegistry/", "DocumentRegistryService");
 
 		XDSRegistry port = new DocumentRegistryService(WSDL_LOCATION, SERVICE).getXDSRegistryHTTPEndpoint();		
 		

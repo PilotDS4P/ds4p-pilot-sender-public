@@ -1,5 +1,6 @@
 package gov.samhsa.ds4ppilot.ws.client;
 
+import gov.samhsa.ds4p.xdsbregistry.DocumentRegistryService;
 import gov.samhsa.schema.ds4p.xdsbregistry.message.RegistryStoredQueryResult;
 import ihe.iti.xds_b._2007.XDSRegistry;
 
@@ -15,7 +16,6 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.tempuri.DocumentRegistryService;
 
 
 public class XdsbRegistryWebServiceClientTest {
@@ -75,7 +75,7 @@ public class XdsbRegistryWebServiceClientTest {
 	private XDSRegistry createPort() {
 		final URL WSDL_LOCATION = this.getClass().getClassLoader()
 				.getResource("XDS.b_registry.net.wsdl");
-		final QName SERVICE = new QName("http://tempuri.org/",
+		final QName SERVICE = new QName("http://samhsa.gov/ds4p/XDSbRegistry/",
 				"DocumentRegistryService");
 
 		XDSRegistry port = new DocumentRegistryService(WSDL_LOCATION, SERVICE)

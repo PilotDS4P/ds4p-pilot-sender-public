@@ -19,7 +19,7 @@ import javax.xml.ws.Action;
  * 
  */
 
-@WebService(serviceName = "DocumentRegistryService", portName = "XDSRegistry_HTTP_Endpoint", targetNamespace = "http://tempuri.org/", wsdlLocation = "classpath:XDS.b_registry.net.wsdl", endpointInterface = "ihe.iti.xds_b._2007.XDSRegistry")
+@WebService(serviceName = "DocumentRegistryService", portName = "XDSRegistry_HTTP_Endpoint", targetNamespace = "http://samhsa.gov/ds4p/XDSbRegistry/", wsdlLocation = "classpath:XDS.b_registry.net.wsdl", endpointInterface = "ihe.iti.xds_b._2007.XDSRegistry")
 public class XdsbRegistryServiceImpl implements XDSRegistry {
 
 	private static final Logger LOG = Logger.getLogger(XdsbRegistryServiceImpl.class
