@@ -1,16 +1,11 @@
 package gov.samhsa.ds4ppilot.ws.client;
 
-import gov.samhsa.schema.ds4p.xdsbregistry.message.MessageBody;
+import gov.samhsa.schema.ds4p.xdsbregistry.message.RegistryRequest;
 import ihe.iti.xds_b._2007.XDSRegistry;
 
 import java.util.logging.Logger;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.ws.Action;
+import org.hl7.v3.PRPAIN201302UV;
 
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 
@@ -33,14 +28,15 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * 
 	 * @see
 	 * ihe.iti.xds_b._2007.XDSRegistry#patientRegistryRecordRevised(com.microsoft
-	 * .schemas.message.MessageBody input )*
+	 * .schemas.message.RegistryRequest input )*
 	 */
-	public MessageBody patientRegistryRecordRevised(
-			MessageBody input) {
+	@Override
+	public Object patientRegistryRecordRevised(
+			RegistryRequest input) {
 		LOG.info("Executing operation patientRegistryRecordRevised");
 		System.out.println(input);
 		try {
-			MessageBody _return = null;
+			RegistryRequest _return = null;
 			return _return;
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
@@ -53,14 +49,15 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * 
 	 * @see
 	 * ihe.iti.xds_b._2007.XDSRegistry#updateDocumentSet(com.microsoft.schemas
-	 * .message.MessageBody input )*
+	 * .message.RegistryRequest input )*
 	 */
-	public MessageBody updateDocumentSet(
-			MessageBody input) {
+	@Override
+	public Object updateDocumentSet(
+			RegistryRequest input) {
 		LOG.info("Executing operation updateDocumentSet");
 		System.out.println(input);
 		try {
-			MessageBody _return = null;
+			RegistryRequest _return = null;
 			return _return;
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
@@ -74,6 +71,7 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * @see ihe.iti.xds_b._2007.XDSRegistry#registryStoredQuery(oasis.names.tc.
 	 * ebxml_regrep.xsd.query._3.AdhocQueryRequest input )*
 	 */
+	@Override
 	public AdhocQueryResponse registryStoredQuery(
 			oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest input) {
 		LOG.info("Executing operation registryStoredQuery");
@@ -92,14 +90,15 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * 
 	 * @see
 	 * ihe.iti.xds_b._2007.XDSRegistry#deleteDocumentSet(com.microsoft.schemas
-	 * .message.MessageBody input )*
+	 * .message.RegistryRequest input )*
 	 */
-	public MessageBody deleteDocumentSet(
-			MessageBody input) {
+	@Override
+	public Object deleteDocumentSet(
+			RegistryRequest input) {
 		LOG.info("Executing operation deleteDocumentSet");
 		System.out.println(input);
 		try {
-			MessageBody _return = null;
+			RegistryRequest _return = null;
 			return _return;
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
@@ -112,14 +111,15 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * 
 	 * @see
 	 * ihe.iti.xds_b._2007.XDSRegistry#patientRegistryRecordAdded(com.microsoft
-	 * .schemas.message.MessageBody input )*
+	 * .schemas.message.RegistryRequest input )*
 	 */
-	public MessageBody patientRegistryRecordAdded(
-			MessageBody input) {
+	@Override
+	public Object patientRegistryRecordAdded(
+			PRPAIN201302UV input) {
 		LOG.info("Executing operation patientRegistryRecordAdded");
 		System.out.println(input);
 		try {
-			MessageBody _return = null;
+			RegistryRequest _return = null;
 			return _return;
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
@@ -132,14 +132,15 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * 
 	 * @see
 	 * ihe.iti.xds_b._2007.XDSRegistry#patientRegistryDuplicatesResolved(com
-	 * .microsoft.schemas.message.MessageBody input )*
+	 * .microsoft.schemas.message.RegistryRequest input )*
 	 */
-	public MessageBody patientRegistryDuplicatesResolved(
-			MessageBody input) {
+	@Override
+	public Object patientRegistryDuplicatesResolved(
+			RegistryRequest input) {
 		LOG.info("Executing operation patientRegistryDuplicatesResolved");
 		System.out.println(input);
 		try {
-			MessageBody _return = null;
+			RegistryRequest _return = null;
 			return _return;
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
@@ -152,19 +153,19 @@ public class XdsbRegistryServiceImpl implements XDSRegistry {
 	 * 
 	 * @see
 	 * ihe.iti.xds_b._2007.XDSRegistry#registerDocumentSet(com.microsoft.schemas
-	 * .message.MessageBody input )*
+	 * .message.RegistryRequest input )*
 	 */
-	public MessageBody registerDocumentSet(
-			MessageBody input) {
+	@Override
+	public Object registerDocumentSet(
+			RegistryRequest input) {
 		LOG.info("Executing operation registerDocumentSet");
 		System.out.println(input);
 		try {
-			MessageBody _return = null;
+			RegistryRequest _return = null;
 			return _return;
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);
 		}
 	}
-
 }
