@@ -11,7 +11,7 @@
 	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
 	<wsdl:types>
 		<xsd:schema targetNamespace="urn:ihe:iti:xds-b:2007/Imports">
-			<xsd:import schemaLocation="XDS.b_repository.net-xsd.wsdl"
+			<xsd:import schemaLocation="XDS.b_repository_types.xsd"
 				namespace="urn:ihe:iti:xds-b:2007" />
 		</xsd:schema>
 	</wsdl:types>
