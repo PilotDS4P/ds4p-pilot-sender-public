@@ -48,18 +48,20 @@ import javax.xml.ws.handler.MessageContext;
 
 import org.hl7.v3.Device;
 import org.hl7.v3.Id;
+import org.hl7.v3.PRPAIN201301UV02;
 import org.hl7.v3.PRPAIN201302UV;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Addr;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.BirthTime;
-import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Name;
-import org.hl7.v3.PRPAIN201302UV.Receiver;
-import org.hl7.v3.PRPAIN201302UV.Sender;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Addr;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.BirthTime;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Name;
+import org.hl7.v3.PatientIdentityFeedRequestType.Receiver;
+import org.hl7.v3.PatientIdentityFeedRequestType.Sender;
+
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 
@@ -98,7 +100,7 @@ public class XdsbRegistryWebServiceClient {
 		return port.registryStoredQuery(registryStoredQuery);
 	}
 
-	public String addPatientRegistryRecord(PRPAIN201302UV input)
+	public String addPatientRegistryRecord(PRPAIN201301UV02 input)
 			throws Throwable {
 		String justPayloadXml = marshall(input);
 
@@ -110,7 +112,7 @@ public class XdsbRegistryWebServiceClient {
 
 		return responsePayload;
 	}
-	
+
 	public String revisePatientRegistryRecord(PRPAIN201302UV input)
 			throws Throwable {
 		String justPayloadXml = marshall(input);
@@ -262,13 +264,13 @@ public class XdsbRegistryWebServiceClient {
 		ControlActProcess controlActProcess = new ControlActProcess();
 		controlActProcess.setSubject(subject);
 
-		// PRPAIN201302UV
-		PRPAIN201302UV messageBody = new PRPAIN201302UV();
-		messageBody.setControlActProcess(controlActProcess);
+		// PRPAIN201301UV02
+		PRPAIN201301UV02 prpain201301uv02 = new PRPAIN201301UV02();
+		prpain201301uv02.setControlActProcess(controlActProcess);
 
 		Id PRPAIN201302UVId = new Id();
 		PRPAIN201302UVId.setRoot("cdc0d3fa-4467-11dc-a6be-3603d686610257");
-		messageBody.setId(PRPAIN201302UVId);
+		prpain201301uv02.setId(PRPAIN201302UVId);
 
 		Receiver receiver = new Receiver();
 		receiver.setTypeCode("RCV");
@@ -278,7 +280,7 @@ public class XdsbRegistryWebServiceClient {
 		receiverDeviceId.setRoot("1.2.840.114350.1.13.99999.4567");
 		receiverDevice.setId(receiverDeviceId);
 		receiver.setDevice(receiverDevice);
-		messageBody.setReceiver(receiver);
+		prpain201301uv02.setReceiver(receiver);
 
 		Sender sender = new Sender();
 		sender.setTypeCode("SND");
@@ -288,14 +290,27 @@ public class XdsbRegistryWebServiceClient {
 		senderDeviceId.setRoot("1.2.840.114350.1.13.99998.8734");
 		senderDevice.setId(senderDeviceId);
 		sender.setDevice(senderDevice);
-		messageBody.setSender(sender);
-		
-		System.out.println(xdsService.addPatientRegistryRecord(messageBody));
-		
+		prpain201301uv02.setSender(sender);
+
+		System.out.println(xdsService
+				.addPatientRegistryRecord(prpain201301uv02));
+
 		System.out.println("Run patientRegistryRecordRevised");
+
+		// PRPAIN201302UV
+		PRPAIN201302UV prpain201302uv = new PRPAIN201302UV();
 		
+		prpain201301uv02.setControlActProcess(controlActProcess);
+
+		prpain201302uv.setId(PRPAIN201302UVId);
+
+		prpain201302uv.setReceiver(receiver);
+
+		prpain201302uv.setSender(sender);
+
 		addr.setCity("DC");
-		System.out.println(xdsService.revisePatientRegistryRecord(messageBody));
+		System.out.println(xdsService
+				.revisePatientRegistryRecord(prpain201302uv));
 	}
 
 	private static String marshall(Object obj) throws Throwable {
