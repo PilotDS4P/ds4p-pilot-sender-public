@@ -1,25 +1,16 @@
 package gov.samhsa.ds4ppilot.orchestrator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
-import gov.samhsa.ds4ppilot.orchestrator.OrchestratorImpl;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32GetterImpl;
 import gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandler;
@@ -33,20 +24,47 @@ import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepositoryImpl;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
+import gov.samhsa.ds4ppilot.ws.client.XdsbRegistryWebServiceClient;
 import gov.va.ehtac.ds4p.ws.EnforcePolicy.Xsparesource;
 import gov.va.ehtac.ds4p.ws.EnforcePolicy.Xspasubject;
 import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+
+import javax.activation.DataHandler;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import junit.framework.Assert;
+
+import org.hl7.v3.Device;
+import org.hl7.v3.Id;
+import org.hl7.v3.PRPAIN201302UV;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Addr;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.BirthTime;
+import org.hl7.v3.PRPAIN201302UV.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Name;
+import org.hl7.v3.PRPAIN201302UV.Receiver;
+import org.hl7.v3.PRPAIN201302UV.Sender;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-
-
-import javax.activation.DataHandler;
-
-import junit.framework.Assert;
 
 public class OrchestratorImplTest {
 
@@ -55,7 +73,7 @@ public class OrchestratorImplTest {
 	private static String patientIdPermit;
 	private static String senderEmailAddress;
 	private static String reciepientEmailAddress;
-	
+
 	private final static String PERMIT = "Permit";
 
 	@Before
@@ -82,27 +100,27 @@ public class OrchestratorImplTest {
 		final String documentProcessorEndpointAddress = "http://localhost:90/DocumentProcessor/services/processdocumentservice";
 		DocumentProcessor documentProcessor = new DocumentProcessorImpl(
 				documentProcessorEndpointAddress);
-		
+
 		DataHandlerToBytesConverter dataHandlerToBytesConverter = new DataHandlerToBytesConverterImpl();
-		
+
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
 		XdsbRepositoryImpl xdsbRepository = new XdsbRepositoryImpl(xdsbRepositoryEndpointAddress);
-		
+
 		final String xdsbRegistryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
 		XdsbRegistryImpl xdsbRegistry = new XdsbRegistryImpl(xdsbRegistryEndpointAddress);
-		
+
 		OrchestratorImpl orchestrator = new OrchestratorImpl(
 				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);
-		
+
 		orchestrator.setSubjectPurposeOfUse("TREAT");
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
 		orchestrator.setOrganizationId("FEiSystems");;
-		
+
 		orchestrator.setResourceName("NwHINDirectSend");
 		orchestrator.setResourceType("C32");
 		orchestrator.setResourceAction("Execute");
-		
+
 		FilterC32Response c32Response = orchestrator.handleC32Request(
 				patientIdDeny, packageXdm, senderEmailAddress,
 				reciepientEmailAddress);
@@ -124,27 +142,27 @@ public class OrchestratorImplTest {
 		final String documentProcessorEndpointAddress = "http://localhost:90/DocumentProcessor/services/processdocumentservice";
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
 				documentProcessorEndpointAddress);
-		
+
 		DataHandlerToBytesConverter dataHandlerToBytesConverter = new DataHandlerToBytesConverterImpl();
-		
+
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
 		XdsbRepositoryImpl xdsbRepository = new XdsbRepositoryImpl(xdsbRepositoryEndpointAddress);
-		
+
 		final String xdsbRegistryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
 		XdsbRegistryImpl xdsbRegistry = new XdsbRegistryImpl(xdsbRegistryEndpointAddress);
 
 		OrchestratorImpl orchestrator = new OrchestratorImpl(
 				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);
-		
+
 		orchestrator.setSubjectPurposeOfUse("TREAT");
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
 		orchestrator.setOrganizationId("FEiSystems");;
-		
+
 		orchestrator.setResourceName("NwHINDirectSend");
 		orchestrator.setResourceType("C32");
 		orchestrator.setResourceAction("Execute");
-		
+
 		FilterC32Response c32Response = orchestrator.handleC32Request(
 				patientIdPermit, packageXdm, senderEmailAddress,
 				reciepientEmailAddress);
@@ -152,7 +170,7 @@ public class OrchestratorImplTest {
 
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
-	
+
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRetrieveDocumentSetRequest() {
@@ -168,31 +186,31 @@ public class OrchestratorImplTest {
 		final String documentProcessorEndpointAddress = "http://localhost:90/DocumentProcessor/services/processdocumentservice";
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
 				documentProcessorEndpointAddress);
-		
+
 		DataHandlerToBytesConverter dataHandlerToBytesConverter = new DataHandlerToBytesConverterImpl();
-				
+
 		XdsbRepositoryImpl xdsbRepository = new XdsbRepositoryImpl(xdsbRepositoryEndpointAddress);
-		
+
 		final String xdsbRegistryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
 		XdsbRegistryImpl xdsbRegistry = new XdsbRegistryImpl(xdsbRegistryEndpointAddress);
 
 		OrchestratorImpl orchestrator = new OrchestratorImpl(
 				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);
-		
+
 		orchestrator.setSubjectPurposeOfUse("TREAT");
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
 		orchestrator.setOrganizationId("FEiSystems");;
-		
+
 		orchestrator.setResourceName("NwHINDirectSend");
 		orchestrator.setResourceType("C32");
 		orchestrator.setResourceAction("Execute");
-		
+
 		gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse response = orchestrator.retrieveDocumentSetRequest("HC", "1.3.6.1.4.1.21367.2010.1.2.1040", "2009.9.1.2458");
-		
+
 		assertNotNull(response);
 	}
-	
+
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRegisteryStoredQueryRequest() {
@@ -208,30 +226,112 @@ public class OrchestratorImplTest {
 		final String documentProcessorEndpointAddress = "http://localhost:90/DocumentProcessor/services/processdocumentservice";
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
 				documentProcessorEndpointAddress);
-		
+
 		DataHandlerToBytesConverter dataHandlerToBytesConverter = new DataHandlerToBytesConverterImpl();
-				
+
 		XdsbRepositoryImpl xdsbRepository = new XdsbRepositoryImpl(xdsbRepositoryEndpointAddress);
-		
+
 		final String xdsbRegistryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
 		XdsbRegistryImpl xdsbRegistry = new XdsbRegistryImpl(xdsbRegistryEndpointAddress);
 
 		OrchestratorImpl orchestrator = new OrchestratorImpl(
 				contextHandler, c32Getter, documentProcessor, dataHandlerToBytesConverter, xdsbRepository, xdsbRegistry);		
-		
+
 		orchestrator.setSubjectPurposeOfUse("TREAT");
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
 		orchestrator.setOrganizationId("FEiSystems");;
-		
+
 		orchestrator.setResourceName("NwHINDirectSend");
 		orchestrator.setResourceType("C32");
 		orchestrator.setResourceAction("Execute");
-		
+
 		RegisteryStoredQueryResponse response = orchestrator.registeryStoredQueryRequest("patientid");
-		
+
 		assertNotNull(response);
 
+	}	
+
+	@Ignore("This test should be configured to run as an integration test.")
+	@Test
+	public void testAddAndRevisePatientRegistryRecord() throws Throwable {
+		final String demoEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";		
+
+		XdsbRegistryWebServiceClient xdsService = new XdsbRegistryWebServiceClient(
+				demoEndpoint);
+		// PatientPerson
+		PatientPerson patientPerson = new PatientPerson();
+		Name name = new Name();
+		name.setFamily("Family");
+		name.setGiven("Given");
+		patientPerson.setName(name);
+		BirthTime birthTime = new BirthTime();
+		birthTime.setValue("19570323");
+		patientPerson.setBirthTime(birthTime);
+		Addr addr = new Addr();
+		addr.setStreetAddressLine("3443 South Beach Avenue");
+		addr.setCity("Columbia");
+		addr.setState("MD");
+		patientPerson.getAddr().add(addr);
+		// Patient
+		Patient patient = new Patient();
+		Id patientId = new Id();
+		patientId.setRoot("1.2.840.114350.1.13.99998.8734"); // Domain Id
+		patientId.setExtension("10"); // PatientId in the domain
+		patient.setId(patientId);
+		patient.setPatientPerson(patientPerson);
+		// Subject 1
+		Subject1 subject1 = new Subject1();
+		subject1.setPatient(patient);
+		// RegistrationEvent
+		RegistrationEvent registrationEvent = new RegistrationEvent();
+		registrationEvent.setSubject1(subject1);
+		// Subject
+		Subject subject = new Subject();
+		subject.setRegistrationEvent(registrationEvent);
+		// ControlActProcess
+		ControlActProcess controlActProcess = new ControlActProcess();
+		controlActProcess.setSubject(subject);
+		// PRPAIN201302UV
+		PRPAIN201302UV messageBody = new PRPAIN201302UV();
+		messageBody.setControlActProcess(controlActProcess);
+		Id PRPAIN201302UVId = new Id();
+		PRPAIN201302UVId.setRoot("cdc0d3fa-4467-11dc-a6be-3603d686610257");
+		messageBody.setId(PRPAIN201302UVId);
+		Receiver receiver = new Receiver();
+		receiver.setTypeCode("RCV");
+		Device receiverDevice = new Device();
+		receiverDevice.setDeterminerCode("INSTANCE");
+		Id receiverDeviceId = new Id();
+		receiverDeviceId.setRoot("1.2.840.114350.1.13.99999.4567");
+		receiverDevice.setId(receiverDeviceId);
+		receiver.setDevice(receiverDevice);
+		messageBody.setReceiver(receiver);
+		Sender sender = new Sender();
+		sender.setTypeCode("SND");
+		Device senderDevice = new Device();
+		senderDevice.setDeterminerCode("INSTANCE");
+		Id senderDeviceId = new Id();
+		senderDeviceId.setRoot("1.2.840.114350.1.13.99998.8734");
+		senderDevice.setId(senderDeviceId);
+		sender.setDevice(senderDevice);
+		messageBody.setSender(sender);
+
+		String revisePatientResponse = null;
+		String addPatientResponse = null;
+		try {
+			addPatientResponse = xdsService.addPatientRegistryRecord(messageBody);
+			System.out.println("Run patientRegistryRecordRevised");
+			addr.setCity("DC");
+
+			revisePatientResponse = xdsService
+					.revisePatientRegistryRecord(messageBody);
+		} catch (Exception e) {
+			throw new DS4PException(e.toString(), e);
+		}
+
+		Assert.assertNotNull(addPatientResponse);
+		Assert.assertNotNull(revisePatientResponse);
 	}
 
 	@Test(expected = DS4PException.class)
@@ -249,16 +349,16 @@ public class OrchestratorImplTest {
 		when(
 				contextHandlerMock.enforcePolicy(isA(Xspasubject.class),
 						isA(Xsparesource.class))).thenThrow(
-				new RuntimeException());
+								new RuntimeException());
 
 		// Act
 		sut.handleC32Request(null, false, null, null);
 
 		// Assert
 		verify(contextHandlerMock).enforcePolicy(isA(Xspasubject.class),
-						isA(Xsparesource.class));
+				isA(Xsparesource.class));
 	}
-	
+
 	@Test
 	public void testHandleC32Request_WorksWhenHavingNotPermitDecision() {
 		// Arrange
@@ -270,14 +370,14 @@ public class OrchestratorImplTest {
 		XdsbRegistry xdsbRegistryMock = mock(XdsbRegistry.class);
 		OrchestratorImpl sut = new OrchestratorImpl(contextHandlerMock,
 				c32GetterMock, documentProcessorMock, dataHandlerToBytesConverterMock, xdsbRepositoryMock, xdsbRegistryMock);
-		
+
 		Return returnMock = mock(Return.class);
 		when(returnMock.getPdpDecision()).thenReturn("Deny");
-		
+
 		when(
 				contextHandlerMock.enforcePolicy(isA(Xspasubject.class),
 						isA(Xsparesource.class))).thenReturn(returnMock);
-		
+
 		final String patientId = "patientId";
 
 		// Act
@@ -289,7 +389,7 @@ public class OrchestratorImplTest {
 		assertNull(c32Response.getMaskedDocument());
 		assertEquals(patientId, c32Response.getPatientId());
 	}	
-	
+
 	@Test
 	public void testHandleC32Request_WorksWhenHavingPermitDecision() throws IOException {
 		// Arrange
@@ -301,14 +401,14 @@ public class OrchestratorImplTest {
 		XdsbRegistry xdsbRegistryMock = mock(XdsbRegistry.class);
 		OrchestratorImpl sut = new OrchestratorImpl(contextHandlerMock,
 				c32GetterMock, documentProcessorMock, dataHandlerToBytesConverterMock, xdsbRepositoryMock, xdsbRegistryMock);
-		
+
 		Return returnMock = mock(Return.class);
 		when(returnMock.getPdpDecision()).thenReturn(PERMIT);
 
 		when(
 				contextHandlerMock.enforcePolicy(isA(Xspasubject.class),
 						isA(Xsparesource.class))).thenReturn(returnMock);
-		
+
 		final String patientId = "patientId";
 		final String c32 = "c32";
 		final String recipientEmailAddress = "recipientEmailAddress";
@@ -316,17 +416,17 @@ public class OrchestratorImplTest {
 		final boolean packageAsXdm = true;
 		final String maskedDocument = "maskedDocument";
 		final byte[] filteredStreamBody = new byte[1];
-		
+
 		when(c32GetterMock.getC32(patientId)).thenReturn(c32);
-		
+
 		ProcessDocumentResponse processDocumentResponseMock = mock(ProcessDocumentResponse.class);
 		when(processDocumentResponseMock.getMaskedDocument()).thenReturn(maskedDocument);
-		
+
 		DataHandler dataHandlerMock = mock(DataHandler.class);
 		when(processDocumentResponseMock.getProcessedDocument()).thenReturn(dataHandlerMock);
-		
+
 		when(documentProcessorMock.processDocument(eq(c32), anyString(), eq(packageAsXdm), eq(senderEmailAddress), eq(recipientEmailAddress))).thenReturn(processDocumentResponseMock);
-		
+
 		when(dataHandlerToBytesConverterMock.toByteArray(isA(DataHandler.class))).thenReturn(filteredStreamBody);
 
 		// Act
