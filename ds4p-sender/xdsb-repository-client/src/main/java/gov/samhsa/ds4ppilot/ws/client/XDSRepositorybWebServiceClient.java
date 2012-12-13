@@ -25,36 +25,17 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.ws.client;
 
+import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
+import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetResponse;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
 import ihe.iti.xds_b._2007.XDSRepository;
 
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.URL;
-import java.util.List;
-import java.util.UUID;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.namespace.QName;
-import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.soap.SOAPBinding;
 
-import org.apache.cxf.ws.addressing.AttributedURIType;
-import org.apache.cxf.ws.addressing.ContextUtils;
-import org.apache.cxf.ws.addressing.EndpointReferenceType;
-import org.apache.cxf.ws.addressing.impl.AddressingPropertiesImpl;
 import org.springframework.util.StringUtils;
 import org.tempuri.DocumentRepositoryService;
 
@@ -65,33 +46,40 @@ import org.tempuri.DocumentRepositoryService;
 public class XDSRepositorybWebServiceClient {
 
 	/** The endpoint address. */
-	private String endpointAddress;
+	private final String endpointAddress;
 
-	
+
 	public XDSRepositorybWebServiceClient(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
-	
+
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(RetrieveDocumentSetRequest retrieveDocumentSet) {
 		XDSRepository port = createPort();
 
 		return port.retrieveDocumentSet(retrieveDocumentSet);
 	}
 
-	
+	public ProvideAndRegisterDocumentSetResponse provideAndRegisterDocumentSetReponse(ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSet)
+	{
+		XDSRepository port = createPort();
+		return port.provideAndRegisterDocumentSet(provideAndRegisterDocumentSet);
+
+	}
+
+
 	private XDSRepository createPort() {
 		final URL WSDL_LOCATION = this.getClass().getClassLoader()
 				.getResource("XDS.b_repository.net.wsdl");
 		final QName SERVICE =  new QName("http://tempuri.org/", "DocumentRepositoryService");
 
 		XDSRepository port = new DocumentRepositoryService(WSDL_LOCATION, SERVICE).getXDSRepositoryHTTPEndpoint();		
-		
+
 		if (StringUtils.hasText(this.endpointAddress)) {
 			BindingProvider bp = (BindingProvider) port;
 			bp.getRequestContext().put(
 					BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointAddress); 
-								
+
 		}
 
 		return port;

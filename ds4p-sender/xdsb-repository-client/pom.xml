@@ -38,6 +38,7 @@
 									<serviceName>DocumentRepositoryService</serviceName>
 									<extraargs>
 										<extraarg>-client</extraarg>
+										<!-- <extraarg>-impl</extraarg> -->
 										<extraarg>-exsh</extraarg>
 										<extraarg>true</extraarg>
 									</extraargs>
