@@ -22,8 +22,8 @@
 	</wsdl:message>
 	<wsdl:message
 		name="XDSRepository_ProvideAndRegisterDocumentSet_OutputMessage">
-		<wsdl:part name="ProvideAndRegisterDocumentSetResult" element="tns:ProvideAndRegisterDocumentSetResponse"
-			xmlns:q2="http://schemas.microsoft.com/Message" />
+		<wsdl:part name="ProvideAndRegisterDocumentSetResult" element="q2:RegistryResponse"
+                     xmlns:q2="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" />
 	</wsdl:message>
 	<wsdl:message name="XDSRepository_RetrieveDocumentSet_InputMessage">
 		<wsdl:part name="input" element="tns:RetrieveDocumentSetRequest"

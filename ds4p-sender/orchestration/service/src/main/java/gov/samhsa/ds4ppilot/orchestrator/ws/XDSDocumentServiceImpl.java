@@ -23,32 +23,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package gov.samhsa.ds4ppilot.orchestrator;
+package gov.samhsa.ds4ppilot.orchestrator.ws;
 
-import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
-import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
-import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
+import gov.samhsa.ds4ppilot.contract.orchestrator.XDSDocumentServicePortType;
+import gov.samhsa.ds4ppilot.orchestrator.Orchestrator;
+import gov.samhsa.ds4ppilot.schema.orchestrator.SaveDocumentSetToXdsRepositoryRequest;
+
+import javax.jws.WebService;
 
 
-/**
- * The Interface Orchestrator.
- */
-public interface Orchestrator {
+@WebService(targetNamespace = "http://www.samhsa.gov/ds4ppilot/contract/orchestrator", 
+portName = "XDSDocumentServicePort", serviceName = "XDSDocumentService", 
+endpointInterface = "gov.samhsa.ds4ppilot.contract.orchestrator.XDSDocumentServicePortType")
+public class XDSDocumentServiceImpl implements
+XDSDocumentServicePortType {
 
-	/**
-	 * Handle c32 request.
-	 *
-	 * @param patientId the patient id
-	 * @param packageAsXdm the package as XDM
-	 * @param senderEmailAddress the sender email address
-	 * @param recipientEmailAddress the recipient email address
-	 * @return the filter c32 response
-	 */
-	public FilterC32Response handleC32Request(String patientId, boolean packageAsXdm, String senderEmailAddress, String recipientEmailAddress);
+	private Orchestrator orchestrator;
 
-	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String homeCommunityId, String repositoryUniqueId, String documentUniqueId);
 
-	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId);
+	public XDSDocumentServiceImpl() {
+	}
 
-	public boolean saveDocumentSetToXdsRepository(String documentSet);
+	public XDSDocumentServiceImpl(Orchestrator orchestrator) {
+
+		this.orchestrator = orchestrator;
+	}
+
+	@Override
+	public boolean saveDocumentSetToXdsRepository(
+			SaveDocumentSetToXdsRepositoryRequest parameters) {
+		boolean response = false;
+
+		response = orchestrator.saveDocumentSetToXdsRepository(parameters.getDocumentSet());
+		return response;
+	}	
+
+	public void setOrchestrator(Orchestrator orchestrator) {
+		this.orchestrator = orchestrator;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		if (orchestrator == null) {
+			throw new IllegalArgumentException(
+					String.format(
+							"You must set the orchestrator property of any beans of type {0}.",
+							this.getClass()));
+		}
+	}
 }

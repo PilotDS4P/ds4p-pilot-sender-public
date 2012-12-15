@@ -18,6 +18,7 @@ import javax.xml.ws.Endpoint;
 
 import junit.framework.Assert;
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -28,7 +29,7 @@ public class XDSRepositorybClientTest {
 	protected static Endpoint ep;
 	protected static String address;
 	private static ihe.iti.xds_b._2007.RetrieveDocumentSetResponse returnedValueOfRetrieveDocumentSet;
-	private static ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetResponse provideAndRegisterDocumentSet;
+	private static RegistryResponseType provideAndRegisterDocumentSet;
 
 	@BeforeClass
 	public static void setUp() {

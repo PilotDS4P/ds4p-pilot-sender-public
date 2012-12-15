@@ -1,28 +1,29 @@
 package gov.samhsa.ds4ppilot.orchestrator.xdsbrepository;
 
+import gov.samhsa.ds4ppilot.ws.client.XDSRepositorybWebServiceClient;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
-import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetResponse;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
-
-import javax.xml.bind.JAXBElement;
-
-import gov.samhsa.ds4ppilot.ws.client.XDSRepositorybWebServiceClient;
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
 
 public class XdsbRepositoryImpl implements XdsbRepository {
 
-	private String endpointAddress;
+	private final String endpointAddress;
 
 	public XdsbRepositoryImpl(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
 	@Override
-	public ProvideAndRegisterDocumentSetResponse provideAndRegisterDocumentSetRequest(
+	public RegistryResponseType provideAndRegisterDocumentSetRequest(
 			ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSetRequest) {
-		// TODO Auto-generated method stub
-		return null;
+		RegistryResponseType registryResponse = null;
+
+		XDSRepositorybWebServiceClient xdsRepositoryWebServiceClient = new XDSRepositorybWebServiceClient(
+				endpointAddress);
+		registryResponse = xdsRepositoryWebServiceClient.provideAndRegisterDocumentSetReponse(provideAndRegisterDocumentSetRequest);
+		return registryResponse;
 	}
 
 	@Override

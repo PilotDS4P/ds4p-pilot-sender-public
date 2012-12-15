@@ -26,7 +26,6 @@
 package gov.samhsa.ds4ppilot.ws.client;
 
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
-import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetResponse;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
 import ihe.iti.xds_b._2007.XDSRepository;
@@ -35,6 +34,8 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
+
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
 import org.springframework.util.StringUtils;
 import org.tempuri.DocumentRepositoryService;
@@ -60,7 +61,7 @@ public class XDSRepositorybWebServiceClient {
 		return port.retrieveDocumentSet(retrieveDocumentSet);
 	}
 
-	public ProvideAndRegisterDocumentSetResponse provideAndRegisterDocumentSetReponse(ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSet)
+	public RegistryResponseType provideAndRegisterDocumentSetReponse(ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSet)
 	{
 		XDSRepository port = createPort();
 		return port.provideAndRegisterDocumentSet(provideAndRegisterDocumentSet);
