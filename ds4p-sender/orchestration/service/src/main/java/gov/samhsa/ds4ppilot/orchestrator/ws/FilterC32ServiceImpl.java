@@ -25,11 +25,8 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator.ws;
 
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
 import gov.samhsa.ds4ppilot.contract.orchestrator.FilterC32ServicePortType;
 import gov.samhsa.ds4ppilot.orchestrator.Orchestrator;
-import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository;
-import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepositoryImpl;
 import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Request;
 import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryRequest;
@@ -82,14 +79,14 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 
 		return c32Response;
 	}
-	
+
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSet(
 			RetrieveDocumentSetRequest parameters) {		
-		
+
 		RetrieveDocumentSetResponse response = orchestrator.retrieveDocumentSetRequest(parameters.getHomeCommunityId(), 
 				parameters.getRepositoryUniqueId(), parameters.getDocumentUniqueId());
-		
+
 		return response;		
 	}
 
@@ -97,7 +94,7 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 	public RegisteryStoredQueryResponse registeryStoredQuery(
 			RegisteryStoredQueryRequest parameters) {
 		RegisteryStoredQueryResponse response = orchestrator.registeryStoredQueryRequest(parameters.getPatientId());
-		
+
 		return response;
 	}
 
@@ -111,7 +108,7 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 		this.orchestrator = orchestrator;
 	}
 
-	
+
 	/**
 	 * After properties set.
 	 *
@@ -126,5 +123,5 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 		}
 	}
 
-	
+
 }

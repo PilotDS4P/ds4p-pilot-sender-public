@@ -26,8 +26,16 @@
 			<entry key="mtom-enabled" value="true" />
 		</jaxws:properties>
 	</jaxws:endpoint>
+	
+	<jaxws:endpoint id="xdsdocumentservice" implementor="#XDSDocumentServiceImpl"
+		wsdlLocation="WEB-INF/wsdl/XDSDocumentService.wsdl" address="/xdsdocumentservice">
+	</jaxws:endpoint>
 
-	<bean id="filterC32ServiceImpl"
+	<bean id="XDSDocumentServiceImpl"
+		class="gov.samhsa.ds4ppilot.orchestrator.ws.XDSDocumentServiceImpl"
+		scope="prototype" autowire="byType" />
+		
+		<bean id="filterC32ServiceImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.ws.FilterC32ServiceImpl"
 		scope="prototype" autowire="byType" />
 

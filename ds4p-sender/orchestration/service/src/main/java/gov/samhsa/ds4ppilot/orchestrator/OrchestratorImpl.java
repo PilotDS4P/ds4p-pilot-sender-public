@@ -25,6 +25,21 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator;
 
+import gov.samhsa.ds4ppilot.common.beans.XacmlResult;
+import gov.samhsa.ds4ppilot.common.exception.DS4PException;
+import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
+import gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandler;
+import gov.samhsa.ds4ppilot.orchestrator.documentprocessor.DocumentProcessor;
+import gov.samhsa.ds4ppilot.orchestrator.xdsbregistry.XdsbRegistry;
+import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository;
+import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
+import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
+import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
+import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
+import gov.va.ehtac.ds4p.ws.EnforcePolicy;
+import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
+import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
+import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest.Document;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
 
@@ -40,25 +55,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 
+import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
-import gov.samhsa.ds4ppilot.common.beans.XacmlResult;
-import gov.samhsa.ds4ppilot.common.exception.DS4PException;
-import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
-import gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandler;
-import gov.samhsa.ds4ppilot.orchestrator.documentprocessor.DocumentProcessor;
-import gov.samhsa.ds4ppilot.orchestrator.xdsbregistry.XdsbRegistry;
-import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository;
-import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
-import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
-import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
-import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
-import gov.va.ehtac.ds4p.ws.EnforcePolicy;
-import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryErrorList;
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
 /**
  * The Class OrchestratorImpl.
@@ -69,22 +74,22 @@ public class OrchestratorImpl implements Orchestrator {
 	private final String PERMIT = "Permit";
 
 	/** The context handler. */
-	private ContextHandler contextHandler;
+	private final ContextHandler contextHandler;
 
 	/** The C32 getter. */
-	private C32Getter c32Getter;
+	private final C32Getter c32Getter;
 
 	/** The document processor. */
-	private DocumentProcessor documentProcessor;
+	private final DocumentProcessor documentProcessor;
 
 	/** The data handler to bytes converter. */
-	private DataHandlerToBytesConverter dataHandlerToBytesConverter;
+	private final DataHandlerToBytesConverter dataHandlerToBytesConverter;
 
 	/** The xdsbRepository. */
-	private XdsbRepository xdsbRepository;
+	private final XdsbRepository xdsbRepository;
 
 	/** The xdsbRegistry. */
-	private XdsbRegistry xdsbRegistry;
+	private final XdsbRegistry xdsbRegistry;
 
 	/** The subject purpose of use. */
 	private String subjectPurposeOfUse; // = "TREAT";
@@ -152,7 +157,7 @@ public class OrchestratorImpl implements Orchestrator {
 		try {			
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
 					recipientEmailAddress, UUID
-							.randomUUID().toString());
+					.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource(patientId);
 
 			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
@@ -200,6 +205,36 @@ public class OrchestratorImpl implements Orchestrator {
 	}
 
 	@Override
+	public boolean saveDocumentSetToXdsRepository(String documentSet) {		
+
+		Document document = new Document();
+		document.setId("Document01");
+		document.setValue("xyz".getBytes());
+
+		ProvideAndRegisterDocumentSetRequest request = new ProvideAndRegisterDocumentSetRequest();
+		request.getDocument().add(document);
+		request.setSubmitObjectsRequest(new SubmitObjectsRequest());
+
+		RegistryResponseType registryResponse = null;
+		try 
+		{
+			registryResponse = xdsbRepository.provideAndRegisterDocumentSetRequest(request);
+
+			RegistryErrorList registryErrorList = registryResponse.getRegistryErrorList();
+
+			if(registryErrorList != null && registryErrorList.getRegistryError().size() > 0)
+				return false;			
+
+		}
+		catch(Exception e)
+		{
+			throw new DS4PException("Document cannot be saved to the XDS repository.", e);
+		}
+
+		return true;
+	}
+
+	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			String homeCommunityId, String repositoryUniqueId,
 			String documentUniqueId) {
@@ -215,7 +250,7 @@ public class OrchestratorImpl implements Orchestrator {
 		try {
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
 					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-							.randomUUID().toString());
+					.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
 			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
@@ -225,9 +260,9 @@ public class OrchestratorImpl implements Orchestrator {
 			if (result.getPdpDecision().equals(PERMIT)) {
 				retrieveDocumentSetResponse = xdsbRepository
 						.retrieveDocumentSetRequest(retrieveDocumentSet);
-				
+
 				String xmlResponse = marshall(retrieveDocumentSetResponse);
-				
+
 				response.setReturn(xmlResponse);
 			}
 		} catch (Throwable e) {
@@ -249,8 +284,8 @@ public class OrchestratorImpl implements Orchestrator {
 
 		AdhocQueryType adhocQueryType = new AdhocQueryType();
 		adhocQueryType.setId("urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d"); // FindDocuments
-																				// by
-																				// patientId
+		// by
+		// patientId
 		registryStoredQuery.setAdhocQuery(adhocQueryType);
 
 		SlotType1 patientIdSlotType = new SlotType1();
@@ -276,7 +311,7 @@ public class OrchestratorImpl implements Orchestrator {
 		try {
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
 					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-							.randomUUID().toString());
+					.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
 			enforcePolicyResult = contextHandler.enforcePolicy(xspasubject, xsparesource);
@@ -469,11 +504,11 @@ public class OrchestratorImpl implements Orchestrator {
 		xacmlResult.setSubjectPurposeOfUse(result.getPurposeOfUse());
 		return xacmlResult;
 	}
-	
+
 	private String marshall(Object obj) throws Throwable{
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 		Marshaller marshaller = context.createMarshaller();
-		
+
 		StringWriter stringWriter = new StringWriter();
 		marshaller.marshal(obj, stringWriter);
 
@@ -515,5 +550,5 @@ public class OrchestratorImpl implements Orchestrator {
 		}
 
 		return c32Document.toString();
-	}
+	}	
 }
