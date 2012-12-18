@@ -42,11 +42,11 @@
     <xsl:variable name="documentTypeInLoincDisplayName"
         select="//ClinicalDocument/code/@displayName"/>
 
-    <xsl:variable name="currentDateTimeUtc" select="string(current-dateTime())"/>
+    <xsl:variable name="currentDateTimeUtc" select="string(adjust-dateTime-to-timezone(current-dateTime(), xs:dayTimeDuration('PT0H')))"/>
 
     <xsl:variable name="currentEffectiveTime">
-        <xsl:value-of select="substring($currentDateTimeUtc, 0, 4)"/>
-        <xsl:value-of select="substring($currentDateTimeUtc, 6, 1)"/>
+        <xsl:value-of select="substring($currentDateTimeUtc, 1, 4)"/>
+        <xsl:value-of select="substring($currentDateTimeUtc, 6, 2)"/>
         <xsl:value-of select="substring($currentDateTimeUtc, 9, 2)"/>
         <xsl:value-of select="substring($currentDateTimeUtc, 12, 2)"/>
         <xsl:value-of select="substring($currentDateTimeUtc, 15, 2)"/>
