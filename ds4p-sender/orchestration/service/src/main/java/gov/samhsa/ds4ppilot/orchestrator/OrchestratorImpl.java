@@ -43,17 +43,21 @@ import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest.Document;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
@@ -64,6 +68,22 @@ import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryErrorList;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
+
+import org.hl7.v3.Device;
+import org.hl7.v3.Id;
+import org.hl7.v3.PRPAIN201301UV02;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Addr;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.BirthTime;
+import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent.Subject1.Patient.PatientPerson.Name;
+import org.hl7.v3.PatientIdentityFeedRequestType.Receiver;
+import org.hl7.v3.PatientIdentityFeedRequestType.Sender;
+import org.xml.sax.InputSource;
 
 /**
  * The Class OrchestratorImpl.
@@ -154,10 +174,9 @@ public class OrchestratorImpl implements Orchestrator {
 		c32Response.setPatientId(patientId);
 
 		Return result = null;
-		try {			
+		try {
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
-					recipientEmailAddress, UUID
-					.randomUUID().toString());
+					recipientEmailAddress, UUID.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource(patientId);
 
 			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
@@ -205,7 +224,163 @@ public class OrchestratorImpl implements Orchestrator {
 	}
 
 	@Override
-	public boolean saveDocumentSetToXdsRepository(String documentSet) {		
+	public boolean saveDocumentSetToXdsRepository(String documentSet) {
+
+		String patientId = null;
+		String patientLastName = null;
+		String patientFirstName = null;
+		String patientAddressLine = null;
+		String patientCity = null;
+		String patientState = null;
+		String patientBirthDate = null;
+
+		try {
+			// TODO: Refactor these code to a new class to be testable
+			org.w3c.dom.Document document = loadXmlFrom(documentSet);
+
+			// We map the prefixes to URIs
+			NamespaceContext namespaceContext = new NamespaceContext() {
+				@Override
+				public String getNamespaceURI(String prefix) {
+					String uri;
+					if (prefix.equals("hl7"))
+						uri = "urn:hl7-org:v3";
+					else
+						throw new IllegalArgumentException(prefix);
+					return uri;
+				}
+
+				@Override
+				public Iterator<?> getPrefixes(String val) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public String getPrefix(String uri) {
+					throw new UnsupportedOperationException();
+				}
+			};
+
+			XPathFactory xpathFactory = XPathFactory.newInstance();
+			XPath xpath = xpathFactory.newXPath();
+			xpath.setNamespaceContext(namespaceContext);
+
+			// Get patient id
+			String xpathForPatientId = "//hl7:recordTarget/hl7:patientRole/hl7:id/@extension[1]";
+			patientId = xpath.evaluate(xpathForPatientId, document);
+
+			// Get patient last name
+			String xpathForLastName = "//hl7:patientRole/hl7:patient/hl7:name/hl7:family/text()";
+			patientLastName = xpath.evaluate(xpathForLastName, document);
+
+			// Get patient first name
+			String xpathForFirstName = "//hl7:patientRole/hl7:patient/hl7:name/hl7:given[1]/text()";
+			patientFirstName = xpath.evaluate(xpathForFirstName, document);
+
+			// Get patient address line
+			String xpathForAddressLine = "//hl7:patientRole/hl7:addr/hl7:streetAddressLine[1]";
+			patientAddressLine = xpath.evaluate(xpathForAddressLine, document);
+
+			// Get patient city
+			String xpathForCity = "//hl7:patientRole/hl7:addr/hl7:city";
+			patientCity = xpath.evaluate(xpathForCity, document);
+
+			// Get patient state
+			String xpathForState = "//hl7:patientRole/hl7:addr/hl7:state";
+			patientState = xpath.evaluate(xpathForState, document);
+
+			// Get patient birth date
+			String xpathForBirthDate = "//hl7:patientRole/hl7:patient/hl7:birthTime/@value";
+			patientBirthDate = xpath.evaluate(xpathForBirthDate, document);
+
+		} catch (Exception e) {
+			throw new DS4PException(
+					"Error occurred when getting the patient id and other patient demographic information from CDA document.",
+					e);
+		}
+
+		// PatientPerson
+		PatientPerson patientPerson = new PatientPerson();
+		Name name = new Name();
+		name.setFamily(patientLastName);
+		name.setGiven(patientFirstName);
+		patientPerson.setName(name);
+
+		BirthTime birthTime = new BirthTime();
+		birthTime.setValue(patientBirthDate);
+		patientPerson.setBirthTime(birthTime);
+
+		Addr addr = new Addr();
+		addr.setStreetAddressLine(patientAddressLine);
+		addr.setCity(patientCity);
+		addr.setState("MD");
+		patientPerson.getAddr().add(addr);
+
+		// Patient
+		Patient patient = new Patient();
+		Id patientHl7Id = new Id();
+		patientHl7Id.setRoot(subjectLocality); // Domain Id
+		patientHl7Id.setExtension(patientId); // PatientId in the domain
+		patient.setId(patientHl7Id);
+		patient.setPatientPerson(patientPerson);
+
+		// Subject 1
+		Subject1 subject1 = new Subject1();
+		subject1.setPatient(patient);
+
+		// RegistrationEvent
+		RegistrationEvent registrationEvent = new RegistrationEvent();
+		registrationEvent.setSubject1(subject1);
+
+		// Subject
+		Subject subject = new Subject();
+		subject.setRegistrationEvent(registrationEvent);
+
+		// ControlActProcess
+		ControlActProcess controlActProcess = new ControlActProcess();
+		controlActProcess.setSubject(subject);
+
+		// PRPAIN201301UV02
+		PRPAIN201301UV02 prpain201301uv02 = new PRPAIN201301UV02();
+		prpain201301uv02.setControlActProcess(controlActProcess);
+
+		Id PRPAIN201302UVId = new Id();
+		PRPAIN201302UVId.setRoot("cdc0d3fa-4467-11dc-a6be-3603d686610257");
+		prpain201301uv02.setId(PRPAIN201302UVId);
+
+		Receiver receiver = new Receiver();
+		receiver.setTypeCode("RCV");
+		Device receiverDevice = new Device();
+		receiverDevice.setDeterminerCode("INSTANCE");
+		Id receiverDeviceId = new Id();
+		receiverDeviceId.setRoot("1.2.840.114350.1.13.99999.4567");
+		receiverDevice.setId(receiverDeviceId);
+		receiver.setDevice(receiverDevice);
+		prpain201301uv02.setReceiver(receiver);
+
+		Sender sender = new Sender();
+		sender.setTypeCode("SND");
+		Device senderDevice = new Device();
+		senderDevice.setDeterminerCode("INSTANCE");
+		Id senderDeviceId = new Id();
+		senderDeviceId.setRoot("1.2.840.114350.1.13.99998.8734");
+		senderDevice.setId(senderDeviceId);
+		sender.setDevice(senderDevice);
+		prpain201301uv02.setSender(sender);
+
+		// First try to add patient to XdsbRegistry
+		String responseOfAddPatient = xdsbRegistry
+				.addPatientRegistryRecord(prpain201301uv02);
+
+		System.out.println(responseOfAddPatient);
+
+		System.out.println("Run patientRegistryRecordRevised");
+
+		// PRPAIN201301UV02 prpain201301uv02 = new PRPAIN201301UV02();
+		// String resultOfAddPatient =
+		// xdsbRegistry.addPatientRegistryRecord(input)
+
+		// Check the return of Add XdsbRegistry
 
 		Document document = new Document();
 		document.setId("Document01");
@@ -216,19 +391,20 @@ public class OrchestratorImpl implements Orchestrator {
 		request.setSubmitObjectsRequest(new SubmitObjectsRequest());
 
 		RegistryResponseType registryResponse = null;
-		try 
-		{
-			registryResponse = xdsbRepository.provideAndRegisterDocumentSetRequest(request);
+		try {
+			registryResponse = xdsbRepository
+					.provideAndRegisterDocumentSetRequest(request);
 
-			RegistryErrorList registryErrorList = registryResponse.getRegistryErrorList();
+			RegistryErrorList registryErrorList = registryResponse
+					.getRegistryErrorList();
 
-			if(registryErrorList != null && registryErrorList.getRegistryError().size() > 0)
-				return false;			
+			if (registryErrorList != null
+					&& registryErrorList.getRegistryError().size() > 0)
+				return false;
 
-		}
-		catch(Exception e)
-		{
-			throw new DS4PException("Document cannot be saved to the XDS repository.", e);
+		} catch (Exception e) {
+			throw new DS4PException(
+					"Document cannot be saved to the XDS repository.", e);
 		}
 
 		return true;
@@ -250,7 +426,7 @@ public class OrchestratorImpl implements Orchestrator {
 		try {
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
 					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-					.randomUUID().toString());
+							.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
 			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
@@ -274,7 +450,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(
-			String patientId)  {
+			String patientId) {
 		AdhocQueryRequest registryStoredQuery = new AdhocQueryRequest();
 
 		ResponseOptionType responseOptionType = new ResponseOptionType();
@@ -304,17 +480,19 @@ public class OrchestratorImpl implements Orchestrator {
 		statusSlotType.setValueList(statusValueListType);
 		adhocQueryType.getSlot().add(statusSlotType);
 
-		AdhocQueryResponse result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
+		AdhocQueryResponse result = xdsbRegistry
+				.registryStoredQuery(registryStoredQuery);
 		RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
 
 		Return enforcePolicyResult = null;
 		try {
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
 					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-					.randomUUID().toString());
+							.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
-			enforcePolicyResult = contextHandler.enforcePolicy(xspasubject, xsparesource);
+			enforcePolicyResult = contextHandler.enforcePolicy(xspasubject,
+					xsparesource);
 
 			if (enforcePolicyResult.getPdpDecision().equals(PERMIT)) {
 				String xmlResponse = marshall(result);
@@ -505,7 +683,7 @@ public class OrchestratorImpl implements Orchestrator {
 		return xacmlResult;
 	}
 
-	private String marshall(Object obj) throws Throwable{
+	private String marshall(Object obj) throws Throwable {
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 		Marshaller marshaller = context.createMarshaller();
 
@@ -515,40 +693,14 @@ public class OrchestratorImpl implements Orchestrator {
 		return stringWriter.toString();
 	}
 
-	/**
-	 * Gets the C32.
-	 * 
-	 * @param patientId
-	 *            the patient id
-	 * @return the c32
-	 */
-	@SuppressWarnings("unused")
-	private String getC32(String patientId) {
-		InputStream in = null;
-		BufferedReader br = null;
-		StringBuilder c32Document = new StringBuilder();
-
-		try {
-			in = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("c32.xml");
-
-			br = new BufferedReader(new InputStreamReader(in));
-
-			String line;
-			while ((line = br.readLine()) != null) {
-				c32Document.append(line);
-			}
-		} catch (IOException e) {
-			throw new DS4PException(e.toString(), e);
-		} finally {
-			try {
-				br.close();
-				in.close();
-			} catch (IOException e) {
-				// do nothing here
-			}
-		}
-
-		return c32Document.toString();
-	}	
+	private static org.w3c.dom.Document loadXmlFrom(String xml)
+			throws Exception {
+		InputSource is = new InputSource(new StringReader(xml));
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		DocumentBuilder builder = null;
+		builder = factory.newDocumentBuilder();
+		org.w3c.dom.Document document = builder.parse(is);
+		return document;
+	}
 }

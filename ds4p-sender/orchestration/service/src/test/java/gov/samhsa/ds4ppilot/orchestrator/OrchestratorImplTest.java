@@ -29,17 +29,23 @@ import gov.va.ehtac.ds4p.ws.EnforcePolicy.Xsparesource;
 import gov.va.ehtac.ds4p.ws.EnforcePolicy.Xspasubject;
 import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 
 import javax.activation.DataHandler;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -174,7 +180,7 @@ public class OrchestratorImplTest {
 		FilterC32Response c32Response = orchestrator.handleC32Request(
 				patientIdPermit, packageXdm, senderEmailAddress,
 				reciepientEmailAddress);
-		WritePackageToFile(c32Response);
+		writePackageToFile(c32Response);
 
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
@@ -500,10 +506,36 @@ public class OrchestratorImplTest {
 		assertEquals(patientId, c32Response.getPatientId());
 	}
 
+	@Test
+	public void testSaveDocumentSetToXdsRepository() {
+		// Arrange
+		String c32Xml = getC32Xml();
+
+		ContextHandler contextHandlerMock = mock(ContextHandler.class);
+		C32Getter c32GetterMock = mock(C32Getter.class);
+		DocumentProcessor documentProcessorMock = mock(DocumentProcessor.class);
+		DataHandlerToBytesConverter dataHandlerToBytesConverterMock = mock(DataHandlerToBytesConverter.class);
+		XdsbRepository xdsbRepositoryMock = mock(XdsbRepository.class);
+		XdsbRegistry xdsbRegistryMock = mock(XdsbRegistry.class);
+		OrchestratorImpl sut = new OrchestratorImpl(contextHandlerMock,
+				c32GetterMock, documentProcessorMock,
+				dataHandlerToBytesConverterMock, xdsbRepositoryMock,
+				xdsbRegistryMock);
+
+		// Act
+		// sut.saveDocumentSetToXdsRepository(c32Xml);
+	}
+
 	@SuppressWarnings("unused")
-	private static void DisplayC32(String xml) throws Exception {
+	private static void displayC32(String xml) {
 		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer = tf.newTransformer();
+		Transformer transformer = null;
+		try {
+			transformer = tf.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -511,14 +543,28 @@ public class OrchestratorImplTest {
 		transformer.setOutputProperty(
 				"{http://xml.apache.org/xslt}indent-amount", "4");
 
-		Document xmlDocument = loadXMLFrom(xml);
+		Document xmlDocument = null;
+		try {
+			xmlDocument = loadXmlFrom(xml);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		transformer.transform(new DOMSource(xmlDocument), new StreamResult(
-				new OutputStreamWriter(System.out, "UTF-8")));
+		try {
+			transformer.transform(new DOMSource(xmlDocument), new StreamResult(
+					new OutputStreamWriter(System.out, "UTF-8")));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("\n\n\r");
 	}
 
-	private static Document loadXMLFrom(String xml) throws Exception {
+	private static Document loadXmlFrom(String xml) throws Exception {
 		InputSource is = new InputSource(new StringReader(xml));
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setNamespaceAware(true);
@@ -533,7 +579,7 @@ public class OrchestratorImplTest {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	private void WritePackageToFile(FilterC32Response c32Response)
+	private void writePackageToFile(FilterC32Response c32Response)
 			throws IOException, FileNotFoundException {
 
 		byte[] bytes = c32Response.getFilteredStreamBody();
@@ -544,5 +590,34 @@ public class OrchestratorImplTest {
 		} finally {
 			fos.close();
 		}
+	}
+
+	private String getC32Xml() {
+		InputStream in = null;
+		BufferedReader br = null;
+		StringBuilder c32Document = new StringBuilder();
+
+		try {
+			in = Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream("c32.xml");
+
+			br = new BufferedReader(new InputStreamReader(in));
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				c32Document.append(line);
+			}
+		} catch (IOException e) {
+			throw new DS4PException(e.toString(), e);
+		} finally {
+			try {
+				br.close();
+				in.close();
+			} catch (IOException e) {
+				// do nothing here
+			}
+		}
+
+		return c32Document.toString();
 	}
 }
