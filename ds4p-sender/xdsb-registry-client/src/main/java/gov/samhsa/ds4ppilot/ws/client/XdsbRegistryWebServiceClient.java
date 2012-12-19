@@ -82,17 +82,33 @@ public class XdsbRegistryWebServiceClient {
 	/** The endpoint address. */
 	private String endpointAddress;
 
+	/** The wsdl url. */
 	final URL wsdlURL = this.getClass().getClassLoader()
 			.getResource("XDS.b_registry.net.wsdl");
+	
+	/** The service name. */
 	final QName serviceName = new QName("http://samhsa.gov/ds4p/XDSbRegistry/",
 			"DocumentRegistryService");
+	
+	/** The port name. */
 	final QName portName = new QName("http://samhsa.gov/ds4p/XDSbRegistry/",
 			"XDSRegistry_HTTP_Endpoint");
 
+	/**
+	 * Instantiates a new xdsb registry web service client.
+	 *
+	 * @param endpointAddress the endpoint address
+	 */
 	public XdsbRegistryWebServiceClient(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
+	/**
+	 * Registry stored query.
+	 *
+	 * @param registryStoredQuery the registry stored query
+	 * @return the adhoc query response
+	 */
 	public AdhocQueryResponse registryStoredQuery(
 			AdhocQueryRequest registryStoredQuery) {
 		XDSRegistry port = createPort();
@@ -100,6 +116,13 @@ public class XdsbRegistryWebServiceClient {
 		return port.registryStoredQuery(registryStoredQuery);
 	}
 
+	/**
+	 * Adds the patient registry record.
+	 *
+	 * @param input the input
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	public String addPatientRegistryRecord(PRPAIN201301UV02 input)
 			throws Throwable {
 		String justPayloadXml = marshall(input);
@@ -113,6 +136,13 @@ public class XdsbRegistryWebServiceClient {
 		return responsePayload;
 	}
 
+	/**
+	 * Revise patient registry record.
+	 *
+	 * @param input the input
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	public String revisePatientRegistryRecord(PRPAIN201302UV input)
 			throws Throwable {
 		String justPayloadXml = marshall(input);
@@ -126,6 +156,11 @@ public class XdsbRegistryWebServiceClient {
 		return responsePayload;
 	}
 
+	/**
+	 * Creates the port.
+	 *
+	 * @return the xDS registry
+	 */
 	private XDSRegistry createPort() {
 		XDSRegistry port = new DocumentRegistryService(wsdlURL, serviceName)
 				.getXDSRegistryHTTPEndpoint();
@@ -139,6 +174,14 @@ public class XdsbRegistryWebServiceClient {
 		return port;
 	}
 
+	/**
+	 * Gets the raw response payload.
+	 *
+	 * @param operationName the operation name
+	 * @param justPayloadXml the just payload xml
+	 * @return the raw response payload
+	 * @throws Throwable the throwable
+	 */
 	private String getRawResponsePayload(QName operationName,
 			String justPayloadXml) throws Throwable {
 		Service jaxwsService = Service.create(wsdlURL, serviceName);
@@ -176,6 +219,12 @@ public class XdsbRegistryWebServiceClient {
 		return responsePayload;
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Throwable the throwable
+	 */
 	public static void main(String[] args) throws Throwable {
 		final String demoEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
 		final String javaVmEndpoint = "http://192.168.223.134:8080/axis2/services/xdsregistryb";
@@ -313,6 +362,13 @@ public class XdsbRegistryWebServiceClient {
 				.revisePatientRegistryRecord(prpain201302uv));
 	}
 
+	/**
+	 * Marshall.
+	 *
+	 * @param obj the obj
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	private static String marshall(Object obj) throws Throwable {
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 
