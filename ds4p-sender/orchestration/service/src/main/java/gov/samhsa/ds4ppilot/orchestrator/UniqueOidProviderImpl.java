@@ -2,8 +2,16 @@ package gov.samhsa.ds4ppilot.orchestrator;
 
 import java.util.UUID;
 
+/**
+ * The Class UniqueOidProviderImpl.
+ */
 public class UniqueOidProviderImpl implements UniqueOidProvider {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.samhsa.ds4ppilot.orchestrator.UniqueOidProvider#getOid()
+	 */
 	@Override
 	public String getOid() {
 		UUID uuid = UUID.randomUUID();
@@ -24,6 +32,12 @@ public class UniqueOidProviderImpl implements UniqueOidProvider {
 		return id;
 	}
 
+	/**
+	 * The main method.
+	 * 
+	 * @param aArgs
+	 *            the arguments
+	 */
 	public static final void main(String... aArgs) {
 		UniqueOidProviderImpl provider = new UniqueOidProviderImpl();
 		String oid = provider.getOid();

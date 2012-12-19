@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator;
 
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
@@ -16,19 +41,43 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+/**
+ * The Class XdsbMetadataGeneratorImpl.
+ */
 public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 
+	/** The unique oid provider. */
 	private final UniqueOidProvider uniqueOidProvider;
 
+	/** The Constant XdsbMetadata_Xsl_File_Name. */
 	private static final String XdsbMetadata_Xsl_File_Name = "XdsbMetadata.xsl";
+
+	/** The Constant HomeCommunityId_Parameter_Name. */
 	private static final String HomeCommunityId_Parameter_Name = "homeCommunityId";
+
+	/** The Constant XdsDocumentEntry_UniqueId_Parameter_Name. */
 	private static final String XdsDocumentEntry_UniqueId_Parameter_Name = "XDSDocumentEntry_uniqueId";
+
+	/** The Constant XdsSubmissionSet_UniqueId_Parameter_Name. */
 	private static final String XdsSubmissionSet_UniqueId_Parameter_Name = "XDSSubmissionSet_uniqueId";
 
+	/**
+	 * Instantiates a new xdsb metadata generator impl.
+	 * 
+	 * @param uniqueOidProvider
+	 *            the unique oid provider
+	 */
 	public XdsbMetadataGeneratorImpl(UniqueOidProvider uniqueOidProvider) {
 		this.uniqueOidProvider = uniqueOidProvider;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.samhsa.ds4ppilot.orchestrator.XdsbMetadataGenerator#generateMetadataXml
+	 * (java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String generateMetadataXml(String document, String homeCommunityId) {
 
@@ -77,6 +126,12 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		}
 	}
 
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
 	public static void main(String[] args) {
 		XdsbMetadataGeneratorImpl xdsbMetadataGeneratorImpl = new XdsbMetadataGeneratorImpl(
 				new UniqueOidProviderImpl());
