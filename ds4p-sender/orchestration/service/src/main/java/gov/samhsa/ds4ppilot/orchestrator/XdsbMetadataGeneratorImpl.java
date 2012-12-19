@@ -17,6 +17,18 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
+
+	private final UniqueOidProvider uniqueOidProvider;
+
+	private static final String XdsbMetadata_Xsl_File_Name = "XdsbMetadata.xsl";
+	private static final String HomeCommunityId_Parameter_Name = "homeCommunityId";
+	private static final String XdsDocumentEntry_UniqueId_Parameter_Name = "XDSDocumentEntry_uniqueId";
+	private static final String XdsSubmissionSet_UniqueId_Parameter_Name = "XDSSubmissionSet_uniqueId";
+
+	public XdsbMetadataGeneratorImpl(UniqueOidProvider uniqueOidProvider) {
+		this.uniqueOidProvider = uniqueOidProvider;
+	}
+
 	@Override
 	public String generateMetadataXml(String document, String homeCommunityId) {
 
@@ -25,7 +37,7 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 
 		try {
 			inputStream = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("XdsbMetadata.xsl");
+					.getResourceAsStream(XdsbMetadata_Xsl_File_Name);
 
 			StreamSource styleSheetStremSource = new StreamSource(inputStream);
 
@@ -36,7 +48,15 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 
 			Transformer transformer = template.newTransformer();
 
-			transformer.setParameter("homeCommunityId", homeCommunityId);
+			String xdsDocumentEntryUniqueId = uniqueOidProvider.getOid();
+			String xdsSubmissionSetUniqueId = uniqueOidProvider.getOid();
+
+			transformer.setParameter(HomeCommunityId_Parameter_Name,
+					homeCommunityId);
+			transformer.setParameter(XdsDocumentEntry_UniqueId_Parameter_Name,
+					xdsDocumentEntryUniqueId);
+			transformer.setParameter(XdsSubmissionSet_UniqueId_Parameter_Name,
+					xdsSubmissionSetUniqueId);
 
 			stringWriter = new StringWriter();
 			transformer.transform(new StreamSource(new StringReader(document)),
@@ -58,7 +78,8 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 	}
 
 	public static void main(String[] args) {
-		XdsbMetadataGeneratorImpl xdsbMetadataGeneratorImpl = new XdsbMetadataGeneratorImpl();
+		XdsbMetadataGeneratorImpl xdsbMetadataGeneratorImpl = new XdsbMetadataGeneratorImpl(
+				new UniqueOidProviderImpl());
 		InputStream is = xdsbMetadataGeneratorImpl.getClass().getClassLoader()
 				.getResourceAsStream("c32.xml");
 
