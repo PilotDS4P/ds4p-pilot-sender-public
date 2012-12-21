@@ -85,7 +85,7 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 			RetrieveDocumentSetRequest parameters) {		
 
 		RetrieveDocumentSetResponse response = orchestrator.retrieveDocumentSetRequest(parameters.getHomeCommunityId(), 
-				parameters.getRepositoryUniqueId(), parameters.getDocumentUniqueId());
+				parameters.getRepositoryUniqueId(), parameters.getDocumentUniqueId(), parameters.getMessageId());
 
 		return response;		
 	}

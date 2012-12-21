@@ -38,6 +38,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 import javax.activation.DataHandler;
 import javax.xml.parsers.DocumentBuilder;
@@ -218,7 +219,7 @@ public class OrchestratorImplTest {
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
 		orchestrator.setOrganizationId("FEiSystems");
-		;
+
 
 		orchestrator.setResourceName("NwHINDirectSend");
 		orchestrator.setResourceType("C32");
@@ -226,7 +227,7 @@ public class OrchestratorImplTest {
 
 		gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse response = orchestrator
 				.retrieveDocumentSetRequest("HC",
-						"1.3.6.1.4.1.21367.2010.1.2.1040", "2009.9.1.2458");
+						"1.3.6.1.4.1.21367.2010.1.2.1040", "2009.9.1.2458", UUID.randomUUID().toString());
 
 		assertNotNull(response);
 	}
@@ -400,7 +401,7 @@ public class OrchestratorImplTest {
 		when(
 				contextHandlerMock.enforcePolicy(isA(Xspasubject.class),
 						isA(Xsparesource.class))).thenThrow(
-				new RuntimeException());
+								new RuntimeException());
 
 		// Act
 		sut.handleC32Request(null, false, null, null);
@@ -488,12 +489,12 @@ public class OrchestratorImplTest {
 				documentProcessorMock.processDocument(eq(c32), anyString(),
 						eq(packageAsXdm), eq(senderEmailAddress),
 						eq(recipientEmailAddress))).thenReturn(
-				processDocumentResponseMock);
+								processDocumentResponseMock);
 
 		when(
 				dataHandlerToBytesConverterMock
-						.toByteArray(isA(DataHandler.class))).thenReturn(
-				filteredStreamBody);
+				.toByteArray(isA(DataHandler.class))).thenReturn(
+						filteredStreamBody);
 
 		// Act
 		FilterC32Response c32Response = sut.handleC32Request(patientId,

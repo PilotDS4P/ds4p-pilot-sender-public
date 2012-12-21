@@ -150,7 +150,7 @@ public class FilterC32ServiceImplEndpointTest {
 		FilterC32ServicePortType port = service.getFilterC32Port();
 		RetrieveDocumentSetRequest request = new RetrieveDocumentSetRequest();
 
-		when(orchrstratorMock.retrieveDocumentSetRequest(null, null, null))
+		when(orchrstratorMock.retrieveDocumentSetRequest(null, null, null, null))
 		.thenReturn(retrieveDocumentSetResponse);
 
 		RetrieveDocumentSetResponse response = port
@@ -171,7 +171,7 @@ public class FilterC32ServiceImplEndpointTest {
 				.getPort(FilterC32ServicePortType.class);
 		RetrieveDocumentSetRequest request = new RetrieveDocumentSetRequest();
 
-		when(orchrstratorMock.retrieveDocumentSetRequest(null, null, null))
+		when(orchrstratorMock.retrieveDocumentSetRequest(null, null, null, null))
 		.thenReturn(retrieveDocumentSetResponse);
 
 		RetrieveDocumentSetResponse response = port

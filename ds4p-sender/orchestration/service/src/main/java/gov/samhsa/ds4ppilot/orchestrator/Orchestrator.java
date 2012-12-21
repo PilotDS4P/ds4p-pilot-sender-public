@@ -46,7 +46,7 @@ public interface Orchestrator {
 	 */
 	public FilterC32Response handleC32Request(String patientId, boolean packageAsXdm, String senderEmailAddress, String recipientEmailAddress);
 
-	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String homeCommunityId, String repositoryUniqueId, String documentUniqueId);
+	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String homeCommunityId, String repositoryUniqueId, String documentUniqueId, String messageId);
 
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId);
 
