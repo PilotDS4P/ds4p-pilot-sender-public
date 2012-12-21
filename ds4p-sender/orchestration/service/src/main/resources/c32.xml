@@ -19,7 +19,7 @@
 	<languageCode code="en-US"/>
 	<recordTarget>
 		<patientRole>
-			<id root="ProviderID" extension="PatientID" assigningAuthorityName="Provider Name"/>
+			<id root="ProviderID" extension="PUI100010060001" assigningAuthorityName="Provider Name"/>
 			<addr use="HP">
 				<!--HITSP/C83 recommends that a patient have at least one address element with a use attribute of HP, i.e. home primary-->
 				None of the following address elements are specifically required by HITSP C32, so

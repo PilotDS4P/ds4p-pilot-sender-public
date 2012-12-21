@@ -43,6 +43,7 @@ import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest.Document;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -53,6 +54,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -72,6 +74,7 @@ import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 import org.hl7.v3.Device;
 import org.hl7.v3.Id;
 import org.hl7.v3.PRPAIN201301UV02;
+import org.hl7.v3.PRPAIN201302UV;
 import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess;
 import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject;
 import org.hl7.v3.PatientIdentityFeedRequestType.ControlActProcess.Subject.RegistrationEvent;
@@ -313,13 +316,13 @@ public class OrchestratorImpl implements Orchestrator {
 		Addr addr = new Addr();
 		addr.setStreetAddressLine(patientAddressLine);
 		addr.setCity(patientCity);
-		addr.setState("MD");
+		addr.setState(patientState);
 		patientPerson.getAddr().add(addr);
 
 		// Patient
 		Patient patient = new Patient();
 		Id patientHl7Id = new Id();
-		patientHl7Id.setRoot(subjectLocality); // Domain Id
+		patientHl7Id.setRoot(subjectLocality); // Domain Id (Home Community Id)
 		patientHl7Id.setExtension(patientId); // PatientId in the domain
 		patient.setId(patientHl7Id);
 		patient.setPatientPerson(patientPerson);
@@ -372,23 +375,92 @@ public class OrchestratorImpl implements Orchestrator {
 		String responseOfAddPatient = xdsbRegistry
 				.addPatientRegistryRecord(prpain201301uv02);
 
-		System.out.println(responseOfAddPatient);
+		if (patientExistsInRegistyBeforeAdding(responseOfAddPatient)) {
+			// Try to revise patient
+			// PRPAIN201302UV
+			PRPAIN201302UV prpain201302uv = new PRPAIN201302UV();
 
-		System.out.println("Run patientRegistryRecordRevised");
+			prpain201302uv.setControlActProcess(controlActProcess);
 
-		// PRPAIN201301UV02 prpain201301uv02 = new PRPAIN201301UV02();
-		// String resultOfAddPatient =
-		// xdsbRegistry.addPatientRegistryRecord(input)
+			prpain201302uv.setId(PRPAIN201302UVId);
 
-		// Check the return of Add XdsbRegistry
+			prpain201302uv.setReceiver(receiver);
+
+			prpain201302uv.setSender(sender);
+
+			String result = xdsbRegistry
+					.revisePatientRegistryRecord(prpain201302uv);
+
+			// TODO: Check the result here to see if the CA code is return
+			System.out.println(result);
+		}
+
+		String metadataString = new XdsbMetadataGeneratorImpl(
+				new UniqueOidProviderImpl()).generateMetadataXml(documentSet,
+				subjectLocality);
+
+		SubmitObjectsRequest submitObjectRequest = null;
+
+		// Marshal this metadata string to SubmitObjectsRequest
+		try {
+			submitObjectRequest = unmarshallFromXml(SubmitObjectsRequest.class,
+					metadataString);
+		} catch (JAXBException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		System.out.println(metadataString);
+
+		String documentId = null;
+
+		// Get the document id from meta data
+		try {
+			org.w3c.dom.Document document = loadXmlFrom(metadataString);
+
+			// We map the prefixes to URIs
+			NamespaceContext namespaceContext = new NamespaceContext() {
+				@Override
+				public String getNamespaceURI(String prefix) {
+					String uri;
+					if (prefix.equals("rim"))
+						uri = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
+					else
+						throw new IllegalArgumentException(prefix);
+					return uri;
+				}
+
+				@Override
+				public Iterator<?> getPrefixes(String val) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public String getPrefix(String uri) {
+					throw new UnsupportedOperationException();
+				}
+			};
+
+			XPathFactory xpathFactory = XPathFactory.newInstance();
+			XPath xpath = xpathFactory.newXPath();
+			xpath.setNamespaceContext(namespaceContext);
+
+			// Get document id
+			String xpathForDocumentId = "//rim:ExtrinsicObject/@id[1]";
+			documentId = xpath.evaluate(xpathForDocumentId, document);
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		Document document = new Document();
-		document.setId("Document01");
-		document.setValue("xyz".getBytes());
+		document.setId(documentId);
+		document.setValue(documentSet.getBytes());
 
 		ProvideAndRegisterDocumentSetRequest request = new ProvideAndRegisterDocumentSetRequest();
 		request.getDocument().add(document);
-		request.setSubmitObjectsRequest(new SubmitObjectsRequest());
+		request.setSubmitObjectsRequest(submitObjectRequest);
 
 		RegistryResponseType registryResponse = null;
 		try {
@@ -467,8 +539,7 @@ public class OrchestratorImpl implements Orchestrator {
 		SlotType1 patientIdSlotType = new SlotType1();
 		patientIdSlotType.setName("$XDSDocumentEntryPatientId");
 		ValueListType patientIdValueListType = new ValueListType();
-		patientIdValueListType.getValue().add(
-				"'24d3b01495f14e9^^^&1.3.6.1.4.1.21367.2010.1.2.300&ISO'"); // PatientId
+		patientIdValueListType.getValue().add(patientId); // PatientId
 		patientIdSlotType.setValueList(patientIdValueListType);
 		adhocQueryType.getSlot().add(patientIdSlotType);
 
@@ -693,6 +764,14 @@ public class OrchestratorImpl implements Orchestrator {
 		return stringWriter.toString();
 	}
 
+	private <T> T unmarshallFromXml(Class<T> clazz, String xml)
+			throws JAXBException {
+		JAXBContext context = JAXBContext.newInstance(clazz);
+		Unmarshaller um = context.createUnmarshaller();
+		ByteArrayInputStream input = new ByteArrayInputStream(xml.getBytes());
+		return (T) um.unmarshal(input);
+	}
+
 	private static org.w3c.dom.Document loadXmlFrom(String xml)
 			throws Exception {
 		InputSource is = new InputSource(new StringReader(xml));
@@ -702,5 +781,64 @@ public class OrchestratorImpl implements Orchestrator {
 		builder = factory.newDocumentBuilder();
 		org.w3c.dom.Document document = builder.parse(is);
 		return document;
+	}
+
+	public static boolean patientExistsInRegistyBeforeAdding(
+			String responseOfAddPatient) {
+
+		boolean patientExistsInRegistyBeforeAdding = false;
+
+		try {
+			// TODO: Refactor these code to a new class to be testable
+			final String hl7Namespace = "urn:hl7-org:v3";
+			final String hl7NamespacePrefix = "hl7";
+
+			org.w3c.dom.Document document = loadXmlFrom(responseOfAddPatient);
+
+			// We map the prefixes to URIs
+			NamespaceContext namespaceContext = new NamespaceContext() {
+				@Override
+				public String getNamespaceURI(String prefix) {
+					String uri;
+					if (prefix.equals(hl7NamespacePrefix))
+						uri = hl7Namespace;
+					else
+						throw new IllegalArgumentException(prefix);
+					return uri;
+				}
+
+				@Override
+				public Iterator<?> getPrefixes(String val) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public String getPrefix(String uri) {
+					throw new UnsupportedOperationException();
+				}
+			};
+
+			XPathFactory xpathFactory = XPathFactory.newInstance();
+			XPath xpath = xpathFactory.newXPath();
+			xpath.setNamespaceContext(namespaceContext);
+
+			// Get acknowledgment type code
+			String xpathForAcknowledgementTypeCode = String.format(
+					"//%s:acknowledgement/%s:typeCode/@code",
+					hl7NamespacePrefix, hl7NamespacePrefix);
+			String acknowledgementTypeCode = xpath.evaluate(
+					xpathForAcknowledgementTypeCode, document);
+
+			if (acknowledgementTypeCode.equals("CE")) {
+				patientExistsInRegistyBeforeAdding = true;
+			}
+
+		} catch (Exception e) {
+			throw new DS4PException(
+					"Error occurred when getting the patient id and other patient demographic information from CDA document.",
+					e);
+		}
+
+		return patientExistsInRegistyBeforeAdding;
 	}
 }

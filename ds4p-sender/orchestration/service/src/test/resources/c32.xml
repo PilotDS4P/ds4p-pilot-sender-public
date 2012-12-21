@@ -15,20 +15,20 @@
 		codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
 	<title>ONC Meaningful Use Example Document</title>
 	<effectiveTime value="20101026130945"/>
-	<confidentialityCode/>
+	<confidentialityCode code="R"/>
 	<languageCode code="en-US"/>
 	<recordTarget>
 		<patientRole>
-			<id root="ProviderID" extension="PatientID" assigningAuthorityName="Provider Name"/>
+			<id root="ProviderID" extension="PUI100010060001" assigningAuthorityName="Provider Name"/>
 			<addr use="HP">
 				<!--HITSP/C83 recommends that a patient have at least one address element with a use attribute of HP, i.e. home primary-->
 				None of the following address elements are specifically required by HITSP C32, so
 				the address could be be just plain text at this location? Use of one or more of the
 				following labeled address lines, with meaningful content, is recommended.
-					<streetAddressLine>First Address Line</streetAddressLine>
+					<streetAddressLine>First Address Line Updated</streetAddressLine>
 				<streetAddressLine>Next Address line - if needed, etc.</streetAddressLine>
 				<city>CityName</city>
-				<state>StateName</state>
+				<state>MD</state>
 				<postalCode>ZipCode(5or9)</postalCode>
 				<country>USA</country>
 			</addr>

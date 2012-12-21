@@ -509,21 +509,41 @@ public class OrchestratorImplTest {
 	@Test
 	public void testSaveDocumentSetToXdsRepository() {
 		// Arrange
-		String c32Xml = getC32Xml();
+		String c32Xml = getXmlFromXmlFile("c32.xml");
 
 		ContextHandler contextHandlerMock = mock(ContextHandler.class);
 		C32Getter c32GetterMock = mock(C32Getter.class);
 		DocumentProcessor documentProcessorMock = mock(DocumentProcessor.class);
 		DataHandlerToBytesConverter dataHandlerToBytesConverterMock = mock(DataHandlerToBytesConverter.class);
-		XdsbRepository xdsbRepositoryMock = mock(XdsbRepository.class);
-		XdsbRegistry xdsbRegistryMock = mock(XdsbRegistry.class);
+
+		final String demoRespositoryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
+		final String demoRegistryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
+
+		XdsbRepository xdsbRepository = new XdsbRepositoryImpl(
+				demoRespositoryEndpoint);
+		XdsbRegistry xdsbRegistry = new XdsbRegistryImpl(demoRegistryEndpoint);
+
 		OrchestratorImpl sut = new OrchestratorImpl(contextHandlerMock,
 				c32GetterMock, documentProcessorMock,
-				dataHandlerToBytesConverterMock, xdsbRepositoryMock,
-				xdsbRegistryMock);
+				dataHandlerToBytesConverterMock, xdsbRepository, xdsbRegistry);
+
+		sut.setSubjectLocality("1.1.1.1");
 
 		// Act
-		// sut.saveDocumentSetToXdsRepository(c32Xml);
+		sut.saveDocumentSetToXdsRepository(c32Xml);
+	}
+
+	@Test
+	public void testPatientExistsInRegistyBeforeAdding() {
+		// Arrange
+		String responseWithCeOfAddPatientToRegistry = getXmlFromXmlFile("responseWithCeOfAddPatientToRegistry.xml");
+
+		// Act
+		boolean result = OrchestratorImpl
+				.patientExistsInRegistyBeforeAdding(responseWithCeOfAddPatientToRegistry);
+
+		// Assert
+		assertEquals(result, true);
 	}
 
 	@SuppressWarnings("unused")
@@ -592,14 +612,14 @@ public class OrchestratorImplTest {
 		}
 	}
 
-	private String getC32Xml() {
+	private String getXmlFromXmlFile(String xmlFileNameInResources) {
 		InputStream in = null;
 		BufferedReader br = null;
 		StringBuilder c32Document = new StringBuilder();
 
 		try {
 			in = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("c32.xml");
+					.getResourceAsStream(xmlFileNameInResources);
 
 			br = new BufferedReader(new InputStreamReader(in));
 

@@ -28,18 +28,25 @@ package gov.samhsa.ds4ppilot.orchestrator;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 
 /**
  * The Class XdsbMetadataGeneratorImpl.
@@ -126,6 +133,48 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		}
 	}
 
+	@Override
+	public SubmitObjectsRequest generateMetadata(String document,
+			String homeCommunityId) {
+
+		String metadataXml = generateMetadataXml(document, homeCommunityId);
+		SubmitObjectsRequest submitObjectsRequest = null;
+		try {
+			submitObjectsRequest = unmarshallFromXml(
+					SubmitObjectsRequest.class, metadataXml);
+		} catch (JAXBException e) {
+			throw new DS4PException(e.toString(), e);
+		}
+
+		return submitObjectsRequest;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T unmarshallFromXml(Class<T> clazz, String xml)
+			throws JAXBException {
+		JAXBContext context = JAXBContext.newInstance(clazz);
+		Unmarshaller um = context.createUnmarshaller();
+		ByteArrayInputStream input = new ByteArrayInputStream(xml.getBytes());
+
+		return (T) um.unmarshal(input);
+	}
+
+	private static String marshall(Object obj) throws Throwable {
+		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
+
+		// Create the marshaller, this is the nifty little thing that will
+		// actually transform the object into XML
+		final Marshaller marshaller = context.createMarshaller();
+
+		// Create a stringWriter to hold the XML
+		final StringWriter stringWriter = new StringWriter();
+
+		// Marshal the javaObject and write the XML to the stringWriter
+		marshaller.marshal(obj, stringWriter);
+
+		return stringWriter.toString();
+	}
+
 	/**
 	 * The main method.
 	 * 
@@ -154,8 +203,20 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		}
 
 		String meta = xdsbMetadataGeneratorImpl.generateMetadataXml(
-				c32Document.toString(), "homeCommunityId");
+				c32Document.toString(), "1.1.1.1.1");
 
 		System.out.println(meta);
+
+		SubmitObjectsRequest submitObjectsRequest = xdsbMetadataGeneratorImpl
+				.generateMetadata(c32Document.toString(), "1.1.1.1.1");
+
+		System.out.println("Generated SubmitObjectsRequest");
+
+		try {
+			System.out.println(marshall(submitObjectsRequest));
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

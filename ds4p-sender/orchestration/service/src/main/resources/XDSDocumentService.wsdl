@@ -8,7 +8,7 @@
 	targetNamespace="http://www.samhsa.gov/ds4ppilot/contract/orchestrator">
 	<wsdl:types>
 		<xsd:schema
-			targetNamespace="http://www.samhsa.gov/ds4ppilot/schema/orchestrator">
+			targetNamespace="http://www.samhsa.gov/ds4ppilot/schema/orchestrator" elementFormDefault="qualified" attributeFormDefault="unqualified">
 			<xsd:element name="saveDocumentSetToXdsRepositoryRequest">
 				<xsd:complexType>
 					<xsd:sequence>
