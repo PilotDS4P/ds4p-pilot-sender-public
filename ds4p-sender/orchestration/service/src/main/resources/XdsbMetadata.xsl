@@ -38,8 +38,22 @@
 	<xsl:variable name="authorIdentifier"
 		select="string-join((concat('100010020002', '^^^'), $homeCommunityId, 'ISO'), '&amp;')" />
 
-	<xsl:variable name="confidentialityCode"
+	<xsl:variable name="confidentialityCode_orig"
 		select="//ClinicalDocument/confidentialityCode/@code" />
+	
+	<xsl:variable name="confidentialityCode">
+		<xsl:choose>
+			<xsl:when test="not(//ClinicalDocument/confidentialityCode/@code)">
+				<xsl:value-of select="'N'" />
+			</xsl:when>
+			<xsl:when test="$confidentialityCode_orig=''">
+				<xsl:value-of select="'N'" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$confidentialityCode_orig" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<xsl:variable name="documentTypeInLoincCode" select="//ClinicalDocument/code/@code" />
 
