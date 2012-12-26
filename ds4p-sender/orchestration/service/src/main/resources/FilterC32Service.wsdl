@@ -74,6 +74,7 @@
 						<xsd:element name="homeCommunityId" type="xsd:string" />
 						<xsd:element name="repositoryUniqueId" type="xsd:string" />
 						<xsd:element name="documentUniqueId" type="xsd:string" />
+						<xsd:element name="messageId" type="xsd:string" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>

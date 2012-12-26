@@ -25,27 +25,28 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.documentprocessor;
 
-import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
-
 import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
 import gov.samhsa.ds4ppilot.common.beans.XacmlResult;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
-import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
-import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.samhsa.ds4ppilot.common.utils.EncryptTool;
 import gov.samhsa.ds4ppilot.common.utils.FileHelper;
 import gov.samhsa.ds4ppilot.common.utils.StringURIResolver;
 import gov.samhsa.ds4ppilot.common.utils.XmlHelper;
 import gov.samhsa.ds4ppilot.common.xdm.XdmZipUtils;
+import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
+import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
+import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.va.ds4p.cas.RuleExecutionResponse;
-import org.apache.axiom.attachments.ByteArrayDataSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.security.Key;
 import java.util.Iterator;
+
+import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -57,23 +58,21 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.w3c.dom.Document;
-import java.security.Key;
-
-import javax.activation.DataHandler;
-import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.encryption.EncryptedData;
-import org.apache.xml.security.encryption.EncryptedKey;
-import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
+import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.xml.security.encryption.EncryptedData;
+import org.apache.xml.security.encryption.EncryptedKey;
+import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.encryption.XMLEncryptionException;
+import org.apache.xml.security.keys.KeyInfo;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * The Class DocumentProcessorImpl.
@@ -81,14 +80,14 @@ import javax.xml.xpath.XPathFactory;
 public class DocumentProcessorImpl implements DocumentProcessor {
 
 	/** The healthcare classification client impl. */
-	private HealthcareClassificationClientImpl healthcareClassificationClientImpl;
-	
+	private final HealthcareClassificationClientImpl healthcareClassificationClientImpl;
+
 	/** The audit service impl. */
-	private AuditServiceImpl auditServiceImpl;
-	
+	private final AuditServiceImpl auditServiceImpl;
+
 	/** The de sede encrypt key. */
 	private Key deSedeEncryptKey;
-	
+
 	/** The de sede mask key. */
 	private Key deSedeMaskKey;
 
@@ -178,6 +177,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			executionResponseContainer = healthcareClassificationClientImpl
 					.assertAndExecuteClinicalFacts(factModel);
 
+			processDocumentResponse.setPostProcessingDirectives(executionResponseContainer);
 			// unmarshall from xml to RuleExecutionContainer
 			ruleExecutionContainer = unmarshallFromXml(
 					RuleExecutionContainer.class, executionResponseContainer);
@@ -217,16 +217,16 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 					metadataXml, readFile("CCD.xsl"), document,
 					readFile("INDEX.htm"), readFile("README.txt"),
 					getDeSedeMaskKey().getEncoded(), getDeSedeEncryptKey()
-							.getEncoded()) : document.getBytes();
+					.getEncoded()) : document.getBytes();
 
-			rawData = new ByteArrayDataSource(documentPayload);
-			processDocumentResponse.setProcessedDocument(new DataHandler(rawData));
+					rawData = new ByteArrayDataSource(documentPayload);
+					processDocumentResponse.setProcessedDocument(new DataHandler(rawData));
 		} catch (IOException e) {
 			throw new DS4PException(e.toString(), e);
 		} catch (Exception e) {
 			throw new DS4PException(e.toString(), e);
 		}
-		
+
 		return processDocumentResponse;
 	}
 
@@ -682,7 +682,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	 */
 	private void encryptElement(Document xmlDocument, Key encryptSymmetricKey,
 			EncryptedKey encryptedKey, Element element)
-			throws XMLEncryptionException, Exception {
+					throws XMLEncryptionException, Exception {
 
 		String algorithmURI = XMLCipher.AES_128;
 

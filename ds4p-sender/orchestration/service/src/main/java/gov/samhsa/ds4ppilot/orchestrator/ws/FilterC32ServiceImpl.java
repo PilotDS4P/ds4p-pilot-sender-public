@@ -55,7 +55,7 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 	 * Instantiates a new filter C32 service implementation.
 	 * 
 	 * @param Orchestrator
-	 *            the  orchestrator
+	 *            the orchestrator
 	 */
 	public FilterC32ServiceImpl(Orchestrator orchestrator) {
 
@@ -65,8 +65,7 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * gov.samhsa.ds4ppilot.contract.orchestrator.FilterC32ServicePortType
+	 * @see gov.samhsa.ds4ppilot.contract.orchestrator.FilterC32ServicePortType
 	 * #filterC32(gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Request)
 	 */
 	@Override
@@ -82,18 +81,22 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSet(
-			RetrieveDocumentSetRequest parameters) {		
+			RetrieveDocumentSetRequest parameters) {
 
-		RetrieveDocumentSetResponse response = orchestrator.retrieveDocumentSetRequest(parameters.getHomeCommunityId(), 
-				parameters.getRepositoryUniqueId(), parameters.getDocumentUniqueId());
+		RetrieveDocumentSetResponse response = orchestrator
+				.retrieveDocumentSetRequest(parameters.getHomeCommunityId(),
+						parameters.getRepositoryUniqueId(),
+						parameters.getDocumentUniqueId(),
+						parameters.getMessageId());
 
-		return response;		
+		return response;
 	}
 
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQuery(
 			RegisteryStoredQueryRequest parameters) {
-		RegisteryStoredQueryResponse response = orchestrator.registeryStoredQueryRequest(parameters.getPatientId());
+		RegisteryStoredQueryResponse response = orchestrator
+				.registeryStoredQueryRequest(parameters.getPatientId());
 
 		return response;
 	}
@@ -108,11 +111,11 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 		this.orchestrator = orchestrator;
 	}
 
-
 	/**
 	 * After properties set.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void afterPropertiesSet() throws Exception {
 		if (orchestrator == null) {
@@ -122,6 +125,5 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 							this.getClass()));
 		}
 	}
-
 
 }
