@@ -30,8 +30,7 @@
 			xmlns:q3="http://schemas.microsoft.com/Message" />
 	</wsdl:message>
 	<wsdl:message name="XDSRepository_RetrieveDocumentSet_OutputMessage">
-		<wsdl:part name="RetrieveDocumentSetResult" element="tns:RetrieveDocumentSetResponse"
-			xmlns:q4="http://schemas.microsoft.com/Message" />
+		<wsdl:part name="RetrieveDocumentSetResult" element="tns:RetrieveDocumentSetResponse"/>
 	</wsdl:message>
 	<wsdl:portType name="XDSRepository">
 		<wsdl:operation name="ProvideAndRegisterDocumentSet">

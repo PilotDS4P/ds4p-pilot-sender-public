@@ -511,7 +511,7 @@ public class OrchestratorImplTest {
 	@Test
 	public void testSaveDocumentSetToXdsRepository() {
 		// Arrange
-		String c32Xml = getXmlFromXmlFile("c32.xml");
+		String c32Xml = getXmlFromXmlFile("remC32.xml");
 
 		ContextHandler contextHandlerMock = mock(ContextHandler.class);
 		C32Getter c32GetterMock = mock(C32Getter.class);

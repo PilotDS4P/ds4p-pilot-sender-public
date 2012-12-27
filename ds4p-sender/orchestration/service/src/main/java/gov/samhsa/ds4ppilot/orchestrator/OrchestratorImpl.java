@@ -69,7 +69,7 @@ import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryErrorList;
-import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponse;
 
 import org.hl7.v3.Device;
 import org.hl7.v3.Id;
@@ -463,10 +463,17 @@ public class OrchestratorImpl implements Orchestrator {
 		request.getDocument().add(document);
 		request.setSubmitObjectsRequest(submitObjectRequest);
 
-		RegistryResponseType registryResponse = null;
+		RegistryResponse registryResponse = null;
 		try {
 			registryResponse = xdsbRepository
 					.provideAndRegisterDocumentSetRequest(request);
+
+			try {
+				System.out.println(marshall(registryResponse));
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			RegistryErrorList registryErrorList = registryResponse
 					.getRegistryErrorList();

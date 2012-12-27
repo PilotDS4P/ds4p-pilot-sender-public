@@ -35,11 +35,10 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
-import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponse;
 
 import org.springframework.util.StringUtils;
 import org.tempuri.DocumentRepositoryService;
-
 
 /**
  * The Class DS4PClinicallyAdaptiveRulesWebServiceClient.
@@ -49,37 +48,38 @@ public class XDSRepositorybWebServiceClient {
 	/** The endpoint address. */
 	private final String endpointAddress;
 
-
 	public XDSRepositorybWebServiceClient(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
-
-	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(RetrieveDocumentSetRequest retrieveDocumentSet) {
+	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
+			RetrieveDocumentSetRequest retrieveDocumentSet) {
 		XDSRepository port = createPort();
 
 		return port.retrieveDocumentSet(retrieveDocumentSet);
 	}
 
-	public RegistryResponseType provideAndRegisterDocumentSetReponse(ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSet)
-	{
+	public RegistryResponse provideAndRegisterDocumentSetReponse(
+			ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSet) {
 		XDSRepository port = createPort();
-		return port.provideAndRegisterDocumentSet(provideAndRegisterDocumentSet);
+		return port
+				.provideAndRegisterDocumentSet(provideAndRegisterDocumentSet);
 
 	}
-
 
 	private XDSRepository createPort() {
 		final URL WSDL_LOCATION = this.getClass().getClassLoader()
 				.getResource("XDS.b_repository.net.wsdl");
-		final QName SERVICE =  new QName("http://tempuri.org/", "DocumentRepositoryService");
+		final QName SERVICE = new QName("http://tempuri.org/",
+				"DocumentRepositoryService");
 
-		XDSRepository port = new DocumentRepositoryService(WSDL_LOCATION, SERVICE).getXDSRepositoryHTTPEndpoint();		
+		XDSRepository port = new DocumentRepositoryService(WSDL_LOCATION,
+				SERVICE).getXDSRepositoryHTTPEndpoint();
 
 		if (StringUtils.hasText(this.endpointAddress)) {
 			BindingProvider bp = (BindingProvider) port;
 			bp.getRequestContext().put(
-					BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointAddress); 
+					BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpointAddress);
 
 		}
 

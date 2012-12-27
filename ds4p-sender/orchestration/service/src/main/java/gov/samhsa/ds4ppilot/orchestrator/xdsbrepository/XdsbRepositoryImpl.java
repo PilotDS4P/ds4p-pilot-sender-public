@@ -29,8 +29,7 @@ import gov.samhsa.ds4ppilot.ws.client.XDSRepositorybWebServiceClient;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
-import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
-
+import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponse;
 
 /**
  * The Class XdsbRepositoryImpl.
@@ -42,29 +41,39 @@ public class XdsbRepositoryImpl implements XdsbRepository {
 
 	/**
 	 * Instantiates a new xdsb repository impl.
-	 *
-	 * @param endpointAddress the endpoint address
+	 * 
+	 * @param endpointAddress
+	 *            the endpoint address
 	 */
 	public XdsbRepositoryImpl(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository#provideAndRegisterDocumentSetRequest(ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository#
+	 * provideAndRegisterDocumentSetRequest
+	 * (ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest)
 	 */
 	@Override
-	public RegistryResponseType provideAndRegisterDocumentSetRequest(
+	public RegistryResponse provideAndRegisterDocumentSetRequest(
 			ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSetRequest) {
-		RegistryResponseType registryResponse = null;
+		RegistryResponse registryResponse = null;
 
 		XDSRepositorybWebServiceClient xdsRepositoryWebServiceClient = new XDSRepositorybWebServiceClient(
 				endpointAddress);
-		registryResponse = xdsRepositoryWebServiceClient.provideAndRegisterDocumentSetReponse(provideAndRegisterDocumentSetRequest);
+		registryResponse = xdsRepositoryWebServiceClient
+				.provideAndRegisterDocumentSetReponse(provideAndRegisterDocumentSetRequest);
 		return registryResponse;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository#retrieveDocumentSetRequest(ihe.iti.xds_b._2007.RetrieveDocumentSetRequest)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository#
+	 * retrieveDocumentSetRequest
+	 * (ihe.iti.xds_b._2007.RetrieveDocumentSetRequest)
 	 */
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
@@ -73,7 +82,8 @@ public class XdsbRepositoryImpl implements XdsbRepository {
 
 		XDSRepositorybWebServiceClient xdsRepositoryWebServiceClient = new XDSRepositorybWebServiceClient(
 				endpointAddress);
-		retrieveDocumentSetRequestResponse = xdsRepositoryWebServiceClient.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
+		retrieveDocumentSetRequestResponse = xdsRepositoryWebServiceClient
+				.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
 		return retrieveDocumentSetRequestResponse;
 	}
 

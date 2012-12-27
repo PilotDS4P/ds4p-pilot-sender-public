@@ -28,18 +28,14 @@ package gov.samhsa.ds4ppilot.orchestrator.ws;
 import gov.samhsa.ds4ppilot.contract.orchestrator.XDSDocumentServicePortType;
 import gov.samhsa.ds4ppilot.orchestrator.Orchestrator;
 import gov.samhsa.ds4ppilot.schema.orchestrator.SaveDocumentSetToXdsRepositoryRequest;
+import gov.samhsa.ds4ppilot.schema.orchestrator.SaveDocumentSetToXdsRepositoryResponse;
 
 import javax.jws.WebService;
 
-
-@WebService(targetNamespace = "http://www.samhsa.gov/ds4ppilot/contract/orchestrator", 
-portName = "XDSDocumentServicePort", serviceName = "XDSDocumentService", 
-endpointInterface = "gov.samhsa.ds4ppilot.contract.orchestrator.XDSDocumentServicePortType")
-public class XDSDocumentServiceImpl implements
-XDSDocumentServicePortType {
+@WebService(targetNamespace = "http://www.samhsa.gov/ds4ppilot/contract/orchestrator", portName = "XDSDocumentServicePort", serviceName = "XDSDocumentService", endpointInterface = "gov.samhsa.ds4ppilot.contract.orchestrator.XDSDocumentServicePortType")
+public class XDSDocumentServiceImpl implements XDSDocumentServicePortType {
 
 	private Orchestrator orchestrator;
-
 
 	public XDSDocumentServiceImpl() {
 	}
@@ -50,13 +46,16 @@ XDSDocumentServicePortType {
 	}
 
 	@Override
-	public boolean saveDocumentSetToXdsRepository(
+	public SaveDocumentSetToXdsRepositoryResponse saveDocumentSetToXdsRepository(
 			SaveDocumentSetToXdsRepositoryRequest parameters) {
-		boolean response = false;
+		SaveDocumentSetToXdsRepositoryResponse response = new SaveDocumentSetToXdsRepositoryResponse();
 
-		response = orchestrator.saveDocumentSetToXdsRepository(parameters.getDocumentSet());
+		boolean result = orchestrator.saveDocumentSetToXdsRepository(parameters
+				.getDocumentSet());
+
+		response.setReturn(result);
 		return response;
-	}	
+	}
 
 	public void setOrchestrator(Orchestrator orchestrator) {
 		this.orchestrator = orchestrator;
