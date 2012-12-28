@@ -12,8 +12,6 @@
 	<xsl:output indent="yes" omit-xml-declaration="yes" />
 
 	<xsl:param name="homeCommunityId" as="xs:string" select="'1.1.1.1.1'" />
-	<xsl:param name="XDSDocumentEntry_classCode" as="xs:string" select="'Consult'"></xsl:param>
-	<xsl:param name="XDSDocumentEntry_classCodeDisplayName" as="xs:string" select="'Consult Note'"></xsl:param>
 	<xsl:param name="XDSDocumentEntry_uniqueId" as="xs:string" select="'2.2.2.2.2'"></xsl:param>
 	<xsl:param name="XDSSubmissionSet_uniqueId" as="xs:string" select="'3.3.3.3.3'"></xsl:param>
 	
@@ -21,6 +19,30 @@
 	
 	<xsl:param name="XDSDocumentEntry_entryUUID" as="xs:string" select="'Document01'"></xsl:param>
 	<xsl:param name="XDSSubmissionSet_entryUUID" as="xs:string" select="'SubmissionSet'"></xsl:param>
+	
+	<xsl:variable name="IsConsentCda" select="count(/ClinicalDocument/templateId[@root='2.16.840.1.113883.3.445.1'])>0"></xsl:variable>
+	
+	<xsl:variable name="XDSDocumentEntry_classCode">
+		<xsl:choose>
+			<xsl:when test="$IsConsentCda">
+				<xsl:value-of select="'Consent'"></xsl:value-of>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'Consult'" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	
+	<xsl:variable name="XDSDocumentEntry_classCodeDisplayName">
+		<xsl:choose>
+			<xsl:when test="$IsConsentCda">
+				<xsl:value-of select="'Consent Notes'"></xsl:value-of>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'Consult Notes'" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<xsl:variable name="patientRole"
 		select="//ClinicalDocument/recordTarget/patientRole" />
