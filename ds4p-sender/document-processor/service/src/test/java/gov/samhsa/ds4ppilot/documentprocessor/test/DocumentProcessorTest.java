@@ -1,32 +1,19 @@
 package gov.samhsa.ds4ppilot.documentprocessor.test;
 
+import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
+import gov.samhsa.ds4ppilot.common.utils.FileHelper;
+import gov.samhsa.ds4ppilot.common.utils.XmlHelper;
+import gov.samhsa.ds4ppilot.documentprocessor.DocumentProcessorImpl;
+import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
+import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
+import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import junit.framework.Assert;
-
-import gov.samhsa.ds4ppilot.documentprocessor.DocumentProcessorImpl;
-import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
-import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
-import gov.samhsa.ds4ppilot.common.utils.FileHelper;
-import gov.samhsa.ds4ppilot.common.utils.XmlHelper;
-import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
-import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
-
-import org.apache.xml.security.utils.EncryptionConstants;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import java.security.Key;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -35,7 +22,20 @@ import java.util.zip.ZipInputStream;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import junit.framework.Assert;
+
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.utils.EncryptionConstants;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class DocumentProcessorTest {
 
@@ -62,7 +62,7 @@ public class DocumentProcessorTest {
 		endpointAddressForHealthcareClassificationService = "http://localhost:90/HealthcareClassificationService/services/healthcareClassificationService";
 	}
 
-	@Ignore("This test should be configured to run as an integration test.")
+	/*@Ignore("This test should be configured to run as an integration test.")*/
 	@Test
 	public void processDocument_Process_Document() {
 
@@ -71,7 +71,7 @@ public class DocumentProcessorTest {
 				new AuditServiceImpl(endpointAddressForAuditServcie));
 
 		ProcessDocumentResponse result = documentProcessor.processDocument(
-				c32Document.toString(), xacmlResult, packageAsXdm,
+				c32Document.toString(), xacmlResult, false, true,
 				senderEmailAddress, recipientEmailAddress);
 
 		Assert.assertNotNull(result);
@@ -263,7 +263,7 @@ public class DocumentProcessorTest {
 
 			Document processedDoc = XmlHelper.loadDocument(document);
 			FileHelper
-					.writeDocToFile(processedDoc, "unitTest_Redacted_C32.xml");
+			.writeDocToFile(processedDoc, "unitTest_Redacted_C32.xml");
 
 			document = documentProcessor.maskElement(document,
 					ruleExecutionContainer);
@@ -367,27 +367,27 @@ public class DocumentProcessorTest {
 			String processDocString = new String(processDocBytes);
 			FileHelper.writeStringToFile(processDocString,
 					"processDocString.xml");
-			
+
 			processedDoc = XmlHelper.loadDocument(processDocString);
 
 			byte[] kekEncryptionKeyBytes = entryBytesFromZipBytes(zis,
 					"kekEncryptionKey");
-			
+
 			desedeEncryptKeySpec =
-			         new DESedeKeySpec(kekEncryptionKeyBytes);
-			      SecretKeyFactory skfEncrypt =
-			         SecretKeyFactory.getInstance("DESede");
-			      SecretKey desedeEncryptKey = skfEncrypt.generateSecret(desedeEncryptKeySpec);			
+					new DESedeKeySpec(kekEncryptionKeyBytes);
+			SecretKeyFactory skfEncrypt =
+					SecretKeyFactory.getInstance("DESede");
+			SecretKey desedeEncryptKey = skfEncrypt.generateSecret(desedeEncryptKeySpec);			
 
 			byte[] kekMaskingKeyBytes = entryBytesFromZipBytes(zis,
 					"kekMaskingKey");
-						
+
 			desedeMaskKeySpec =
-			         new DESedeKeySpec(kekMaskingKeyBytes);
-			      SecretKeyFactory skfMask =
-			         SecretKeyFactory.getInstance("DESede");
-			      SecretKey desedeMaskKey = skfMask.generateSecret(desedeMaskKeySpec);
-					
+					new DESedeKeySpec(kekMaskingKeyBytes);
+			SecretKeyFactory skfMask =
+					SecretKeyFactory.getInstance("DESede");
+			SecretKey desedeMaskKey = skfMask.generateSecret(desedeMaskKeySpec);
+
 			zis.close();
 
 			/*************************************************
@@ -437,7 +437,7 @@ public class DocumentProcessorTest {
 						EncryptionConstants.EncryptionSpecNS,
 						EncryptionConstants._TAG_ENCRYPTEDDATA);
 			}
-			
+
 			FileHelper.writeDocToFile(processedDoc,
 					"unitTest_DecryptedUnMasked_C32_from_zip.xml");
 

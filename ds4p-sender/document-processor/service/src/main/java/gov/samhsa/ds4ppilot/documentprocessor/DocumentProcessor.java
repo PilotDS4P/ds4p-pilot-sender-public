@@ -27,15 +27,11 @@ package gov.samhsa.ds4ppilot.documentprocessor;
 
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 
-import java.util.List;
-
-import javax.activation.DataHandler;
-
 /**
  * The Interface DocumentProcessor.
  */
 public interface DocumentProcessor {
-	
+
 	/**
 	 * Process document.
 	 *
@@ -46,7 +42,7 @@ public interface DocumentProcessor {
 	 * @param recipientEmailAddress the recipient email address
 	 * @return the process document response
 	 */
-	public ProcessDocumentResponse processDocument(String document, String enforcementPolicies, boolean packageAsXdm,
+	public ProcessDocumentResponse processDocument(String document, String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress);
 
 }

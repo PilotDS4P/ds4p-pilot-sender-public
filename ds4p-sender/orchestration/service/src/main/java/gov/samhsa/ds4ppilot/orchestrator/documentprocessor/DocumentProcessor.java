@@ -31,7 +31,7 @@ import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
  * The Interface DocumentProcessor.
  */
 public interface DocumentProcessor {
-	
+
 	/**
 	 * Process document.
 	 *
@@ -42,7 +42,7 @@ public interface DocumentProcessor {
 	 * @param recipientEmailAddress the recipient email address
 	 * @return the process document response
 	 */
-	public ProcessDocumentResponse processDocument(String c32Document, String enforcePolicyResponseXmlString, boolean packageAsXdm,
+	public ProcessDocumentResponse processDocument(String c32Document, String enforcePolicyResponseXmlString, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress);
 
 }

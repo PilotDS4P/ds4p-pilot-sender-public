@@ -34,7 +34,7 @@ import gov.samhsa.schemas.client.DocumentProcessorWebServiceClient;
 public class DocumentProcessorImpl implements DocumentProcessor {
 
 	/** The endpoint address. */
-	private String endpointAddress;
+	private final String endpointAddress;
 
 	/**
 	 * Instantiates a new document processor implementation.
@@ -50,14 +50,14 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	 */
 	@Override
 	public ProcessDocumentResponse processDocument(String c32Document,
-			String enforcePolicyResponseXmlString, boolean packageAsXdm,
+			String enforcePolicyResponseXmlString, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress) {
 
 		DocumentProcessorWebServiceClient documentProcessorWebServiceClient = new DocumentProcessorWebServiceClient(
 				endpointAddress);
 		ProcessDocumentResponse response = documentProcessorWebServiceClient
 				.processDocument(c32Document, enforcePolicyResponseXmlString,
-						packageAsXdm, senderEmailAddress, recipientEmailAddress);
+						packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
 
 		return response;
 	}

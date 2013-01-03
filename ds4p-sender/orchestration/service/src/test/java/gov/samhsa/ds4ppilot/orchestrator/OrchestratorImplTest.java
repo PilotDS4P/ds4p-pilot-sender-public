@@ -186,7 +186,7 @@ public class OrchestratorImplTest {
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
 
-	@Ignore("This test should be configured to run as an integration test.")
+	/*@Ignore("This test should be configured to run as an integration test.")*/
 	@Test
 	public void testRetrieveDocumentSetRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
@@ -226,7 +226,7 @@ public class OrchestratorImplTest {
 
 		gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse response = orchestrator
 				.retrieveDocumentSetRequest("HC",
-						"1.3.6.1.4.1.21367.2010.1.2.1040", "2009.9.1.2458",
+						"1.3.6.1.4.1.21367.2010.1.2.1040", "26712912132.29142.81145.01078.91111078125914134",
 						UUID.randomUUID().toString());
 
 		assertNotNull(response);
@@ -401,7 +401,7 @@ public class OrchestratorImplTest {
 		when(
 				contextHandlerMock.enforcePolicy(isA(Xspasubject.class),
 						isA(Xsparesource.class))).thenThrow(
-				new RuntimeException());
+								new RuntimeException());
 
 		// Act
 		sut.handleC32Request(null, false, null, null);
@@ -472,6 +472,7 @@ public class OrchestratorImplTest {
 		final String recipientEmailAddress = "recipientEmailAddress";
 		final String senderEmailAddress = "senderEmailAddress";
 		final boolean packageAsXdm = true;
+		final boolean encryptDocument = true;
 		final String maskedDocument = "maskedDocument";
 		final byte[] filteredStreamBody = new byte[1];
 
@@ -487,14 +488,14 @@ public class OrchestratorImplTest {
 
 		when(
 				documentProcessorMock.processDocument(eq(c32), anyString(),
-						eq(packageAsXdm), eq(senderEmailAddress),
+						eq(packageAsXdm), eq(encryptDocument), eq(senderEmailAddress),
 						eq(recipientEmailAddress))).thenReturn(
-				processDocumentResponseMock);
+								processDocumentResponseMock);
 
 		when(
 				dataHandlerToBytesConverterMock
-						.toByteArray(isA(DataHandler.class))).thenReturn(
-				filteredStreamBody);
+				.toByteArray(isA(DataHandler.class))).thenReturn(
+						filteredStreamBody);
 
 		// Act
 		FilterC32Response c32Response = sut.handleC32Request(patientId,
