@@ -25,19 +25,11 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.documentprocessor.ws;
 
-import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
-import gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentService;
 import gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentServicePortType;
 import gov.samhsa.ds4ppilot.documentprocessor.DocumentProcessor;
-import gov.samhsa.ds4ppilot.documentprocessor.DocumentProcessorImpl;
-import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentRequest;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
-import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 
-import java.util.List;
-
-import javax.activation.DataHandler;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
@@ -46,22 +38,22 @@ import javax.xml.ws.soap.MTOM;
  */
 @MTOM(enabled = true, threshold = 512)
 @WebService(targetNamespace = "http://www.samhsa.gov/ds4ppilot/contract/documentprocessor", 
-            portName="ProcessDocumentPort",
-            serviceName="ProcessDocumentService", 
-            endpointInterface="gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentServicePortType")
+portName="ProcessDocumentPort",
+serviceName="ProcessDocumentService", 
+endpointInterface="gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentServicePortType")
 public class ProcessDocumentServiceImpl implements ProcessDocumentServicePortType {
-	
+
 	/** The document processor. */
 	private DocumentProcessor documentProcessor;
-	
+
 	// Default constructor
 	/**
 	 * Instantiates a new process document service impl.
 	 */
 	public ProcessDocumentServiceImpl() {
-		
+
 	}
-	
+
 	/**
 	 * Instantiates a new process document service impl.
 	 *
@@ -79,10 +71,10 @@ public class ProcessDocumentServiceImpl implements ProcessDocumentServicePortTyp
 	public ProcessDocumentResponse processDocument(
 			ProcessDocumentRequest parameters) {
 		ProcessDocumentResponse response = new ProcessDocumentResponse();
-		response = documentProcessor.processDocument(parameters.getDocument(), parameters.getEnforcementPolicies(), parameters.isPackageAsXdm(), parameters.getSenderEmailAddress(), parameters.getRecipientEmailAddress());
+		response = documentProcessor.processDocument(parameters.getDocument(), parameters.getEnforcementPolicies(), parameters.isPackageAsXdm(), parameters.isEncryptDocument(), parameters.getSenderEmailAddress(), parameters.getRecipientEmailAddress());
 		return response;
 	}	
-	
+
 	/**
 	 * Gets the document processor.
 	 *

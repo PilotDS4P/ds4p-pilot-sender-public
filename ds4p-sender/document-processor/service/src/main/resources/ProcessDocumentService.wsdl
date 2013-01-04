@@ -13,6 +13,7 @@
 						<xsd:element name="document" type="xsd:string" />
 						<xsd:element name="enforcementPolicies" type="xsd:string"/>
 						<xsd:element name="packageAsXdm" type="xsd:boolean" />
+						<xsd:element name="encryptDocument" type="xsd:boolean" />
 						<xsd:element name="senderEmailAddress" type="xsd:string"/>
 						<xsd:element name="recipientEmailAddress" type="xsd:string"/>
 					</xsd:sequence>

@@ -1,7 +1,7 @@
 package gov.samhsa.ds4ppilot.documentprocessor.ws;
 
-import static org.mockito.Mockito.*;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentService;
 import gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentServicePortType;
 import gov.samhsa.ds4ppilot.documentprocessor.DocumentProcessor;
@@ -26,11 +26,11 @@ public class DocumentProcessorImplEndpointTest {
 	private static ProcessDocumentResponse processDocumentResponse;
 	private static URL wsdlURL;
 	private static String address;
-	
+
 	private static QName serviceName;
-	
+
 	private static DocumentProcessor documentProcessorMock = mock(DocumentProcessor.class);
-	
+
 	static {
 		serviceName = new QName(
 				"http://www.samhsa.gov/ds4ppilot/contract/documentprocessor",
@@ -44,7 +44,7 @@ public class DocumentProcessorImplEndpointTest {
 		processDocumentResponse = new ProcessDocumentResponse();
 
 		processDocumentResponse
-				.setMaskedDocument("<ClinicalDocument></ClinicalDocument>");
+		.setMaskedDocument("<ClinicalDocument></ClinicalDocument>");
 		processDocumentResponse.setProcessedDocument(null);
 
 		ep = Endpoint.publish(address, new ProcessDocumentServiceImpl(documentProcessorMock));
@@ -65,11 +65,11 @@ public class DocumentProcessorImplEndpointTest {
 		ProcessDocumentService service = new ProcessDocumentService(wsdlURL, serviceName);
 		ProcessDocumentServicePortType port = service.getProcessDocumentPort();
 		ProcessDocumentRequest request = new ProcessDocumentRequest();
-		
-		when(documentProcessorMock.processDocument(null, null, false,
+
+		when(documentProcessorMock.processDocument(null, null, false, false,
 				null, null))
-		.thenReturn(processDocumentResponse);
-		
+				.thenReturn(processDocumentResponse);
+
 		ProcessDocumentResponse response = port.processDocument(request);
 
 		validateResponse(response);

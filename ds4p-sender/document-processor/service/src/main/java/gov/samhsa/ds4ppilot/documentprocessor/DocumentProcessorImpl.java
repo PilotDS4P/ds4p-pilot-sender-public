@@ -155,7 +155,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	 */
 	@Override
 	public ProcessDocumentResponse processDocument(String document,
-			String enforcementPolicies, boolean packageAsXdm,
+			String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress) {
 		RuleExecutionContainer ruleExecutionContainer = null;
 		XacmlResult xacmlResult = null;
@@ -211,7 +211,8 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			processDocumentResponse.setMaskedDocument(document);
 
 			// encrypt document
-			document = encryptDocument(document, ruleExecutionContainer);
+			if(encryptDocument)
+				document = encryptDocument(document, ruleExecutionContainer);
 
 			byte[] documentPayload  = (packageAsXdm) ? XdmZipUtils.createXDMPackage(
 					metadataXml, readFile("CCD.xsl"), document,

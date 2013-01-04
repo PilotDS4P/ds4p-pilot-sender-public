@@ -25,6 +25,7 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator;
 
+import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
 import gov.samhsa.ds4ppilot.common.beans.XacmlResult;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
@@ -42,6 +43,7 @@ import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest.Document;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse.DocumentResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -204,7 +206,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
 						.processDocument(originalC32,
-								xacmlResponseXml.toString(), packageAsXdm,
+								xacmlResponseXml.toString(), packageAsXdm, true,
 								senderEmailAddress, recipientEmailAddress);
 
 				processedPayload = dataHandlerToBytesConverter
@@ -398,7 +400,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 		String metadataString = new XdsbMetadataGeneratorImpl(
 				new UniqueOidProviderImpl()).generateMetadataXml(documentSet,
-				subjectLocality);
+						subjectLocality);
 
 		SubmitObjectsRequest submitObjectRequest = null;
 
@@ -494,54 +496,102 @@ public class OrchestratorImpl implements Orchestrator {
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			String homeCommunityId, String repositoryUniqueId,
 			String documentUniqueId, String messageId) {
-		RetrieveDocumentSetResponse response = new RetrieveDocumentSetResponse();
-		RetrieveDocumentSetRequest retrieveDocumentSet = new RetrieveDocumentSetRequest();
+		RetrieveDocumentSetResponse retrieveDocumentSetResponse = new RetrieveDocumentSetResponse();
+		RetrieveDocumentSetRequest retrieveDocumentSetRequest = new RetrieveDocumentSetRequest();
+		StringWriter xacmlResponseXml = new StringWriter();
+		byte[] processedPayload;
+		Return result = null;
+		EnforcePolicy.Xspasubject xspasubject = null;
+		EnforcePolicy.Xsparesource xsparesource = null;
 
 		try {
 			DocumentRequest documentRequest = new DocumentRequest();
 			documentRequest.setHomeCommunityId(homeCommunityId);
 			documentRequest.setRepositoryUniqueId(repositoryUniqueId);
 			documentRequest.setDocumentUniqueId(documentUniqueId);
-			retrieveDocumentSet.getDocumentRequest().add(documentRequest);
+			retrieveDocumentSetRequest.getDocumentRequest().add(documentRequest);
 
-			ihe.iti.xds_b._2007.RetrieveDocumentSetResponse retrieveDocumentSetResponse = null;
-			retrieveDocumentSetResponse = xdsbRepository
-					.retrieveDocumentSetRequest(retrieveDocumentSet);
+			ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = null;
+			xdsbRetrieveDocumentSetResponse = xdsbRepository
+					.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
 
-			// TODO: get original cda, send to documentProcessor, get additional
-			// policy attributes from response, get xacml decision and set
-			// processed doc in payload
+			// get original cda
+			DocumentResponse documentResponse = xdsbRetrieveDocumentSetResponse
+					.getDocumentResponse().get(0);
+			byte[] rawDocument = documentResponse.getDocument();
+			String originalC32 = new String(rawDocument);
+			System.out.println(originalC32);					
 
-			String xmlResponse;
+			xspasubject = setXspaSubject(
+					"Duane_Decouteau@direct.healthvault-stage.com", UUID
+					.randomUUID().toString());
+			xsparesource = setXspaResource("PUI100010060001");
 
-			xmlResponse = marshall(retrieveDocumentSetResponse);
+			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
 
-			response.setReturn(xmlResponse);
+			if (true/*result.getPdpDecision().equals(PERMIT)*/) {
 
-			/*
-			 * Return result = null; try { EnforcePolicy.Xspasubject xspasubject
-			 * = setXspaSubject( "Duane_Decouteau@direct.healthvault-stage.com",
-			 * UUID .randomUUID().toString()); EnforcePolicy.Xsparesource
-			 * xsparesource = setXspaResource("PUI100010060001");
-			 * 
-			 * result = contextHandler.enforcePolicy(xspasubject, xsparesource);
-			 * 
-			 * ihe.iti.xds_b._2007.RetrieveDocumentSetResponse
-			 * retrieveDocumentSetResponse = null;
-			 * 
-			 * // verify identify of the individual and return decision if
-			 * (result.getPdpDecision().equals(PERMIT)) {
-			 * 
-			 * } } catch (Throwable e) { throw new DS4PException(e.toString(),
-			 * e); }
-			 */
+				XacmlResult xacmlResult = getXacmlResponse(result);
 
+				JAXBContext jaxbContext = JAXBContext
+						.newInstance(XacmlResult.class);
+				Marshaller marshaller = jaxbContext.createMarshaller();
+				marshaller.setProperty("com.sun.xml.bind.xmlDeclaration",
+						Boolean.FALSE);
+				marshaller.marshal(xacmlResult, xacmlResponseXml);
+
+				ProcessDocumentResponse processDocumentResponse = documentProcessor
+						.processDocument(originalC32,
+								/*xacmlResponseXml.toString()*/ "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>", 
+								false,
+								false,
+								"leo.smith@direct.obhita-stage.org",
+								"Duane_Decouteau@direct.healthvault-stage.com");
+
+				processedPayload = dataHandlerToBytesConverter
+						.toByteArray(processDocumentResponse
+								.getProcessedDocument());
+
+				// get processed document
+				String processedDocument = new String(processedPayload);
+
+				// get post processing directives
+				String postProcessingDirectives = processDocumentResponse.getPostProcessingDirectives();
+				RuleExecutionContainer executionResponseContainer = unmarshallFromXml(RuleExecutionContainer.class, postProcessingDirectives);			
+
+				xspasubject = setXspaSubject(
+						"Duane_Decouteau@direct.healthvault-stage.com", UUID
+						.randomUUID().toString());
+				xsparesource = setXspaResource("PUI100010060001");
+
+				// set additional policies in the xpasubject and get policy decision
+				result = contextHandler.enforcePolicy(xspasubject, xsparesource);
+
+				if (true/*result.getPdpDecision().equals(PERMIT)*/) {					
+
+					DocumentResponse document = new DocumentResponse();
+					document.setDocument(originalC32.getBytes());
+
+					xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(0, document);				
+
+					retrieveDocumentSetResponse.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
+
+					String temp = marshall(xdsbRetrieveDocumentSetResponse);
+					System.out.println(temp);
+				}
+			}
+
+		} catch (PropertyException e) {
+			throw new DS4PException(e.toString(), e);
+		} catch (JAXBException e) {
+			throw new DS4PException(e.toString(), e);
+		} catch (IOException e) {
+			throw new DS4PException(e.toString(), e);
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DS4PException(e.toString(), e);
 		}
 
-		return response;
+		return retrieveDocumentSetResponse;
 	}
 
 	@Override
@@ -583,7 +633,7 @@ public class OrchestratorImpl implements Orchestrator {
 		try {
 			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
 					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-							.randomUUID().toString());
+					.randomUUID().toString());
 			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
 			enforcePolicyResult = contextHandler.enforcePolicy(xspasubject,

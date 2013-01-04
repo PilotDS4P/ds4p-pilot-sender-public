@@ -6,9 +6,7 @@ import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentRequest;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 
 import java.net.URL;
-import java.util.GregorianCalendar;
 
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
@@ -22,7 +20,7 @@ import org.junit.Test;
 public class DocumentProcessorClientTest {
 	protected static Endpoint ep;
 	protected static String address;
-	
+
 	private static ProcessDocumentResponse returnedValueOfProcessDocument;
 
 	@BeforeClass
@@ -30,11 +28,12 @@ public class DocumentProcessorClientTest {
 		try {
 			address = "http://localhost:9000/services/ProcessDocumentService";
 			ep = Endpoint.publish(address, new IDocumentProcessorImpl());
-			
+
 			returnedValueOfProcessDocument = new ProcessDocumentResponse ();
 			returnedValueOfProcessDocument.setMaskedDocument("<ClinicalDocument></ClinicalDocument>");
 			returnedValueOfProcessDocument.setProcessedDocument(null);
-			
+			returnedValueOfProcessDocument.setPostProcessingDirectives(null);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,16 +52,17 @@ public class DocumentProcessorClientTest {
 	// Test if the stub web service activate properly
 	@Test
 	public void testStubWebServiceWorks() {
-		
-		
+
+
 		IDocumentProcessorImpl.returnedValueOfProcessDocument = returnedValueOfProcessDocument;
 		ProcessDocumentRequest request = new ProcessDocumentRequest();
 		request.setDocument("<ClinicalDocument></ClinicalDocument>");
 		request.setEnforcementPolicies("<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>");
 		request.setPackageAsXdm(true);
+		request.setEncryptDocument(true);
 		request.setSenderEmailAddress("leo.smith@direct.obhita-stage.org");
 		request.setRecipientEmailAddress("Duane_Decouteau@direct.healthvault.com");
-			
+
 		ProcessDocumentResponse resp = createPort().processDocument(request);
 		validateResponse(resp);
 	}
@@ -70,17 +70,18 @@ public class DocumentProcessorClientTest {
 	// Test if the SOAP client calling the stub web service correctly?
 	@Test
 	public void testWSClientSOAPCallWorks() {
-		
+
 		String document = "<ClinicalDocument></ClinicalDocument>";
 		String enforcementPolicies = "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>";
 		boolean packageAsXdm = true;
+		boolean encryptDocument = true;
 		String senderEmailAddress = "leo.smith@direct.obhita-stage.org";
 		String recipientEmailAddress = "Duane_Decouteau@direct.healthvault.com"; 		
-		
+
 		IDocumentProcessorImpl.returnedValueOfProcessDocument = returnedValueOfProcessDocument;		
 
 		DocumentProcessorWebServiceClient wsc = new DocumentProcessorWebServiceClient(address);
-		ProcessDocumentResponse resp = wsc.processDocument(document, enforcementPolicies, packageAsXdm, senderEmailAddress, recipientEmailAddress);
+		ProcessDocumentResponse resp = wsc.processDocument(document, enforcementPolicies, packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
 		validateResponse(resp);
 	}
 

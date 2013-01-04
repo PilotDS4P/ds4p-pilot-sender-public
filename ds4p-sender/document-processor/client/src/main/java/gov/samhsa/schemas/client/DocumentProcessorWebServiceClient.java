@@ -32,7 +32,6 @@ import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
@@ -45,13 +44,13 @@ import org.springframework.util.StringUtils;
  * The Class DocumentProcessorWebServiceClient.
  */
 public class DocumentProcessorWebServiceClient {
-	
+
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(DocumentProcessorWebServiceClient.class);
-	
+
 	/** The endpoint address. */
-	private String endpointAddress;
+	private final String endpointAddress;
 
 	/**
 	 * The main method.
@@ -59,15 +58,16 @@ public class DocumentProcessorWebServiceClient {
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {	
-		
+
 		String document = "<ClinicalDocument></ClinicalDocument>";
 		String enforcementPolicies = "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>";
 		boolean packageAsXdm = true;
+		boolean encryptDocument = true;
 		String senderEmailAddress = "leo.smith@direct.obhita-stage.org";
 		String recipientEmailAddress = "Duane_Decouteau@direct.healthvault.com"; 
-		
+
 		DocumentProcessorWebServiceClient documentProcessorService = new DocumentProcessorWebServiceClient(null);		
-		documentProcessorService.run(document, enforcementPolicies, packageAsXdm, senderEmailAddress, recipientEmailAddress);
+		documentProcessorService.run(document, enforcementPolicies, packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class DocumentProcessorWebServiceClient {
 	 * @return the process document response
 	 */
 	public ProcessDocumentResponse processDocument(String document,
-			String enforcementPolicies, boolean packageAsXdm,
+			String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress) {
 		ProcessDocumentServicePortType port;
 		if (StringUtils.hasText(this.endpointAddress))
@@ -102,7 +102,7 @@ public class DocumentProcessorWebServiceClient {
 			// Using default endpoint address defined in the wsdl:port of wsdl file
 			port = createPort();
 		}		
-		return processDocument(port, document, enforcementPolicies, packageAsXdm, senderEmailAddress, recipientEmailAddress);
+		return processDocument(port, document, enforcementPolicies, packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class DocumentProcessorWebServiceClient {
 	 * @return the process document response
 	 */
 	private ProcessDocumentResponse processDocument(ProcessDocumentServicePortType port, String document,
-			String enforcementPolicies, boolean packageAsXdm,
+			String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress) {
 		ProcessDocumentRequest request = new ProcessDocumentRequest();
 		request.setDocument(document);
@@ -125,6 +125,7 @@ public class DocumentProcessorWebServiceClient {
 		request.setPackageAsXdm(packageAsXdm);
 		request.setSenderEmailAddress(senderEmailAddress);
 		request.setRecipientEmailAddress(recipientEmailAddress);
+		request.setEncryptDocument(encryptDocument);
 		return port.processDocument(request);
 	}
 
@@ -166,12 +167,12 @@ public class DocumentProcessorWebServiceClient {
 	 * @param recipientEmailAddress the recipient email address
 	 */
 	private void run(String document,
-			String enforcementPolicies, boolean packageAsXdm,
+			String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
 			String senderEmailAddress, String recipientEmailAddress) {
 		try {			
 			LOGGER.debug("Creating DocumentProcessor service instance ...");
 			long start = new Date().getTime();
-			
+
 			// Get a reference to the SOAP service interface.
 			ProcessDocumentServicePortType  port = createPort();
 
@@ -182,8 +183,8 @@ public class DocumentProcessorWebServiceClient {
 					(end - start) / 1000f);
 
 			start = new Date().getTime();
-			
-			ProcessDocumentResponse result = processDocument(port, document, enforcementPolicies, packageAsXdm, senderEmailAddress, recipientEmailAddress);
+
+			ProcessDocumentResponse result = processDocument(port, document, enforcementPolicies, packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
 			end = new Date().getTime();
 			LOGGER.debug("Time required to invoke 'enforcePolicy': {} seconds",
 					(end - start) / 1000f);
