@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="FilterC32Service"
 	targetNamespace="http://www.samhsa.gov/ds4ppilot/contract/orchestrator"
-	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.samhsa.gov/ds4ppilot/contract/orchestrator"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tsu="http://www.samhsa.gov/ds4ppilot/contract/orchestrator"
 	xmlns:di="http://www.samhsa.gov/ds4ppilot/schema/orchestrator"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
 	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:tns="http://ws.ds4p.ehtac.va.gov/"
 	xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
 	<wsp:Policy wsu:Id="XDS_HTTPS_Endpoint_policy">
 		<wsp:ExactlyOne>
@@ -47,7 +48,8 @@
 	</wsp:Policy>
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://www.samhsa.gov/ds4ppilot/schema/orchestrator">
-
+		<xsd:import namespace="http://ws.ds4p.ehtac.va.gov/" schemaLocation="http://174.78.146.228:8080/DS4PACSServices/DS4PContextHandler?xsd=1"/>
+			
 			<xsd:element name="FilterC32Request">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -76,6 +78,7 @@
 						<xsd:element name="repositoryUniqueId" type="xsd:string" />
 						<xsd:element name="documentUniqueId" type="xsd:string" />
 						<xsd:element name="messageId" type="xsd:string" />
+						<xsd:element name="enforcePolicy" type="tns:enforcePolicy" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -91,6 +94,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="patientId" type="xsd:string" />
+						<xsd:element name="enforcePolicy" type="tns:enforcePolicy" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -137,26 +141,26 @@
 				specified by the privacy
 				policies
 			</wsdl:documentation>
-			<wsdl:input message="tns:FilterC32Request" />
-			<wsdl:output message="tns:FilterC32Response" />
+			<wsdl:input message="tsu:FilterC32Request" />
+			<wsdl:output message="tsu:FilterC32Response" />
 		</wsdl:operation>
 
 		<wsdl:operation name="RetrieveDocumentSet">
 			<wsdl:documentation>Retrieve documents from the XDS.b repository
 			</wsdl:documentation>
-			<wsdl:input message="tns:RetrieveDocumentSetRequest" />
-			<wsdl:output message="tns:RetrieveDocumentSetResponse" />
+			<wsdl:input message="tsu:RetrieveDocumentSetRequest" />
+			<wsdl:output message="tsu:RetrieveDocumentSetResponse" />
 		</wsdl:operation>
 
 		<wsdl:operation name="RegisteryStoredQuery">
 			<wsdl:documentation>Query XDS.b repository for patient
 			</wsdl:documentation>
-			<wsdl:input message="tns:RegisteryStoredQueryRequest" />
-			<wsdl:output message="tns:RegisteryStoredQueryResponse" />
+			<wsdl:input message="tsu:RegisteryStoredQueryRequest" />
+			<wsdl:output message="tsu:RegisteryStoredQueryResponse" />
 		</wsdl:operation>
 	</wsdl:portType>
 
-	<wsdl:binding name="FilterC32ServiceBinding" type="tns:FilterC32ServicePortType">
+	<wsdl:binding name="FilterC32ServiceBinding" type="tsu:FilterC32ServicePortType">
 		<wsp:PolicyReference URI="#XDS_HTTP_Endpoint_policy" />
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
@@ -192,7 +196,7 @@
 
 	</wsdl:binding>
 	<wsdl:service name="FilterC32Service">
-		<wsdl:port binding="tns:FilterC32ServiceBinding" name="FilterC32Port">
+		<wsdl:port binding="tsu:FilterC32ServiceBinding" name="FilterC32Port">
 			<soap:address
 				location="http://localhost:90/Orchestrator/services/filterc32service" />
 		</wsdl:port>

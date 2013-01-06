@@ -206,8 +206,8 @@ public class OrchestratorImpl implements Orchestrator {
 
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
 						.processDocument(originalC32,
-								xacmlResponseXml.toString(), packageAsXdm, true,
-								senderEmailAddress, recipientEmailAddress);
+								xacmlResponseXml.toString(), packageAsXdm,
+								true, senderEmailAddress, recipientEmailAddress);
 
 				processedPayload = dataHandlerToBytesConverter
 						.toByteArray(processDocumentResponse
@@ -495,21 +495,21 @@ public class OrchestratorImpl implements Orchestrator {
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			String homeCommunityId, String repositoryUniqueId,
-			String documentUniqueId, String messageId) {
+			String documentUniqueId, String messageId,
+			EnforcePolicy enforcePolicy) {
 		RetrieveDocumentSetResponse retrieveDocumentSetResponse = new RetrieveDocumentSetResponse();
 		RetrieveDocumentSetRequest retrieveDocumentSetRequest = new RetrieveDocumentSetRequest();
 		StringWriter xacmlResponseXml = new StringWriter();
 		byte[] processedPayload;
 		Return result = null;
-		EnforcePolicy.Xspasubject xspasubject = null;
-		EnforcePolicy.Xsparesource xsparesource = null;
 
 		try {
 			DocumentRequest documentRequest = new DocumentRequest();
 			documentRequest.setHomeCommunityId(homeCommunityId);
 			documentRequest.setRepositoryUniqueId(repositoryUniqueId);
 			documentRequest.setDocumentUniqueId(documentUniqueId);
-			retrieveDocumentSetRequest.getDocumentRequest().add(documentRequest);
+			retrieveDocumentSetRequest.getDocumentRequest()
+			.add(documentRequest);
 
 			ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = null;
 			xdsbRetrieveDocumentSetResponse = xdsbRepository
@@ -520,16 +520,12 @@ public class OrchestratorImpl implements Orchestrator {
 					.getDocumentResponse().get(0);
 			byte[] rawDocument = documentResponse.getDocument();
 			String originalC32 = new String(rawDocument);
-			System.out.println(originalC32);					
+			System.out.println(originalC32);
+			result = contextHandler.enforcePolicy(
+					enforcePolicy.getXspasubject(),
+					enforcePolicy.getXsparesource());
 
-			xspasubject = setXspaSubject(
-					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-					.randomUUID().toString());
-			xsparesource = setXspaResource("PUI100010060001");
-
-			result = contextHandler.enforcePolicy(xspasubject, xsparesource);
-
-			if (true/*result.getPdpDecision().equals(PERMIT)*/) {
+			if (result.getPdpDecision().equals(PERMIT)) {
 
 				XacmlResult xacmlResult = getXacmlResponse(result);
 
@@ -541,12 +537,12 @@ public class OrchestratorImpl implements Orchestrator {
 				marshaller.marshal(xacmlResult, xacmlResponseXml);
 
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
-						.processDocument(originalC32,
-								/*xacmlResponseXml.toString()*/ "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>", 
-								false,
-								false,
+						.processDocument(originalC32, xacmlResponseXml
+								.toString(), /* "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>" */
+								false, false,
 								"leo.smith@direct.obhita-stage.org",
-								"Duane_Decouteau@direct.healthvault-stage.com");
+								enforcePolicy.getXspasubject()
+								.getSubjectEmailAddress());
 
 				processedPayload = dataHandlerToBytesConverter
 						.toByteArray(processDocumentResponse
@@ -554,31 +550,25 @@ public class OrchestratorImpl implements Orchestrator {
 
 				// get processed document
 				String processedDocument = new String(processedPayload);
+				System.out.println("processedDoc: " + processedDocument);
 
 				// get post processing directives
-				String postProcessingDirectives = processDocumentResponse.getPostProcessingDirectives();
-				RuleExecutionContainer executionResponseContainer = unmarshallFromXml(RuleExecutionContainer.class, postProcessingDirectives);			
+				String postProcessingDirectives = processDocumentResponse
+						.getPostProcessingDirectives();
+				RuleExecutionContainer executionResponseContainer = unmarshallFromXml(
+						RuleExecutionContainer.class, postProcessingDirectives);
 
-				xspasubject = setXspaSubject(
-						"Duane_Decouteau@direct.healthvault-stage.com", UUID
-						.randomUUID().toString());
-				xsparesource = setXspaResource("PUI100010060001");
+				DocumentResponse document = new DocumentResponse();
+				document.setDocument(processedDocument.getBytes());
 
-				// set additional policies in the xpasubject and get policy decision
-				result = contextHandler.enforcePolicy(xspasubject, xsparesource);
+				xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(0,
+						document);
 
-				if (true/*result.getPdpDecision().equals(PERMIT)*/) {					
+				retrieveDocumentSetResponse
+				.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
 
-					DocumentResponse document = new DocumentResponse();
-					document.setDocument(originalC32.getBytes());
-
-					xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(0, document);				
-
-					retrieveDocumentSetResponse.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
-
-					String temp = marshall(xdsbRetrieveDocumentSetResponse);
-					System.out.println(temp);
-				}
+				String temp = marshall(retrieveDocumentSetResponse);
+				System.out.println(temp);
 			}
 
 		} catch (PropertyException e) {
@@ -596,7 +586,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(
-			String patientId) {
+			String patientId, EnforcePolicy enforcePolicy) {
 		AdhocQueryRequest registryStoredQuery = new AdhocQueryRequest();
 
 		ResponseOptionType responseOptionType = new ResponseOptionType();
@@ -624,27 +614,22 @@ public class OrchestratorImpl implements Orchestrator {
 				"('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')");
 		statusSlotType.setValueList(statusValueListType);
 		adhocQueryType.getSlot().add(statusSlotType);
-
-		AdhocQueryResponse result = xdsbRegistry
-				.registryStoredQuery(registryStoredQuery);
 		RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
 
 		Return enforcePolicyResult = null;
 		try {
-			EnforcePolicy.Xspasubject xspasubject = setXspaSubject(
-					"Duane_Decouteau@direct.healthvault-stage.com", UUID
-					.randomUUID().toString());
-			EnforcePolicy.Xsparesource xsparesource = setXspaResource("PUI100010060001");
 
-			enforcePolicyResult = contextHandler.enforcePolicy(xspasubject,
-					xsparesource);
+			enforcePolicyResult = contextHandler.enforcePolicy(
+					enforcePolicy.getXspasubject(),
+					enforcePolicy.getXsparesource());
 
 			// verify identify of the individual and return decision
 			if (enforcePolicyResult.getPdpDecision().equals(PERMIT)) {
+
+				AdhocQueryResponse result = xdsbRegistry
+						.registryStoredQuery(registryStoredQuery);
 				String xmlResponse = marshall(result);
 				response.setReturn(xmlResponse);
-				// TODO: store enforcePolicyResult.getPdpObligation() in session
-				// with messageId as key
 			}
 		} catch (Throwable e) {
 			throw new DS4PException(e.toString(), e);
@@ -789,7 +774,7 @@ public class OrchestratorImpl implements Orchestrator {
 	/**
 	 * @return
 	 */
-	private EnforcePolicy.Xsparesource setXspaResource(String patientId) {
+	public EnforcePolicy.Xsparesource setXspaResource(String patientId) {
 		EnforcePolicy.Xsparesource xsparesource = new EnforcePolicy.Xsparesource();
 		xsparesource.setResourceId(patientId);
 		xsparesource.setResourceName(resourceName);
@@ -801,7 +786,7 @@ public class OrchestratorImpl implements Orchestrator {
 	/**
 	 * @return
 	 */
-	private EnforcePolicy.Xspasubject setXspaSubject(
+	public EnforcePolicy.Xspasubject setXspaSubject(
 			String recipientEmailAddress, String messageId) {
 		EnforcePolicy.Xspasubject xspasubject = new EnforcePolicy.Xspasubject();
 		xspasubject.setSubjectPurposeOfUse(subjectPurposeOfUse);

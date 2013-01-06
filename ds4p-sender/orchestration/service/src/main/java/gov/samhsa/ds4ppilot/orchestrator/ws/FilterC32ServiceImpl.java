@@ -87,7 +87,8 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 				.retrieveDocumentSetRequest(parameters.getHomeCommunityId(),
 						parameters.getRepositoryUniqueId(),
 						parameters.getDocumentUniqueId(),
-						parameters.getMessageId());
+						parameters.getMessageId(),
+						parameters.getEnforcePolicy());
 
 		return response;
 	}
@@ -96,7 +97,8 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 	public RegisteryStoredQueryResponse registeryStoredQuery(
 			RegisteryStoredQueryRequest parameters) {
 		RegisteryStoredQueryResponse response = orchestrator
-				.registeryStoredQueryRequest(parameters.getPatientId());
+				.registeryStoredQueryRequest(parameters.getPatientId(),
+						parameters.getEnforcePolicy());
 
 		return response;
 	}

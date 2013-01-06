@@ -28,6 +28,7 @@ package gov.samhsa.ds4ppilot.orchestrator;
 import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
+import gov.va.ehtac.ds4p.ws.EnforcePolicy;
 
 
 /**
@@ -46,9 +47,9 @@ public interface Orchestrator {
 	 */
 	public FilterC32Response handleC32Request(String patientId, boolean packageAsXdm, String senderEmailAddress, String recipientEmailAddress);
 
-	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String homeCommunityId, String repositoryUniqueId, String documentUniqueId, String messageId);
+	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String homeCommunityId, String repositoryUniqueId, String documentUniqueId, String messageId, EnforcePolicy enforcePolicy);
 
-	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId);
+	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId, EnforcePolicy enforcePolicy);
 
 	public boolean saveDocumentSetToXdsRepository(String documentSet);
 }

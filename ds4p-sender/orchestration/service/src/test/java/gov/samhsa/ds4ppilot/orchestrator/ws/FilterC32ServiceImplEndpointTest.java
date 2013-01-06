@@ -77,7 +77,7 @@ public class FilterC32ServiceImplEndpointTest {
 
 		retrieveDocumentSetResponse = new RetrieveDocumentSetResponse();
 		retrieveDocumentSetResponse
-				.setReturn("<ns3:RetrieveDocumentSetResponse xmlns:ns2=\"urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0\" xmlns=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\" xmlns:ns4=\"urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0\" xmlns:ns3=\"urn:ihe:iti:xds-b:2007\"> <ns2:RegistryResponse status=\"urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success\"/> <ns3:DocumentResponse> <ns3:RepositoryUniqueId>1.3.6.1.4.1.21367.2010.1.2.1040</ns3:RepositoryUniqueId> <ns3:DocumentUniqueId>$uniqueId06</ns3:DocumentUniqueId> <ns3:mimeType>text/plain</ns3:mimeType> <ns3:Document>VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg==</ns3:Document> </ns3:DocumentResponse> </ns3:RetrieveDocumentSetResponse>");
+		.setReturn("<ns3:RetrieveDocumentSetResponse xmlns:ns2=\"urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0\" xmlns=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\" xmlns:ns4=\"urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0\" xmlns:ns3=\"urn:ihe:iti:xds-b:2007\"> <ns2:RegistryResponse status=\"urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success\"/> <ns3:DocumentResponse> <ns3:RepositoryUniqueId>1.3.6.1.4.1.21367.2010.1.2.1040</ns3:RepositoryUniqueId> <ns3:DocumentUniqueId>$uniqueId06</ns3:DocumentUniqueId> <ns3:mimeType>text/plain</ns3:mimeType> <ns3:Document>VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg0KVGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4NClRoZSBxdWljayBicm93biBmb3gganVtcHMgb3ZlciB0aGUgbGF6eSBkb2cuDQpUaGUgcXVpY2sgYnJvd24gZm94IGp1bXBzIG92ZXIgdGhlIGxhenkgZG9nLg==</ns3:Document> </ns3:DocumentResponse> </ns3:RetrieveDocumentSetResponse>");
 
 		// portName is same as the value specified in FilterC32ServiceImpl class
 		// @WebService annotation
@@ -112,7 +112,7 @@ public class FilterC32ServiceImplEndpointTest {
 		FilterC32Request request = new FilterC32Request();
 
 		when(orchrstratorMock.handleC32Request(null, false, null, null))
-				.thenReturn(filterC32Response);
+		.thenReturn(filterC32Response);
 
 		FilterC32Response respoonse = port.filterC32(request);
 
@@ -132,7 +132,7 @@ public class FilterC32ServiceImplEndpointTest {
 		FilterC32Request request = new FilterC32Request();
 
 		when(orchrstratorMock.handleC32Request(null, false, null, null))
-				.thenReturn(filterC32Response);
+		.thenReturn(filterC32Response);
 
 		FilterC32Response response = port.filterC32(request);
 
@@ -153,7 +153,7 @@ public class FilterC32ServiceImplEndpointTest {
 
 		when(
 				orchrstratorMock.retrieveDocumentSetRequest(null, null, null,
-						null)).thenReturn(retrieveDocumentSetResponse);
+						null, null)).thenReturn(retrieveDocumentSetResponse);
 
 		RetrieveDocumentSetResponse response = port
 				.retrieveDocumentSet(request);
@@ -175,7 +175,7 @@ public class FilterC32ServiceImplEndpointTest {
 
 		when(
 				orchrstratorMock.retrieveDocumentSetRequest(null, null, null,
-						null)).thenReturn(retrieveDocumentSetResponse);
+						null, null)).thenReturn(retrieveDocumentSetResponse);
 
 		RetrieveDocumentSetResponse response = port
 				.retrieveDocumentSet(request);
@@ -202,7 +202,7 @@ public class FilterC32ServiceImplEndpointTest {
 		when(
 				orchrstratorMock.handleC32Request(anyString(), anyBoolean(),
 						anyString(), anyString()))
-				.thenReturn(filterC32Response);
+						.thenReturn(filterC32Response);
 
 		SOAPMessage responseSOAPMessage = disp.invoke(reqMsg);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -241,7 +241,7 @@ public class FilterC32ServiceImplEndpointTest {
 		when(
 				orchrstratorMock.handleC32Request(anyString(), anyBoolean(),
 						anyString(), anyString()))
-				.thenReturn(filterC32Response);
+						.thenReturn(filterC32Response);
 
 		Source responsePayloadSource = disp.invoke(request);
 		Transformer trans = TransformerFactory.newInstance().newTransformer();

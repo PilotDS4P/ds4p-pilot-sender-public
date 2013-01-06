@@ -25,6 +25,7 @@ import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Response;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
 import gov.samhsa.ds4ppilot.ws.client.XdsbRegistryWebServiceClient;
+import gov.va.ehtac.ds4p.ws.EnforcePolicy;
 import gov.va.ehtac.ds4p.ws.EnforcePolicy.Xsparesource;
 import gov.va.ehtac.ds4p.ws.EnforcePolicy.Xspasubject;
 import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
@@ -186,7 +187,7 @@ public class OrchestratorImplTest {
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
 
-	/*@Ignore("This test should be configured to run as an integration test.")*/
+	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRetrieveDocumentSetRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
@@ -215,6 +216,7 @@ public class OrchestratorImplTest {
 				c32Getter, documentProcessor, dataHandlerToBytesConverter,
 				xdsbRepository, xdsbRegistry);
 
+
 		orchestrator.setSubjectPurposeOfUse("TREAT");
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
@@ -224,10 +226,18 @@ public class OrchestratorImplTest {
 		orchestrator.setResourceType("C32");
 		orchestrator.setResourceAction("Execute");
 
+		Xspasubject xspasubject = orchestrator.setXspaSubject(
+				"Duane_Decouteau@direct.healthvault-stage.com", UUID
+				.randomUUID().toString());
+		Xsparesource xsparesource = orchestrator.setXspaResource("PUI100010060001");
+		EnforcePolicy enforcePolicy = new EnforcePolicy();
+		enforcePolicy.setXsparesource(xsparesource);
+		enforcePolicy.setXspasubject(xspasubject);
+
 		gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse response = orchestrator
 				.retrieveDocumentSetRequest("HC",
 						"1.3.6.1.4.1.21367.2010.1.2.1040", "26712912132.29142.81145.01078.91111078125914134",
-						UUID.randomUUID().toString());
+						UUID.randomUUID().toString(), enforcePolicy);
 
 		assertNotNull(response);
 	}
@@ -265,14 +275,21 @@ public class OrchestratorImplTest {
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
 		orchestrator.setOrganizationId("FEiSystems");
-		;
 
 		orchestrator.setResourceName("NwHINDirectSend");
 		orchestrator.setResourceType("C32");
 		orchestrator.setResourceAction("Execute");
 
+		Xspasubject xspasubject = orchestrator.setXspaSubject(
+				"Duane_Decouteau@direct.healthvault-stage.com", UUID
+				.randomUUID().toString());
+		Xsparesource xsparesource = orchestrator.setXspaResource("PUI100010060001");
+		EnforcePolicy enforcePolicy = new EnforcePolicy();
+		enforcePolicy.setXsparesource(xsparesource);
+		enforcePolicy.setXspasubject(xspasubject);
+
 		RegisteryStoredQueryResponse response = orchestrator
-				.registeryStoredQueryRequest("patientid");
+				.registeryStoredQueryRequest("PUI100010060001", enforcePolicy);
 
 		assertNotNull(response);
 
