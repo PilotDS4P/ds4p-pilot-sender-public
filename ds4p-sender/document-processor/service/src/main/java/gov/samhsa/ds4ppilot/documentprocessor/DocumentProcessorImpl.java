@@ -93,7 +93,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 
 	/**
 	 * Gets the de sede encrypt key.
-	 *
+	 * 
 	 * @return the de sede encrypt key
 	 */
 	public Key getDeSedeEncryptKey() {
@@ -101,17 +101,8 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * Sets the de sede encrypt key.
-	 *
-	 * @param deSedeEncryptKey the new de sede encrypt key
-	 */
-	public void setDeSedeEncryptKey(Key deSedeEncryptKey) {
-		this.deSedeEncryptKey = deSedeEncryptKey;
-	}
-
-	/**
 	 * Gets the de sede mask key.
-	 *
+	 * 
 	 * @return the de sede mask key
 	 */
 	public Key getDeSedeMaskKey() {
@@ -119,19 +110,12 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * Sets the de sede mask key.
-	 *
-	 * @param deSedeMaskKey the new de sede mask key
-	 */
-	public void setDeSedeMaskKey(Key deSedeMaskKey) {
-		this.deSedeMaskKey = deSedeMaskKey;
-	}
-
-	/**
 	 * Instantiates a new document processor impl.
-	 *
-	 * @param healthcareClassificationClientImpl the healthcare classification client impl
-	 * @param auditServiceImpl the audit service impl
+	 * 
+	 * @param healthcareClassificationClientImpl
+	 *            the healthcare classification client impl
+	 * @param auditServiceImpl
+	 *            the audit service impl
 	 */
 	public DocumentProcessorImpl(
 			HealthcareClassificationClientImpl healthcareClassificationClientImpl,
@@ -142,21 +126,26 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Process document based on drools directives
-	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param enforcementPolicies the enforcement policies
-	 * @param packageAsXdm the package as xdm
-	 * @param senderEmailAddress the sender email address
-	 * @param recipientEmailAddress the recipient email address
+	 * ***************************************** Process document based on
+	 * drools directives ******************************************.
+	 * 
+	 * @param document
+	 *            the document
+	 * @param enforcementPolicies
+	 *            the enforcement policies
+	 * @param packageAsXdm
+	 *            the package as xdm
+	 * @param senderEmailAddress
+	 *            the sender email address
+	 * @param recipientEmailAddress
+	 *            the recipient email address
 	 * @return the process document response
 	 */
 	@Override
 	public ProcessDocumentResponse processDocument(String document,
-			String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
-			String senderEmailAddress, String recipientEmailAddress) {
+			String enforcementPolicies, boolean packageAsXdm,
+			boolean encryptDocument, String senderEmailAddress,
+			String recipientEmailAddress) {
 		RuleExecutionContainer ruleExecutionContainer = null;
 		XacmlResult xacmlResult = null;
 		ByteArrayDataSource rawData = null;
@@ -177,7 +166,8 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			executionResponseContainer = healthcareClassificationClientImpl
 					.assertAndExecuteClinicalFacts(factModel);
 
-			processDocumentResponse.setPostProcessingDirectives(executionResponseContainer);
+			processDocumentResponse
+					.setPostProcessingDirectives(executionResponseContainer);
 			// unmarshall from xml to RuleExecutionContainer
 			ruleExecutionContainer = unmarshallFromXml(
 					RuleExecutionContainer.class, executionResponseContainer);
@@ -197,7 +187,9 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 					xacmlResult.getMessageId());
 
 			// generate metadata xml
-			metadataXml = generateMetadataXml(document, executionResponseContainer, xacmlResult.getHomeCommunityId(), senderEmailAddress,
+			metadataXml = generateMetadataXml(document,
+					executionResponseContainer,
+					xacmlResult.getHomeCommunityId(), senderEmailAddress,
 					recipientEmailAddress);
 			FileHelper.writeStringToFile(metadataXml, "metadata.xml");
 
@@ -210,18 +202,28 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			document = maskElement(document, ruleExecutionContainer);
 			processDocumentResponse.setMaskedDocument(document);
 
+			byte[] maskingKeyBytes = deSedeMaskKey.getEncoded();
+			processDocumentResponse
+					.setKekMaskingKey(new String(maskingKeyBytes));
+
+			byte[] encryptionKeyBytes = deSedeEncryptKey.getEncoded();
+
 			// encrypt document
-			if(encryptDocument)
+			if (encryptDocument) {
 				document = encryptDocument(document, ruleExecutionContainer);
+				processDocumentResponse.setKekEncryptionKey(new String(
+						encryptionKeyBytes));
+			}
 
-			byte[] documentPayload  = (packageAsXdm) ? XdmZipUtils.createXDMPackage(
-					metadataXml, readFile("CCD.xsl"), document,
-					readFile("INDEX.htm"), readFile("README.txt"),
-					getDeSedeMaskKey().getEncoded(), getDeSedeEncryptKey()
-					.getEncoded()) : document.getBytes();
+			byte[] documentPayload = (packageAsXdm) ? XdmZipUtils
+					.createXDMPackage(metadataXml, readFile("CCD.xsl"),
+							document, readFile("INDEX.htm"),
+							readFile("README.txt"), maskingKeyBytes,
+							encryptionKeyBytes) : document.getBytes();
 
-					rawData = new ByteArrayDataSource(documentPayload);
-					processDocumentResponse.setProcessedDocument(new DataHandler(rawData));
+			rawData = new ByteArrayDataSource(documentPayload);
+			processDocumentResponse.setProcessedDocument(new DataHandler(
+					rawData));
 		} catch (IOException e) {
 			throw new DS4PException(e.toString(), e);
 		} catch (Exception e) {
@@ -232,12 +234,13 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Extract clinical facts and xacml result
-	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param enforcementPolicies the enforcement policies
+	 * ***************************************** Extract clinical facts and
+	 * xacml result ******************************************.
+	 * 
+	 * @param document
+	 *            the document
+	 * @param enforcementPolicies
+	 *            the enforcement policies
 	 * @return the string
 	 */
 	public String extractFactModel(String document, String enforcementPolicies) {
@@ -281,18 +284,23 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Generate metadata xml
+	 * ***************************************** Generate metadata xml
 	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param executionResponseContainer the execution response container
-	 * @param homeCommunityId the home community id
-	 * @param senderEmailAddress the sender email address
-	 * @param recipientEmailAddress the recipient email address
+	 * 
+	 * @param document
+	 *            the document
+	 * @param executionResponseContainer
+	 *            the execution response container
+	 * @param homeCommunityId
+	 *            the home community id
+	 * @param senderEmailAddress
+	 *            the sender email address
+	 * @param recipientEmailAddress
+	 *            the recipient email address
 	 * @return the string
 	 */
-	public String generateMetadataXml(String document, String executionResponseContainer, String homeCommunityId,
+	public String generateMetadataXml(String document,
+			String executionResponseContainer, String homeCommunityId,
 			String senderEmailAddress, String recipientEmailAddress) {
 		StringWriter out = new StringWriter();
 		InputStream in = null;
@@ -339,13 +347,15 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Tag document
+	 * ***************************************** Tag document
 	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param executionResponseContainer the execution response container
-	 * @param messageId the message id
+	 * 
+	 * @param document
+	 *            the document
+	 * @param executionResponseContainer
+	 *            the execution response container
+	 * @param messageId
+	 *            the message id
 	 * @return the string
 	 */
 	public String tagDocument(String document,
@@ -392,12 +402,13 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Encrypt document
+	 * ***************************************** Encrypt document
 	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param ruleExecutionContainer the rule execution container
+	 * 
+	 * @param document
+	 *            the document
+	 * @param ruleExecutionContainer
+	 *            the rule execution container
 	 * @return the string
 	 */
 	public String encryptDocument(String document,
@@ -465,12 +476,13 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Mask element
+	 * ***************************************** Mask element
 	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param ruleExecutionContainer the rule execution container
+	 * 
+	 * @param document
+	 *            the document
+	 * @param ruleExecutionContainer
+	 *            the rule execution container
 	 * @return the string
 	 */
 	public String maskElement(String document,
@@ -550,12 +562,13 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Redact element
+	 * ***************************************** Redact element
 	 * ******************************************.
-	 *
-	 * @param document the document
-	 * @param ruleExecutionContainer the rule execution container
+	 * 
+	 * @param document
+	 *            the document
+	 * @param ruleExecutionContainer
+	 *            the rule execution container
 	 * @return the string
 	 */
 	public String redactElement(String document,
@@ -619,16 +632,21 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *********************************************************************
-	 * Get element
+	 * ********************************************************************* Get
+	 * element
 	 * **********************************************************************.
-	 *
-	 * @param xmlDocument the xml document
-	 * @param xPathExprDisplayName the x path expr display name
+	 * 
+	 * @param xmlDocument
+	 *            the xml document
+	 * @param xPathExprDisplayName
+	 *            the x path expr display name
 	 * @return the element
-	 * @throws XPathExpressionException the x path expression exception
-	 * @throws XMLEncryptionException the xML encryption exception
-	 * @throws Exception the exception
+	 * @throws XPathExpressionException
+	 *             the x path expression exception
+	 * @throws XMLEncryptionException
+	 *             the xML encryption exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	public Element getElement(Document xmlDocument, String xPathExprDisplayName)
 			throws XPathExpressionException, XMLEncryptionException, Exception {
@@ -673,17 +691,23 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	 * *********************************************************************
 	 * Encrypt element
 	 * **********************************************************************.
-	 *
-	 * @param xmlDocument the xml document
-	 * @param encryptSymmetricKey the encrypt symmetric key
-	 * @param encryptedKey the encrypted key
-	 * @param element the element
-	 * @throws XMLEncryptionException the xML encryption exception
-	 * @throws Exception the exception
+	 * 
+	 * @param xmlDocument
+	 *            the xml document
+	 * @param encryptSymmetricKey
+	 *            the encrypt symmetric key
+	 * @param encryptedKey
+	 *            the encrypted key
+	 * @param element
+	 *            the element
+	 * @throws XMLEncryptionException
+	 *             the xML encryption exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	private void encryptElement(Document xmlDocument, Key encryptSymmetricKey,
 			EncryptedKey encryptedKey, Element element)
-					throws XMLEncryptionException, Exception {
+			throws XMLEncryptionException, Exception {
 
 		String algorithmURI = XMLCipher.AES_128;
 
@@ -702,14 +726,18 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Unmarshall from xml to generic object.
-	 *
-	 * @param <T> the generic type
-	 * @param clazz the clazz
-	 * @param xml the xml
+	 * ***************************************** Unmarshall from xml to generic
+	 * object.
+	 * 
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the clazz
+	 * @param xml
+	 *            the xml
 	 * @return the t
-	 * @throws JAXBException ******************************************
+	 * @throws JAXBException
+	 *             ******************************************
 	 */
 	private <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
@@ -720,13 +748,14 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	}
 
 	/**
-	 * *****************************************
-	 * Read a file and return string
+	 * ***************************************** Read a file and return string
 	 * ******************************************.
-	 *
-	 * @param filename the filename
+	 * 
+	 * @param filename
+	 *            the filename
 	 * @return the string
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	private String readFile(String filename) throws IOException {
 		byte[] bytes;

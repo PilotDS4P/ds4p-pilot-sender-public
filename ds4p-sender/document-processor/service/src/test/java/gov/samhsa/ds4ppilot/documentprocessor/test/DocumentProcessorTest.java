@@ -47,7 +47,7 @@ public class DocumentProcessorTest {
 	private static String senderEmailAddress;
 	private static String recipientEmailAddress;
 	private static String endpointAddressForAuditServcie;
-	private static  String endpointAddressForHealthcareClassificationService;	
+	private static String endpointAddressForHealthcareClassificationService;
 
 	@BeforeClass
 	public static void setUp() {
@@ -62,12 +62,13 @@ public class DocumentProcessorTest {
 		endpointAddressForHealthcareClassificationService = "http://localhost:90/HealthcareClassificationService/services/healthcareClassificationService";
 	}
 
-	/*@Ignore("This test should be configured to run as an integration test.")*/
+	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_Process_Document() {
 
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
 
 		ProcessDocumentResponse result = documentProcessor.processDocument(
@@ -81,7 +82,8 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_ExtractClinicalFacts() {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
 
 		String factModel = documentProcessor.extractFactModel(c32Document,
@@ -95,7 +97,8 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_TagDocument() throws Exception {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
 
 		String taggedDocument = documentProcessor.tagDocument(c32Document,
@@ -110,9 +113,9 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_MetadataXmlDocument() throws Exception {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
-
 
 		String metadataXmlDocument = documentProcessor.generateMetadataXml(
 				c32Document, ruleExecutionResponseContainer, homeCommunityId,
@@ -128,9 +131,9 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_EncryptDocument() {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
-
 
 		RuleExecutionContainer ruleExecutionContainer = null;
 		String encryptedDocument = null;
@@ -158,7 +161,8 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_MaskElement() {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
 
 		RuleExecutionContainer ruleExecutionContainer = null;
@@ -187,9 +191,9 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_RedactElement() {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
-
 
 		RuleExecutionContainer ruleExecutionContainer = null;
 		String redactedDocument = null;
@@ -242,9 +246,9 @@ public class DocumentProcessorTest {
 	@Test
 	public void processDocument_DecryptDocument() {
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
-				new HealthcareClassificationClientImpl(endpointAddressForHealthcareClassificationService),
+				new HealthcareClassificationClientImpl(
+						endpointAddressForHealthcareClassificationService),
 				new AuditServiceImpl(endpointAddressForAuditServcie));
-
 
 		RuleExecutionContainer ruleExecutionContainer = null;
 		String document = "";
@@ -263,7 +267,7 @@ public class DocumentProcessorTest {
 
 			Document processedDoc = XmlHelper.loadDocument(document);
 			FileHelper
-			.writeDocToFile(processedDoc, "unitTest_Redacted_C32.xml");
+					.writeDocToFile(processedDoc, "unitTest_Redacted_C32.xml");
 
 			document = documentProcessor.maskElement(document,
 					ruleExecutionContainer);
@@ -373,19 +377,17 @@ public class DocumentProcessorTest {
 			byte[] kekEncryptionKeyBytes = entryBytesFromZipBytes(zis,
 					"kekEncryptionKey");
 
-			desedeEncryptKeySpec =
-					new DESedeKeySpec(kekEncryptionKeyBytes);
-			SecretKeyFactory skfEncrypt =
-					SecretKeyFactory.getInstance("DESede");
-			SecretKey desedeEncryptKey = skfEncrypt.generateSecret(desedeEncryptKeySpec);			
+			desedeEncryptKeySpec = new DESedeKeySpec(kekEncryptionKeyBytes);
+			SecretKeyFactory skfEncrypt = SecretKeyFactory
+					.getInstance("DESede");
+			SecretKey desedeEncryptKey = skfEncrypt
+					.generateSecret(desedeEncryptKeySpec);
 
 			byte[] kekMaskingKeyBytes = entryBytesFromZipBytes(zis,
 					"kekMaskingKey");
 
-			desedeMaskKeySpec =
-					new DESedeKeySpec(kekMaskingKeyBytes);
-			SecretKeyFactory skfMask =
-					SecretKeyFactory.getInstance("DESede");
+			desedeMaskKeySpec = new DESedeKeySpec(kekMaskingKeyBytes);
+			SecretKeyFactory skfMask = SecretKeyFactory.getInstance("DESede");
 			SecretKey desedeMaskKey = skfMask.generateSecret(desedeMaskKeySpec);
 
 			zis.close();

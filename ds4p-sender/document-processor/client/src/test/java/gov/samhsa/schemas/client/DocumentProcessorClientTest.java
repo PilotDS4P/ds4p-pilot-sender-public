@@ -29,8 +29,9 @@ public class DocumentProcessorClientTest {
 			address = "http://localhost:9000/services/ProcessDocumentService";
 			ep = Endpoint.publish(address, new IDocumentProcessorImpl());
 
-			returnedValueOfProcessDocument = new ProcessDocumentResponse ();
-			returnedValueOfProcessDocument.setMaskedDocument("<ClinicalDocument></ClinicalDocument>");
+			returnedValueOfProcessDocument = new ProcessDocumentResponse();
+			returnedValueOfProcessDocument
+					.setMaskedDocument("<ClinicalDocument></ClinicalDocument>");
 			returnedValueOfProcessDocument.setProcessedDocument(null);
 			returnedValueOfProcessDocument.setPostProcessingDirectives(null);
 
@@ -52,7 +53,6 @@ public class DocumentProcessorClientTest {
 	// Test if the stub web service activate properly
 	@Test
 	public void testStubWebServiceWorks() {
-
 
 		IDocumentProcessorImpl.returnedValueOfProcessDocument = returnedValueOfProcessDocument;
 		ProcessDocumentRequest request = new ProcessDocumentRequest();
@@ -76,25 +76,35 @@ public class DocumentProcessorClientTest {
 		boolean packageAsXdm = true;
 		boolean encryptDocument = true;
 		String senderEmailAddress = "leo.smith@direct.obhita-stage.org";
-		String recipientEmailAddress = "Duane_Decouteau@direct.healthvault.com"; 		
+		String recipientEmailAddress = "Duane_Decouteau@direct.healthvault.com";
 
-		IDocumentProcessorImpl.returnedValueOfProcessDocument = returnedValueOfProcessDocument;		
+		IDocumentProcessorImpl.returnedValueOfProcessDocument = returnedValueOfProcessDocument;
 
-		DocumentProcessorWebServiceClient wsc = new DocumentProcessorWebServiceClient(address);
-		ProcessDocumentResponse resp = wsc.processDocument(document, enforcementPolicies, packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
+		DocumentProcessorWebServiceClient wsc = new DocumentProcessorWebServiceClient(
+				address);
+		ProcessDocumentResponse resp = wsc.processDocument(document,
+				enforcementPolicies, packageAsXdm, encryptDocument,
+				senderEmailAddress, recipientEmailAddress);
 		validateResponse(resp);
 	}
 
 	private void validateResponse(ProcessDocumentResponse resp) {
-		System.out.println("resp.getMaskedDocument(): " + resp.getMaskedDocument());
-		Assert.assertEquals("<ClinicalDocument></ClinicalDocument>", returnedValueOfProcessDocument.getMaskedDocument(), resp.getMaskedDocument());
+		System.out.println("resp.getMaskedDocument(): "
+				+ resp.getMaskedDocument());
+		Assert.assertEquals("<ClinicalDocument></ClinicalDocument>",
+				returnedValueOfProcessDocument.getMaskedDocument(),
+				resp.getMaskedDocument());
 	}
 
-	private ProcessDocumentServicePortType createPort() {		
-		final URL WSDL_LOCATION = ClassLoader.getSystemResource("DocumentProcessor.wsdl");
-		final QName SERVICE = new QName("http://www.samhsa.gov/ds4ppilot/contract/documentprocessor", "ProcessDocumentService");
+	private ProcessDocumentServicePortType createPort() {
+		final URL WSDL_LOCATION = ClassLoader
+				.getSystemResource("DocumentProcessor.wsdl");
+		final QName SERVICE = new QName(
+				"http://www.samhsa.gov/ds4ppilot/contract/documentprocessor",
+				"ProcessDocumentService");
 
-		ProcessDocumentServicePortType port = new ProcessDocumentService(WSDL_LOCATION, SERVICE).getProcessDocumentPort();
+		ProcessDocumentServicePortType port = new ProcessDocumentService(
+				WSDL_LOCATION, SERVICE).getProcessDocumentPort();
 		BindingProvider bp = (BindingProvider) port;
 		bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
 				address);
