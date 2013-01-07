@@ -167,7 +167,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 					.assertAndExecuteClinicalFacts(factModel);
 
 			processDocumentResponse
-			.setPostProcessingDirectives(executionResponseContainer);
+					.setPostProcessingDirectives(executionResponseContainer);
 			// unmarshall from xml to RuleExecutionContainer
 			ruleExecutionContainer = unmarshallFromXml(
 					RuleExecutionContainer.class, executionResponseContainer);
@@ -203,9 +203,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			processDocumentResponse.setMaskedDocument(document);
 
 			byte[] maskingKeyBytes = deSedeMaskKey.getEncoded();
-			processDocumentResponse
-			.setKekMaskingKey(new String(maskingKeyBytes));
-
+			processDocumentResponse.setKekMaskingKey(maskingKeyBytes);
 
 			byte[] encryptionKeyBytes = null;
 			// encrypt document
@@ -213,8 +211,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 				document = encryptDocument(document, ruleExecutionContainer);
 				encryptionKeyBytes = deSedeEncryptKey.getEncoded();
 
-				processDocumentResponse.setKekEncryptionKey(new String(
-						encryptionKeyBytes));
+				processDocumentResponse.setKekEncryptionKey(encryptionKeyBytes);
 			}
 
 			byte[] documentPayload = (packageAsXdm) ? XdmZipUtils
@@ -223,9 +220,9 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 							readFile("README.txt"), maskingKeyBytes,
 							encryptionKeyBytes) : document.getBytes();
 
-					rawData = new ByteArrayDataSource(documentPayload);
-					processDocumentResponse.setProcessedDocument(new DataHandler(
-							rawData));
+			rawData = new ByteArrayDataSource(documentPayload);
+			processDocumentResponse.setProcessedDocument(new DataHandler(
+					rawData));
 		} catch (IOException e) {
 			throw new DS4PException(e.toString(), e);
 		} catch (Exception e) {
@@ -709,7 +706,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	 */
 	private void encryptElement(Document xmlDocument, Key encryptSymmetricKey,
 			EncryptedKey encryptedKey, Element element)
-					throws XMLEncryptionException, Exception {
+			throws XMLEncryptionException, Exception {
 
 		String algorithmURI = XMLCipher.AES_128;
 
