@@ -539,7 +539,7 @@ public class OrchestratorImpl implements Orchestrator {
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
 						.processDocument(originalC32, xacmlResponseXml
 								.toString(), /* "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>" */
-								false, false,
+								false, true,
 								"leo.smith@direct.obhita-stage.org",
 								enforcePolicy.getXspasubject()
 								.getSubjectEmailAddress());
@@ -550,7 +550,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 				// get processed document
 				String processedDocument = new String(processedPayload);
-				System.out.println("processedDoc: " + processedDocument);
+				//System.out.println("processedDoc: " + processedDocument);
 
 				// get post processing directives
 				String postProcessingDirectives = processDocumentResponse
@@ -558,14 +558,19 @@ public class OrchestratorImpl implements Orchestrator {
 				RuleExecutionContainer executionResponseContainer = unmarshallFromXml(
 						RuleExecutionContainer.class, postProcessingDirectives);
 
+				// set processed document in payload
 				DocumentResponse document = new DocumentResponse();
 				document.setDocument(processedDocument.getBytes());
 
 				xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(0,
 						document);
 
+				// set response from xdsb
 				retrieveDocumentSetResponse
 				.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
+
+				retrieveDocumentSetResponse.setKekEncryptionKey(processDocumentResponse.getKekEncryptionKey());
+				retrieveDocumentSetResponse.setKekMaskingKey(processDocumentResponse.getKekMaskingKey());
 
 				String temp = marshall(retrieveDocumentSetResponse);
 				System.out.println(temp);

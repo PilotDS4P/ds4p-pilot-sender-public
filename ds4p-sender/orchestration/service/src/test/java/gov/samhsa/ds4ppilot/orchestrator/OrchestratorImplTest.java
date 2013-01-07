@@ -187,7 +187,7 @@ public class OrchestratorImplTest {
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
 
-	@Ignore("This test should be configured to run as an integration test.")
+	/*@Ignore("This test should be configured to run as an integration test.")*/
 	@Test
 	public void testRetrieveDocumentSetRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
@@ -242,7 +242,7 @@ public class OrchestratorImplTest {
 		assertNotNull(response);
 	}
 
-	@Ignore("This test should be configured to run as an integration test.")
+	/*@Ignore("This test should be configured to run as an integration test.")*/
 	@Test
 	public void testRegisteryStoredQueryRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
@@ -289,7 +289,7 @@ public class OrchestratorImplTest {
 		enforcePolicy.setXspasubject(xspasubject);
 
 		RegisteryStoredQueryResponse response = orchestrator
-				.registeryStoredQueryRequest("PUI100010060001", enforcePolicy);
+				.registeryStoredQueryRequest("'PUI100010060001^^^&2.16.840.1.113883.3.467&ISO'", enforcePolicy);
 
 		assertNotNull(response);
 
