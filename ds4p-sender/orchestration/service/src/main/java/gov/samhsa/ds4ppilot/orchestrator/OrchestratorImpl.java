@@ -520,7 +520,7 @@ public class OrchestratorImpl implements Orchestrator {
 					.getDocumentResponse().get(0);
 			byte[] rawDocument = documentResponse.getDocument();
 			String originalC32 = new String(rawDocument);
-			System.out.println(originalC32);
+			//System.out.println(originalC32);
 			result = contextHandler.enforcePolicy(
 					enforcePolicy.getXspasubject(),
 					enforcePolicy.getXsparesource());
@@ -570,10 +570,7 @@ public class OrchestratorImpl implements Orchestrator {
 				.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
 
 				retrieveDocumentSetResponse.setKekEncryptionKey(processDocumentResponse.getKekEncryptionKey());
-				retrieveDocumentSetResponse.setKekMaskingKey(processDocumentResponse.getKekMaskingKey());
-
-				String temp = marshall(retrieveDocumentSetResponse);
-				System.out.println(temp);
+				retrieveDocumentSetResponse.setKekMaskingKey(processDocumentResponse.getKekMaskingKey()); 				
 			}
 
 		} catch (PropertyException e) {
