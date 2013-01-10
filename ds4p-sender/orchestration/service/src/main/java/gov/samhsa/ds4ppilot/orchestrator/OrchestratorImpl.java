@@ -613,6 +613,13 @@ public class OrchestratorImpl implements Orchestrator {
 		SlotType1 patientIdSlotType = new SlotType1();
 		patientIdSlotType.setName("$XDSDocumentEntryPatientId");
 		ValueListType patientIdValueListType = new ValueListType();
+
+		if (patientId.indexOf("'") != 0) {
+			patientId = "'" + patientId;
+		}
+		if (patientId.lastIndexOf("'") != patientId.length() - 1) {
+			patientId = patientId + "'";
+		}
 		patientIdValueListType.getValue().add(patientId); // PatientId
 		patientIdSlotType.setValueList(patientIdValueListType);
 		adhocQueryType.getSlot().add(patientIdSlotType);

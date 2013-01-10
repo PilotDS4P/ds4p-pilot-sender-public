@@ -187,7 +187,7 @@ public class OrchestratorImplTest {
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
 
-	/*@Ignore("This test should be configured to run as an integration test.")*/
+	/* @Ignore("This test should be configured to run as an integration test.") */
 	@Test
 	public void testRetrieveDocumentSetRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
@@ -216,7 +216,6 @@ public class OrchestratorImplTest {
 				c32Getter, documentProcessor, dataHandlerToBytesConverter,
 				xdsbRepository, xdsbRegistry);
 
-
 		orchestrator.setSubjectPurposeOfUse("TREAT");
 		orchestrator.setSubjectLocality("2.16.840.1.113883.3.467");
 		orchestrator.setOrganization("SAMHSA");
@@ -228,21 +227,23 @@ public class OrchestratorImplTest {
 
 		Xspasubject xspasubject = orchestrator.setXspaSubject(
 				"Duane_Decouteau@direct.healthvault-stage.com", UUID
-				.randomUUID().toString());
-		Xsparesource xsparesource = orchestrator.setXspaResource("PUI100010060001");
+						.randomUUID().toString());
+		Xsparesource xsparesource = orchestrator
+				.setXspaResource("PUI100010060001");
 		EnforcePolicy enforcePolicy = new EnforcePolicy();
 		enforcePolicy.setXsparesource(xsparesource);
 		enforcePolicy.setXspasubject(xspasubject);
 
 		gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse response = orchestrator
 				.retrieveDocumentSetRequest("HC",
-						"1.3.6.1.4.1.21367.2010.1.2.1040", "26712912132.29142.81145.01078.91111078125914134",
-						UUID.randomUUID().toString(), enforcePolicy);
+						"1.3.6.1.4.1.21367.2010.1.2.1040",
+						"26712912132.29142.81145.01078.91111078125914134", UUID
+								.randomUUID().toString(), enforcePolicy);
 
 		assertNotNull(response);
 	}
 
-	/*@Ignore("This test should be configured to run as an integration test.")*/
+	/* @Ignore("This test should be configured to run as an integration test.") */
 	@Test
 	public void testRegisteryStoredQueryRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
@@ -282,14 +283,17 @@ public class OrchestratorImplTest {
 
 		Xspasubject xspasubject = orchestrator.setXspaSubject(
 				"Duane_Decouteau@direct.healthvault-stage.com", UUID
-				.randomUUID().toString());
-		Xsparesource xsparesource = orchestrator.setXspaResource("PUI100010060001");
+						.randomUUID().toString());
+		Xsparesource xsparesource = orchestrator
+				.setXspaResource("PUI100010060001");
 		EnforcePolicy enforcePolicy = new EnforcePolicy();
 		enforcePolicy.setXsparesource(xsparesource);
 		enforcePolicy.setXspasubject(xspasubject);
 
 		RegisteryStoredQueryResponse response = orchestrator
-				.registeryStoredQueryRequest("'PUI100010060001^^^&2.16.840.1.113883.3.467&ISO'", enforcePolicy);
+				.registeryStoredQueryRequest(
+						"PUI100010060001^^^&2.16.840.1.113883.3.467&ISO",
+						enforcePolicy);
 
 		assertNotNull(response);
 
@@ -418,7 +422,7 @@ public class OrchestratorImplTest {
 		when(
 				contextHandlerMock.enforcePolicy(isA(Xspasubject.class),
 						isA(Xsparesource.class))).thenThrow(
-								new RuntimeException());
+				new RuntimeException());
 
 		// Act
 		sut.handleC32Request(null, false, null, null);
@@ -505,14 +509,14 @@ public class OrchestratorImplTest {
 
 		when(
 				documentProcessorMock.processDocument(eq(c32), anyString(),
-						eq(packageAsXdm), eq(encryptDocument), eq(senderEmailAddress),
-						eq(recipientEmailAddress))).thenReturn(
-								processDocumentResponseMock);
+						eq(packageAsXdm), eq(encryptDocument),
+						eq(senderEmailAddress), eq(recipientEmailAddress)))
+				.thenReturn(processDocumentResponseMock);
 
 		when(
 				dataHandlerToBytesConverterMock
-				.toByteArray(isA(DataHandler.class))).thenReturn(
-						filteredStreamBody);
+						.toByteArray(isA(DataHandler.class))).thenReturn(
+				filteredStreamBody);
 
 		// Act
 		FilterC32Response c32Response = sut.handleC32Request(patientId,
