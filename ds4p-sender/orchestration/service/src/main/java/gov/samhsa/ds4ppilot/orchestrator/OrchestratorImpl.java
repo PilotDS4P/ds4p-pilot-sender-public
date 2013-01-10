@@ -49,10 +49,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
@@ -68,6 +71,7 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExtrinsicObjectType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryErrorList;
@@ -400,7 +404,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 		String metadataString = new XdsbMetadataGeneratorImpl(
 				new UniqueOidProviderImpl()).generateMetadataXml(documentSet,
-						subjectLocality);
+				subjectLocality);
 
 		SubmitObjectsRequest submitObjectRequest = null;
 
@@ -509,7 +513,7 @@ public class OrchestratorImpl implements Orchestrator {
 			documentRequest.setRepositoryUniqueId(repositoryUniqueId);
 			documentRequest.setDocumentUniqueId(documentUniqueId);
 			retrieveDocumentSetRequest.getDocumentRequest()
-			.add(documentRequest);
+					.add(documentRequest);
 
 			ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = null;
 			xdsbRetrieveDocumentSetResponse = xdsbRepository
@@ -520,7 +524,7 @@ public class OrchestratorImpl implements Orchestrator {
 					.getDocumentResponse().get(0);
 			byte[] rawDocument = documentResponse.getDocument();
 			String originalC32 = new String(rawDocument);
-			//System.out.println(originalC32);
+			// System.out.println(originalC32);
 			result = contextHandler.enforcePolicy(
 					enforcePolicy.getXspasubject(),
 					enforcePolicy.getXsparesource());
@@ -542,7 +546,7 @@ public class OrchestratorImpl implements Orchestrator {
 								false, true,
 								"leo.smith@direct.obhita-stage.org",
 								enforcePolicy.getXspasubject()
-								.getSubjectEmailAddress());
+										.getSubjectEmailAddress());
 
 				processedPayload = dataHandlerToBytesConverter
 						.toByteArray(processDocumentResponse
@@ -550,7 +554,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 				// get processed document
 				String processedDocument = new String(processedPayload);
-				//System.out.println("processedDoc: " + processedDocument);
+				// System.out.println("processedDoc: " + processedDocument);
 
 				// get post processing directives
 				String postProcessingDirectives = processDocumentResponse
@@ -567,10 +571,14 @@ public class OrchestratorImpl implements Orchestrator {
 
 				// set response from xdsb
 				retrieveDocumentSetResponse
-				.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
+						.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
 
-				retrieveDocumentSetResponse.setKekEncryptionKey(processDocumentResponse.getKekEncryptionKey());
-				retrieveDocumentSetResponse.setKekMaskingKey(processDocumentResponse.getKekMaskingKey()); 				
+				retrieveDocumentSetResponse
+						.setKekEncryptionKey(processDocumentResponse
+								.getKekEncryptionKey());
+				retrieveDocumentSetResponse
+						.setKekMaskingKey(processDocumentResponse
+								.getKekMaskingKey());
 			}
 
 		} catch (PropertyException e) {
@@ -630,6 +638,9 @@ public class OrchestratorImpl implements Orchestrator {
 
 				AdhocQueryResponse result = xdsbRegistry
 						.registryStoredQuery(registryStoredQuery);
+
+				result = getResponseWithLatestDocumentEntryOnly(result);
+
 				String xmlResponse = marshall(result);
 				response.setReturn(xmlResponse);
 			}
@@ -845,6 +856,86 @@ public class OrchestratorImpl implements Orchestrator {
 		builder = factory.newDocumentBuilder();
 		org.w3c.dom.Document document = builder.parse(is);
 		return document;
+	}
+
+	private static AdhocQueryResponse getResponseWithLatestDocumentEntryOnly(
+			AdhocQueryResponse result) {
+		int documentEntryCount = result.getRegistryObjectList()
+				.getIdentifiable().size();
+		if (documentEntryCount >= 2) {
+			int theLatestDocumentEntryIndex = -1;
+			Date theLatestCreationTime = new Date(Long.MIN_VALUE);
+
+			for (int index = 0; index < documentEntryCount; index++) {
+				JAXBElement<?> jaxbElement = result.getRegistryObjectList()
+						.getIdentifiable().get(index);
+
+				@SuppressWarnings("unchecked")
+				JAXBElement<ExtrinsicObjectType> jaxbElementOfExtrinsicObjectType = (JAXBElement<ExtrinsicObjectType>) (jaxbElement);
+				if (!jaxbElementOfExtrinsicObjectType.equals(null)) {
+					ExtrinsicObjectType extrinsicObjectType = jaxbElementOfExtrinsicObjectType
+							.getValue();
+
+					for (SlotType1 slotType1 : extrinsicObjectType.getSlot()) {
+						if (slotType1.getName().equals("creationTime")) {
+							String datetimeString = slotType1.getValueList()
+									.getValue().get(0);
+							int lengthOfDateTimeString = datetimeString
+									.length();
+
+							int year = lengthOfDateTimeString >= 4 ? Integer
+									.parseInt(datetimeString.substring(0, 4))
+									: 0;
+							int month = lengthOfDateTimeString >= 6 ? Integer
+									.parseInt(datetimeString.substring(4, 6))
+									: 0;
+							int day = lengthOfDateTimeString >= 8 ? Integer
+									.parseInt(datetimeString.substring(6, 8))
+									: 0;
+							int hour = lengthOfDateTimeString >= 10 ? Integer
+									.parseInt(datetimeString.substring(8, 10))
+									: 0;
+							int minute = lengthOfDateTimeString >= 12 ? Integer
+									.parseInt(datetimeString.substring(10, 12))
+									: 0;
+							int second = lengthOfDateTimeString >= 14 ? Integer
+									.parseInt(datetimeString.substring(12, 14))
+									: 0;
+
+							GregorianCalendar gregorianCalendar = new GregorianCalendar(
+									year, month, day, hour, minute, second);
+
+							Date creationTime = gregorianCalendar.getTime();
+
+							if (creationTime.after(theLatestCreationTime)) {
+								theLatestCreationTime = creationTime;
+								theLatestDocumentEntryIndex = index;
+							}
+						}
+					}
+				}
+			}
+
+			for (int index = 0; index < documentEntryCount; index++) {
+				if (index != theLatestDocumentEntryIndex) {
+
+				}
+			}
+
+			if (theLatestDocumentEntryIndex != -1) {
+
+				@SuppressWarnings("unchecked")
+				JAXBElement<ExtrinsicObjectType> theLatestDocumentEntry = (JAXBElement<ExtrinsicObjectType>) (result
+						.getRegistryObjectList().getIdentifiable()
+						.get(theLatestDocumentEntryIndex));
+
+				result.getRegistryObjectList().getIdentifiable().clear();
+				result.getRegistryObjectList().getIdentifiable()
+						.add(theLatestDocumentEntry);
+			}
+		}
+
+		return result;
 	}
 
 	public static boolean patientExistsInRegistyBeforeAdding(
