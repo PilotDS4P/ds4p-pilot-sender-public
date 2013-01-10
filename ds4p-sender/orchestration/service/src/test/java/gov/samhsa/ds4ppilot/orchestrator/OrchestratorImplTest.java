@@ -187,7 +187,7 @@ public class OrchestratorImplTest {
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
 
-	/* @Ignore("This test should be configured to run as an integration test.") */
+	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRetrieveDocumentSetRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
