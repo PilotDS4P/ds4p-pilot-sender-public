@@ -25,7 +25,6 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator;
 
-import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
 import gov.samhsa.ds4ppilot.common.beans.XacmlResult;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
@@ -556,12 +555,6 @@ public class OrchestratorImpl implements Orchestrator {
 				String processedDocument = new String(processedPayload);
 				// System.out.println("processedDoc: " + processedDocument);
 
-				// get post processing directives
-				String postProcessingDirectives = processDocumentResponse
-						.getPostProcessingDirectives();
-				RuleExecutionContainer executionResponseContainer = unmarshallFromXml(
-						RuleExecutionContainer.class, postProcessingDirectives);
-
 				// set processed document in payload
 				DocumentResponse document = new DocumentResponse();
 				document.setDocument(processedDocument.getBytes());
@@ -579,6 +572,9 @@ public class OrchestratorImpl implements Orchestrator {
 				retrieveDocumentSetResponse
 						.setKekMaskingKey(processDocumentResponse
 								.getKekMaskingKey());
+
+				retrieveDocumentSetResponse.setMetadata(processDocumentResponse
+						.getMaskedDocument());
 			}
 
 		} catch (PropertyException e) {

@@ -88,6 +88,7 @@
 						<xsd:element name="return" type="xsd:string" />
 						<xsd:element name="kekMaskingKey" type="xsd:base64Binary"/>
 						<xsd:element name="kekEncryptionKey" type="xsd:base64Binary"/>
+						<xsd:element name="metadata" type="xsd:string"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
