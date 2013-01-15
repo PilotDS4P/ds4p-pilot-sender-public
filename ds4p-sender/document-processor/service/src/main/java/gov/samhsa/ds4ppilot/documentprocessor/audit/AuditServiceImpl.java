@@ -25,49 +25,58 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.documentprocessor.audit;
 
-import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditService;
 import gov.samhsa.schemas.client.AuditWebServiceClient;
-import gov.va.ehtac.ds4p.ws.DS4PAudit;
-import gov.va.ehtac.ds4p.ws.DS4PAuditService;
 
 /**
  * The Class AuditServiceImpl.
  */
-public class AuditServiceImpl implements AuditService{
+public class AuditServiceImpl implements AuditService {
 
-/** The endpoint address. */
-private String endpointAddress;
-	
+	/** The endpoint address. */
+	private final String endpointAddress;
+
 	/**
 	 * Instantiates a new audit service impl.
-	 *
-	 * @param endpointAddress the endpoint address
+	 * 
+	 * @param endpointAddress
+	 *            the endpoint address
 	 */
 	public AuditServiceImpl(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
-	
-	/* (non-Javadoc)
-	 * @see gov.samhsa.ds4ppilot.documentprocessor.audit.AuditService#updateAuthorizationEventWithExecRules(java.lang.String, java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.samhsa.ds4ppilot.documentprocessor.audit.AuditService#
+	 * updateAuthorizationEventWithExecRules(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Boolean updateAuthorizationEventWithExecRules(String messageId,
 			String execRules) {
-		
-		AuditWebServiceClient auditWebServiceClient = new AuditWebServiceClient(endpointAddress);		
-		Boolean result = auditWebServiceClient.updateAuthorizationEventWithExecRules(messageId, execRules);
+
+		AuditWebServiceClient auditWebServiceClient = new AuditWebServiceClient(
+				endpointAddress);
+		Boolean result = auditWebServiceClient
+				.updateAuthorizationEventWithExecRules(messageId, execRules);
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.samhsa.ds4ppilot.documentprocessor.audit.AuditService#updateAuthorizationEventWithAnnotatedDoc(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.samhsa.ds4ppilot.documentprocessor.audit.AuditService#
+	 * updateAuthorizationEventWithAnnotatedDoc(java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public Boolean updateAuthorizationEventWithAnnotatedDoc(String messageId,
 			String doc) {
-		
-		AuditWebServiceClient auditWebServiceClient = new AuditWebServiceClient(endpointAddress);		
-		Boolean result = auditWebServiceClient.updateAuthorizationEventWithAnnotatedDoc(messageId, doc);
+
+		AuditWebServiceClient auditWebServiceClient = new AuditWebServiceClient(
+				endpointAddress);
+		Boolean result = auditWebServiceClient
+				.updateAuthorizationEventWithAnnotatedDoc(messageId, doc);
 		return result;
 	}
 

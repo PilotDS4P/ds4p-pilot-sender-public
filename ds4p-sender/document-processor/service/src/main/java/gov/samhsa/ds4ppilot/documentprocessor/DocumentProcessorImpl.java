@@ -33,8 +33,8 @@ import gov.samhsa.ds4ppilot.common.utils.FileHelper;
 import gov.samhsa.ds4ppilot.common.utils.StringURIResolver;
 import gov.samhsa.ds4ppilot.common.utils.XmlHelper;
 import gov.samhsa.ds4ppilot.common.xdm.XdmZipUtils;
-import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
-import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
+import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditService;
+import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClient;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.va.ds4p.cas.RuleExecutionResponse;
 
@@ -79,11 +79,11 @@ import org.w3c.dom.Node;
  */
 public class DocumentProcessorImpl implements DocumentProcessor {
 
-	/** The healthcare classification client impl. */
-	private final HealthcareClassificationClientImpl healthcareClassificationClientImpl;
+	/** The healthcare classification client. */
+	private final HealthcareClassificationClient healthcareClassificationClient;
 
-	/** The audit service impl. */
-	private final AuditServiceImpl auditServiceImpl;
+	/** The audit service. */
+	private final AuditService auditService;
 
 	/** The de sede encrypt key. */
 	private Key deSedeEncryptKey;
@@ -112,17 +112,17 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	/**
 	 * Instantiates a new document processor impl.
 	 * 
-	 * @param healthcareClassificationClientImpl
-	 *            the healthcare classification client impl
-	 * @param auditServiceImpl
-	 *            the audit service impl
+	 * @param healthcareClassificationClient
+	 *            the healthcare classification client
+	 * @param auditService
+	 *            the audit service
 	 */
 	public DocumentProcessorImpl(
-			HealthcareClassificationClientImpl healthcareClassificationClientImpl,
-			AuditServiceImpl auditServiceImpl) {
+			HealthcareClassificationClient healthcareClassificationClient,
+			AuditService auditService) {
 
-		this.healthcareClassificationClientImpl = healthcareClassificationClientImpl;
-		this.auditServiceImpl = auditServiceImpl;
+		this.healthcareClassificationClient = healthcareClassificationClient;
+		this.auditService = auditService;
 	}
 
 	/**
@@ -135,6 +135,8 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	 *            the enforcement policies
 	 * @param packageAsXdm
 	 *            the package as xdm
+	 * @param encryptDocument
+	 *            the encrypt document
 	 * @param senderEmailAddress
 	 *            the sender email address
 	 * @param recipientEmailAddress
@@ -163,11 +165,9 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 
 			// get execution response container
 			String executionResponseContainer;
-			executionResponseContainer = healthcareClassificationClientImpl
+			executionResponseContainer = healthcareClassificationClient
 					.assertAndExecuteClinicalFacts(factModel);
 
-			processDocumentResponse
-					.setPostProcessingDirectives(executionResponseContainer);
 			// unmarshall from xml to RuleExecutionContainer
 			ruleExecutionContainer = unmarshallFromXml(
 					RuleExecutionContainer.class, executionResponseContainer);
@@ -193,8 +193,10 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 					recipientEmailAddress);
 			FileHelper.writeStringToFile(metadataXml, "metadata.xml");
 
-			// log annoted doc
-			auditServiceImpl.updateAuthorizationEventWithAnnotatedDoc(
+			processDocumentResponse.setPostProcessingMetadata(metadataXml);
+
+			// log annotated doc
+			auditService.updateAuthorizationEventWithAnnotatedDoc(
 					xacmlResult.getMessageId(), document);
 			FileHelper.writeStringToFile(document, "Tagged_C32.xml");
 
@@ -262,7 +264,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			t.setParameter("xacmlResult", xacmlResult);
 
 			t.setOutputProperty(OutputKeys.INDENT, "no");
-			t.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
+			t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			t.transform(source, new StreamResult(writer));
 
 			factModel = writer.toString();

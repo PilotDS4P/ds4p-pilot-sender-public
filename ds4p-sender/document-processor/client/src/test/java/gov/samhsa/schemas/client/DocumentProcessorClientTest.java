@@ -33,7 +33,7 @@ public class DocumentProcessorClientTest {
 			returnedValueOfProcessDocument
 					.setMaskedDocument("<ClinicalDocument></ClinicalDocument>");
 			returnedValueOfProcessDocument.setProcessedDocument(null);
-			returnedValueOfProcessDocument.setPostProcessingDirectives(null);
+			returnedValueOfProcessDocument.setPostProcessingMetadata(null);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
