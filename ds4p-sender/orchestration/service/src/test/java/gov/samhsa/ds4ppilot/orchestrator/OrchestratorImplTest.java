@@ -533,7 +533,7 @@ public class OrchestratorImplTest {
 	@Test
 	public void testSaveDocumentSetToXdsRepository() {
 		// Arrange
-		String c32Xml = getXmlFromXmlFile("remC32.xml");
+		String c32Xml = getXmlFromXmlFile("cdaR2Consent.xml");// remC32.xml
 
 		ContextHandler contextHandlerMock = mock(ContextHandler.class);
 		C32Getter c32GetterMock = mock(C32Getter.class);
@@ -554,7 +554,9 @@ public class OrchestratorImplTest {
 		sut.setSubjectLocality("1.1.1.1");
 
 		// Act
-		sut.saveDocumentSetToXdsRepository(c32Xml);
+		boolean result = sut.saveDocumentSetToXdsRepository(c32Xml);
+
+		System.out.println(result);
 	}
 
 	@Test

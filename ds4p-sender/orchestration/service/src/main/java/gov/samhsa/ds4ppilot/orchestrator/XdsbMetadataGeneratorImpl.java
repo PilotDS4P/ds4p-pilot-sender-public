@@ -27,11 +27,9 @@ package gov.samhsa.ds4ppilot.orchestrator;
 
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -173,50 +171,5 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		marshaller.marshal(obj, stringWriter);
 
 		return stringWriter.toString();
-	}
-
-	/**
-	 * The main method.
-	 * 
-	 * @param args
-	 *            the arguments
-	 */
-	public static void main(String[] args) {
-		XdsbMetadataGeneratorImpl xdsbMetadataGeneratorImpl = new XdsbMetadataGeneratorImpl(
-				new UniqueOidProviderImpl());
-		InputStream is = xdsbMetadataGeneratorImpl.getClass().getClassLoader()
-				.getResourceAsStream("c32.xml");
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-		StringBuilder c32Document = new StringBuilder();
-		String line;
-		try {
-			while ((line = br.readLine()) != null) {
-				c32Document.append(line);
-			}
-
-			br.close();
-			is.close();
-		} catch (IOException e) {
-			throw new DS4PException(e.toString(), e);
-		}
-
-		String meta = xdsbMetadataGeneratorImpl.generateMetadataXml(
-				c32Document.toString(), "1.1.1.1.1");
-
-		System.out.println(meta);
-
-		SubmitObjectsRequest submitObjectsRequest = xdsbMetadataGeneratorImpl
-				.generateMetadata(c32Document.toString(), "1.1.1.1.1");
-
-		System.out.println("Generated SubmitObjectsRequest");
-
-		try {
-			System.out.println(marshall(submitObjectsRequest));
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
