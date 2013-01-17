@@ -48,9 +48,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
@@ -70,7 +72,9 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.ClassificationType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExtrinsicObjectType;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.IdentifiableType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryErrorList;
@@ -642,7 +646,7 @@ public class OrchestratorImpl implements Orchestrator {
 				AdhocQueryResponse result = xdsbRegistry
 						.registryStoredQuery(registryStoredQuery);
 
-				result = getResponseWithLatestDocumentEntryOnly(result);
+				result = getResponseWithLatestDocumentEntriesForConsentAndNonconsent(result);
 
 				String xmlResponse = marshall(result);
 				response.setReturn(xmlResponse);
@@ -832,7 +836,7 @@ public class OrchestratorImpl implements Orchestrator {
 		return xacmlResult;
 	}
 
-	private String marshall(Object obj) throws Throwable {
+	private static String marshall(Object obj) throws Throwable {
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 		Marshaller marshaller = context.createMarshaller();
 
@@ -842,7 +846,7 @@ public class OrchestratorImpl implements Orchestrator {
 		return stringWriter.toString();
 	}
 
-	private <T> T unmarshallFromXml(Class<T> clazz, String xml)
+	private static <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(clazz);
 		Unmarshaller um = context.createUnmarshaller();
@@ -861,23 +865,44 @@ public class OrchestratorImpl implements Orchestrator {
 		return document;
 	}
 
-	private static AdhocQueryResponse getResponseWithLatestDocumentEntryOnly(
-			AdhocQueryResponse result) {
-		int documentEntryCount = result.getRegistryObjectList()
+	private static AdhocQueryResponse getResponseWithLatestDocumentEntriesForConsentAndNonconsent(
+			AdhocQueryResponse adhocQueryResponse) {
+		int documentEntryCount = adhocQueryResponse.getRegistryObjectList()
 				.getIdentifiable().size();
 		if (documentEntryCount >= 2) {
-			int theLatestDocumentEntryIndex = -1;
-			Date theLatestCreationTime = new Date(Long.MIN_VALUE);
+			int theLatestConsentDocumentEntryIndex = -1;
+			Date theLatestConsentDocumentEntryCreationTime = new Date(
+					Long.MIN_VALUE);
+
+			int theLatestNonConsentDocumentEntryIndex = -1;
+			Date theLatestNonConsentDocumentEntryCreationTime = new Date(
+					Long.MIN_VALUE);
 
 			for (int index = 0; index < documentEntryCount; index++) {
-				JAXBElement<?> jaxbElement = result.getRegistryObjectList()
-						.getIdentifiable().get(index);
+				JAXBElement<?> jaxbElement = adhocQueryResponse
+						.getRegistryObjectList().getIdentifiable().get(index);
 
 				@SuppressWarnings("unchecked")
 				JAXBElement<ExtrinsicObjectType> jaxbElementOfExtrinsicObjectType = (JAXBElement<ExtrinsicObjectType>) (jaxbElement);
 				if (!jaxbElementOfExtrinsicObjectType.equals(null)) {
 					ExtrinsicObjectType extrinsicObjectType = jaxbElementOfExtrinsicObjectType
 							.getValue();
+
+					boolean isConsentDocumentEntry = false;
+
+					// Get the classCode (Consent or others)
+					for (ClassificationType classificationType : extrinsicObjectType
+							.getClassification()) {
+						if (classificationType
+								.getClassificationScheme()
+								.equalsIgnoreCase(
+										"urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a")) {
+							if (classificationType.getNodeRepresentation()
+									.equalsIgnoreCase("Consent")) {
+								isConsentDocumentEntry = true;
+							}
+						}
+					}
 
 					for (SlotType1 slotType1 : extrinsicObjectType.getSlot()) {
 						if (slotType1.getName().equals("creationTime")) {
@@ -910,35 +935,56 @@ public class OrchestratorImpl implements Orchestrator {
 
 							Date creationTime = gregorianCalendar.getTime();
 
-							if (creationTime.after(theLatestCreationTime)) {
-								theLatestCreationTime = creationTime;
-								theLatestDocumentEntryIndex = index;
+							if (isConsentDocumentEntry
+									&& creationTime
+											.after(theLatestConsentDocumentEntryCreationTime)) {
+								theLatestConsentDocumentEntryCreationTime = creationTime;
+								theLatestConsentDocumentEntryIndex = index;
+							} else if (!isConsentDocumentEntry
+									&& creationTime
+											.after(theLatestNonConsentDocumentEntryCreationTime)) {
+								theLatestNonConsentDocumentEntryCreationTime = creationTime;
+								theLatestNonConsentDocumentEntryIndex = index;
 							}
 						}
 					}
 				}
 			}
 
-			for (int index = 0; index < documentEntryCount; index++) {
-				if (index != theLatestDocumentEntryIndex) {
+			List<JAXBElement<? extends IdentifiableType>> latestDocumentEntryList = new ArrayList<JAXBElement<? extends IdentifiableType>>();
 
-				}
+			if (theLatestConsentDocumentEntryIndex != -1) {
+				latestDocumentEntryList.add(adhocQueryResponse
+						.getRegistryObjectList().getIdentifiable()
+						.get(theLatestConsentDocumentEntryIndex));
 			}
 
-			if (theLatestDocumentEntryIndex != -1) {
+			if (theLatestNonConsentDocumentEntryIndex != -1) {
 
-				@SuppressWarnings("unchecked")
-				JAXBElement<ExtrinsicObjectType> theLatestDocumentEntry = (JAXBElement<ExtrinsicObjectType>) (result
+				latestDocumentEntryList.add(adhocQueryResponse
 						.getRegistryObjectList().getIdentifiable()
-						.get(theLatestDocumentEntryIndex));
+						.get(theLatestNonConsentDocumentEntryIndex));
+			}
 
-				result.getRegistryObjectList().getIdentifiable().clear();
-				result.getRegistryObjectList().getIdentifiable()
-						.add(theLatestDocumentEntry);
+			if (latestDocumentEntryList.size() > 0) {
+				adhocQueryResponse.getRegistryObjectList().getIdentifiable()
+						.clear();
+			}
+
+			for (int i = 0; i < latestDocumentEntryList.size(); i++) {
+				adhocQueryResponse.getRegistryObjectList().getIdentifiable()
+						.add(latestDocumentEntryList.get(i));
 			}
 		}
 
-		return result;
+		try {
+			System.out.println(marshall(adhocQueryResponse));
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return adhocQueryResponse;
 	}
 
 	public static boolean patientExistsInRegistyBeforeAdding(

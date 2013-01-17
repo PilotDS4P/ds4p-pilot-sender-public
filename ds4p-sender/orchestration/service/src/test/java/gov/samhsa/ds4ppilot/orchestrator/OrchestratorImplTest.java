@@ -243,7 +243,7 @@ public class OrchestratorImplTest {
 		assertNotNull(response);
 	}
 
-	/* @Ignore("This test should be configured to run as an integration test.") */
+	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRegisteryStoredQueryRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
