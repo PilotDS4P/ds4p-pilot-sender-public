@@ -578,7 +578,7 @@ public class OrchestratorImpl implements Orchestrator {
 								.getKekMaskingKey());
 
 				retrieveDocumentSetResponse.setMetadata(processDocumentResponse
-						.getMaskedDocument());
+						.getPostProcessingMetadata());
 			}
 
 		} catch (PropertyException e) {
