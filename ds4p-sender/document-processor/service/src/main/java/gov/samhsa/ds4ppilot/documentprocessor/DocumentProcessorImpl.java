@@ -151,7 +151,6 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 		RuleExecutionContainer ruleExecutionContainer = null;
 		XacmlResult xacmlResult = null;
 		ByteArrayDataSource rawData = null;
-		String metadataXml = "";
 		enforcementPolicies = enforcementPolicies.replace(
 				" xmlns:ns2=\"http://ws.ds4p.ehtac.va.gov/\"", "");
 		ProcessDocumentResponse processDocumentResponse = new ProcessDocumentResponse();
@@ -186,14 +185,12 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			document = tagDocument(document, executionResponseContainer,
 					xacmlResult.getMessageId());
 
-			// generate metadata xml
-			metadataXml = generateMetadataXml(document,
-					executionResponseContainer,
-					xacmlResult.getHomeCommunityId(), senderEmailAddress,
-					recipientEmailAddress);
-			FileHelper.writeStringToFile(metadataXml, "metadata.xml");
-
-			processDocumentResponse.setPostProcessingMetadata(metadataXml);
+			AdditionalMetadataGeneratorForProcessedC32Impl additionalMetadataGeneratorForProcessedC32Impl = new AdditionalMetadataGeneratorForProcessedC32Impl();
+			String additonalMetadataGeneratorForProcessedC32 = additionalMetadataGeneratorForProcessedC32Impl
+					.generateMetadataXml(executionResponseContainer,
+							senderEmailAddress, recipientEmailAddress);
+			processDocumentResponse
+					.setPostProcessingMetadata(additonalMetadataGeneratorForProcessedC32);
 
 			// log annotated doc
 			auditService.updateAuthorizationEventWithAnnotatedDoc(
@@ -216,11 +213,23 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 				processDocumentResponse.setKekEncryptionKey(encryptionKeyBytes);
 			}
 
-			byte[] documentPayload = (packageAsXdm) ? XdmZipUtils
-					.createXDMPackage(metadataXml, readFile("CCD.xsl"),
-							document, readFile("INDEX.htm"),
-							readFile("README.txt"), maskingKeyBytes,
-							encryptionKeyBytes) : document.getBytes();
+			byte[] documentPayload = null;
+			if (packageAsXdm) {
+
+				// generate metadata xml
+				String metadataXml = generateMetadataXml(document,
+						executionResponseContainer,
+						xacmlResult.getHomeCommunityId(), senderEmailAddress,
+						recipientEmailAddress);
+				FileHelper.writeStringToFile(metadataXml, "metadata.xml");
+
+				documentPayload = XdmZipUtils.createXDMPackage(metadataXml,
+						readFile("CCD.xsl"), document, readFile("INDEX.htm"),
+						readFile("README.txt"), maskingKeyBytes,
+						encryptionKeyBytes);
+			} else {
+				documentPayload = document.getBytes();
+			}
 
 			rawData = new ByteArrayDataSource(documentPayload);
 			processDocumentResponse.setProcessedDocument(new DataHandler(

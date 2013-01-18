@@ -1,0 +1,52 @@
+<lcm:SubmitObjectsRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0"
+                          xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+                          xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"
+                          xmlns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <RegistryObjectList>
+      <ExtrinsicObject>
+         <Slot name="authorTelecommunication">
+            <ValueList>
+               <Value>^^Internet^sender@sender.com</Value>
+            </ValueList>
+         </Slot>
+         <Slot name="intendedRecipient">
+            <ValueList>
+               <Value>^^Internet^</Value>
+            </ValueList>
+         </Slot>
+         <Slot name="urn:siframework.org:ds4p:purposeofuse">
+            <ValueList>
+               <Value>TREAT</Value>
+            </ValueList>
+         </Slot>
+         <Slot name="urn:siframework.org:ds4p:obligationpolicy">
+            <ValueList>
+               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">ENCRYPT</Value>
+            </ValueList>
+         </Slot>
+         <Slot name="urn:siframework.org:ds4p:refrainpolicy">
+            <ValueList>
+               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">NORDSLCD</Value>
+            </ValueList>
+         </Slot>
+         <Slot name="urn:siframework.org:ds4p:sensitivitypolicy">
+            <ValueList>
+               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">HIV</Value>
+            </ValueList>
+         </Slot>
+         <Slot name="urn:siframework.org:ds4p:usprivacylaw">
+            <ValueList>
+               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">42CFRPart2</Value>
+            </ValueList>
+         </Slot>
+         <ExternalIdentifier id="ei02"
+                             identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"
+                             value="{$XDSDocumentEntry_uniqueId}">
+            <Name>
+               <LocalizedString value="XDSDocumentEntry.uniqueId"/>
+            </Name>
+         </ExternalIdentifier>
+      </ExtrinsicObject>
+   </RegistryObjectList>
+</lcm:SubmitObjectsRequest>

@@ -1,9 +1,8 @@
-package gov.samhsa.ds4ppilot.documentprocessor.test;
+package gov.samhsa.ds4ppilot.documentprocessor;
 
 import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
 import gov.samhsa.ds4ppilot.common.utils.FileHelper;
 import gov.samhsa.ds4ppilot.common.utils.XmlHelper;
-import gov.samhsa.ds4ppilot.documentprocessor.DocumentProcessorImpl;
 import gov.samhsa.ds4ppilot.documentprocessor.audit.AuditServiceImpl;
 import gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification.HealthcareClassificationClientImpl;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
