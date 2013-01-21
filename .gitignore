@@ -1,6 +1,9 @@
+# Eclipse Artifacts #
 .settings
-target
 .project
+.classpath
+# Generated Artifacts #
+target
 *.class
 # Package Files #
 *.jar
