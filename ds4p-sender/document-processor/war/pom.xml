@@ -49,9 +49,8 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
+				<version>${maven-war-plugin-version}</version>
 				<configuration>
-					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 					<webResources>
 						<resource>
 							<directory>../service/src/main/resources</directory>
