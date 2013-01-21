@@ -65,6 +65,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
@@ -407,7 +408,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 		String metadataString = new XdsbMetadataGeneratorImpl(
 				new UniqueOidProviderImpl()).generateMetadataXml(documentSet,
-				subjectLocality);
+						subjectLocality);
 
 		SubmitObjectsRequest submitObjectRequest = null;
 
@@ -506,6 +507,7 @@ public class OrchestratorImpl implements Orchestrator {
 			EnforcePolicy enforcePolicy) {
 		RetrieveDocumentSetResponse retrieveDocumentSetResponse = new RetrieveDocumentSetResponse();
 		RetrieveDocumentSetRequest retrieveDocumentSetRequest = new RetrieveDocumentSetRequest();
+		ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = null;
 		StringWriter xacmlResponseXml = new StringWriter();
 		byte[] processedPayload;
 		Return result = null;
@@ -516,18 +518,8 @@ public class OrchestratorImpl implements Orchestrator {
 			documentRequest.setRepositoryUniqueId(repositoryUniqueId);
 			documentRequest.setDocumentUniqueId(documentUniqueId);
 			retrieveDocumentSetRequest.getDocumentRequest()
-					.add(documentRequest);
+			.add(documentRequest);
 
-			ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = null;
-			xdsbRetrieveDocumentSetResponse = xdsbRepository
-					.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
-
-			// get original cda
-			DocumentResponse documentResponse = xdsbRetrieveDocumentSetResponse
-					.getDocumentResponse().get(0);
-			byte[] rawDocument = documentResponse.getDocument();
-			String originalC32 = new String(rawDocument);
-			// System.out.println(originalC32);
 			result = contextHandler.enforcePolicy(
 					enforcePolicy.getXspasubject(),
 					enforcePolicy.getXsparesource());
@@ -543,42 +535,58 @@ public class OrchestratorImpl implements Orchestrator {
 						Boolean.FALSE);
 				marshaller.marshal(xacmlResult, xacmlResponseXml);
 
-				ProcessDocumentResponse processDocumentResponse = documentProcessor
-						.processDocument(originalC32, xacmlResponseXml
-								.toString(), /* "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>" */
-								false, true,
-								"leo.smith@direct.obhita-stage.org",
-								enforcePolicy.getXspasubject()
-										.getSubjectEmailAddress());
+				xdsbRetrieveDocumentSetResponse = xdsbRepository
+						.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
 
-				processedPayload = dataHandlerToBytesConverter
-						.toByteArray(processDocumentResponse
-								.getProcessedDocument());
+				// get original cda
+				DocumentResponse documentResponse = xdsbRetrieveDocumentSetResponse
+						.getDocumentResponse().get(0);
+				byte[] rawDocument = documentResponse.getDocument();
+				String originalDocument = new String(rawDocument);
+				// System.out.println(originalC32);
 
-				// get processed document
-				String processedDocument = new String(processedPayload);
-				// System.out.println("processedDoc: " + processedDocument);
-
-				// set processed document in payload
-				DocumentResponse document = new DocumentResponse();
-				document.setDocument(processedDocument.getBytes());
-
-				xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(0,
-						document);
-
-				// set response from xdsb
-				retrieveDocumentSetResponse
-						.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
-
-				retrieveDocumentSetResponse
-						.setKekEncryptionKey(processDocumentResponse
-								.getKekEncryptionKey());
-				retrieveDocumentSetResponse
-						.setKekMaskingKey(processDocumentResponse
-								.getKekMaskingKey());
-
-				retrieveDocumentSetResponse.setMetadata(processDocumentResponse
-						.getPostProcessingMetadata());
+				if (!isConsentDocument(originalDocument)) {
+					ProcessDocumentResponse processDocumentResponse = documentProcessor
+							.processDocument(originalDocument, xacmlResponseXml
+									.toString(), /* "<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>" */
+									false, true,
+									"leo.smith@direct.obhita-stage.org",
+									enforcePolicy.getXspasubject()
+									.getSubjectEmailAddress());
+					processedPayload = dataHandlerToBytesConverter
+							.toByteArray(processDocumentResponse
+									.getProcessedDocument());
+					// get processed document
+					String processedDocument = new String(processedPayload);
+					// System.out.println("processedDoc: " + processedDocument);					
+					// set processed document in payload
+					DocumentResponse document = new DocumentResponse();
+					document.setDocument(processedDocument.getBytes());
+					xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(
+							0, document);
+					// set response from xdsb
+					retrieveDocumentSetResponse
+					.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
+					retrieveDocumentSetResponse
+					.setKekEncryptionKey(processDocumentResponse
+							.getKekEncryptionKey());
+					retrieveDocumentSetResponse
+					.setKekMaskingKey(processDocumentResponse
+							.getKekMaskingKey());
+					retrieveDocumentSetResponse
+					.setMetadata(processDocumentResponse
+							.getPostProcessingMetadata());
+				}
+				else
+				{
+					DocumentResponse document = new DocumentResponse();
+					document.setDocument(rawDocument);
+					xdsbRetrieveDocumentSetResponse.getDocumentResponse().set(
+							0, document);
+					// set response from xdsb
+					retrieveDocumentSetResponse
+					.setReturn(marshall(xdsbRetrieveDocumentSetResponse));
+				}
 			}
 
 		} catch (PropertyException e) {
@@ -606,8 +614,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 		AdhocQueryType adhocQueryType = new AdhocQueryType();
 		adhocQueryType.setId("urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d"); // FindDocuments
-		// by
-		// patientId
+		// by patientId
 		registryStoredQuery.setAdhocQuery(adhocQueryType);
 
 		SlotType1 patientIdSlotType = new SlotType1();
@@ -914,38 +921,38 @@ public class OrchestratorImpl implements Orchestrator {
 							int year = lengthOfDateTimeString >= 4 ? Integer
 									.parseInt(datetimeString.substring(0, 4))
 									: 0;
-							int month = lengthOfDateTimeString >= 6 ? Integer
-									.parseInt(datetimeString.substring(4, 6))
-									: 0;
-							int day = lengthOfDateTimeString >= 8 ? Integer
-									.parseInt(datetimeString.substring(6, 8))
-									: 0;
-							int hour = lengthOfDateTimeString >= 10 ? Integer
-									.parseInt(datetimeString.substring(8, 10))
-									: 0;
-							int minute = lengthOfDateTimeString >= 12 ? Integer
-									.parseInt(datetimeString.substring(10, 12))
-									: 0;
-							int second = lengthOfDateTimeString >= 14 ? Integer
-									.parseInt(datetimeString.substring(12, 14))
-									: 0;
+									int month = lengthOfDateTimeString >= 6 ? Integer
+											.parseInt(datetimeString.substring(4, 6))
+											: 0;
+											int day = lengthOfDateTimeString >= 8 ? Integer
+													.parseInt(datetimeString.substring(6, 8))
+													: 0;
+													int hour = lengthOfDateTimeString >= 10 ? Integer
+															.parseInt(datetimeString.substring(8, 10))
+															: 0;
+															int minute = lengthOfDateTimeString >= 12 ? Integer
+																	.parseInt(datetimeString.substring(10, 12))
+																	: 0;
+																	int second = lengthOfDateTimeString >= 14 ? Integer
+																			.parseInt(datetimeString.substring(12, 14))
+																			: 0;
 
-							GregorianCalendar gregorianCalendar = new GregorianCalendar(
-									year, month, day, hour, minute, second);
+																			GregorianCalendar gregorianCalendar = new GregorianCalendar(
+																					year, month, day, hour, minute, second);
 
-							Date creationTime = gregorianCalendar.getTime();
+																			Date creationTime = gregorianCalendar.getTime();
 
-							if (isConsentDocumentEntry
-									&& creationTime
-											.after(theLatestConsentDocumentEntryCreationTime)) {
-								theLatestConsentDocumentEntryCreationTime = creationTime;
-								theLatestConsentDocumentEntryIndex = index;
-							} else if (!isConsentDocumentEntry
-									&& creationTime
-											.after(theLatestNonConsentDocumentEntryCreationTime)) {
-								theLatestNonConsentDocumentEntryCreationTime = creationTime;
-								theLatestNonConsentDocumentEntryIndex = index;
-							}
+																			if (isConsentDocumentEntry
+																					&& creationTime
+																					.after(theLatestConsentDocumentEntryCreationTime)) {
+																				theLatestConsentDocumentEntryCreationTime = creationTime;
+																				theLatestConsentDocumentEntryIndex = index;
+																			} else if (!isConsentDocumentEntry
+																					&& creationTime
+																					.after(theLatestNonConsentDocumentEntryCreationTime)) {
+																				theLatestNonConsentDocumentEntryCreationTime = creationTime;
+																				theLatestNonConsentDocumentEntryIndex = index;
+																			}
 						}
 					}
 				}
@@ -968,12 +975,12 @@ public class OrchestratorImpl implements Orchestrator {
 
 			if (latestDocumentEntryList.size() > 0) {
 				adhocQueryResponse.getRegistryObjectList().getIdentifiable()
-						.clear();
+				.clear();
 			}
 
 			for (int i = 0; i < latestDocumentEntryList.size(); i++) {
 				adhocQueryResponse.getRegistryObjectList().getIdentifiable()
-						.add(latestDocumentEntryList.get(i));
+				.add(latestDocumentEntryList.get(i));
 			}
 		}
 
@@ -985,6 +992,55 @@ public class OrchestratorImpl implements Orchestrator {
 		}
 
 		return adhocQueryResponse;
+	}
+
+	private boolean isConsentDocument(String originalDocument) {
+		boolean consentDocumentExists = false;
+
+		try {			
+			final String hl7Namespace = "urn:hl7-org:v3";
+			final String hl7NamespacePrefix = "hl7";
+
+			org.w3c.dom.Document document = loadXmlFrom(originalDocument);
+
+			// We map the prefixes to URIs
+			NamespaceContext namespaceContext = new NamespaceContext() {
+				@Override
+				public String getNamespaceURI(String prefix) {
+					String uri;
+					if (prefix.equals(hl7NamespacePrefix))
+						uri = hl7Namespace;
+					else
+						throw new IllegalArgumentException(prefix);
+					return uri;
+				}
+
+				@Override
+				public Iterator<?> getPrefixes(String val) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public String getPrefix(String uri) {
+					throw new UnsupportedOperationException();
+				}
+			};
+
+			XPathFactory xpathFactory = XPathFactory.newInstance();
+			XPath xpath = xpathFactory.newXPath();
+			xpath.setNamespaceContext(namespaceContext);
+
+			String xpathExpression = "count(//*[@root='2.16.840.1.113883.3.445.1']) > 0";
+			consentDocumentExists = (Boolean) xpath.evaluate(
+					xpathExpression, document, XPathConstants.BOOLEAN);		
+
+		} catch (Exception e) {
+			throw new DS4PException(
+					"Error occurred when getting the templateId count for consent from CDA document.",
+					e);
+		}
+
+		return consentDocumentExists;
 	}
 
 	public static boolean patientExistsInRegistyBeforeAdding(
