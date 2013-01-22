@@ -21,7 +21,7 @@
     <jaxws:endpoint 
         id="processdocumentservice"
         implementor="#processDocumentServiceImpl"
-        wsdlLocation="WEB-INF/wsdl/ProcessDocumentService.wsdl"
+        wsdlLocation="classpath:ProcessDocumentService.wsdl"
         address="/processdocumentservice">
         <jaxws:properties>
 			<entry key="mtom-enabled" value="true" />

@@ -21,14 +21,14 @@
 		location="/WEB-INF/parameterConfig.Properties" />
 
 	<jaxws:endpoint id="filterc32service" implementor="#filterC32ServiceImpl"
-		wsdlLocation="WEB-INF/wsdl/FilterC32Service.wsdl" address="/filterc32service">
+		wsdlLocation="classpath:FilterC32Service.wsdl" address="/filterc32service">
 		<jaxws:properties>
 			<entry key="mtom-enabled" value="true" />
 		</jaxws:properties>
 	</jaxws:endpoint>
 	
 	<jaxws:endpoint id="xdsdocumentservice" implementor="#XDSDocumentServiceImpl"
-		wsdlLocation="WEB-INF/wsdl/XDSDocumentService.wsdl" address="/xdsdocumentservice">
+		wsdlLocation="classpath:XDSDocumentService.wsdl" address="/xdsdocumentservice">
 	</jaxws:endpoint>
 
 	<bean id="XDSDocumentServiceImpl"
