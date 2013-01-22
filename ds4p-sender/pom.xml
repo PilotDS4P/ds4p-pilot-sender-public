@@ -3,19 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.hhs.samhsa.ds4p</groupId>
 	<artifactId>ds4p-sender</artifactId>
-	<version>1.0</version> 
+	<version>1.0</version>
 	<name>DS4P-PILOT</name>
 	<packaging>pom</packaging>
 
 	<!-- List of modules. -->
 	<modules>
-		<module>common-library</module> 
+		<module>common-library</module>
 		<module>audit-service-client</module>
 
 		<module>c32-service-client</module>
 
 		<module>clinically-adaptive-rules-client</module>
-		
+
 		<module>xdsb-registry-client</module>
 		<module>xdsb-repository-client</module>
 
@@ -40,14 +40,15 @@
 		<logback-core-version>0.9.19</logback-core-version>
 		<saxon-HE-version>9.4</saxon-HE-version>
 		<xercesImpl-version>2.8.1</xercesImpl-version>
-		
+
+		<!-- This version of maven-war-plugin fixes the flowing annoying message: [WARNING] 
+			Warning: selected war files include a WEB-INF/web.xml which will be ignored 
+			(webxml attribute is missing from war task, or ignoreWebxml attribute is 
+			specified as 'true') -->
 		<maven-war-plugin-version>2.3</maven-war-plugin-version>
 	</properties>
 
 	<dependencies>
-
-		
-
 
 		<!-- XML security -->
 		<dependency>
@@ -197,4 +198,17 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven-war-plugin-version}</version>
+				</plugin>
+			</plugins>
+
+		</pluginManagement>
+	</build>
+
 </project>
