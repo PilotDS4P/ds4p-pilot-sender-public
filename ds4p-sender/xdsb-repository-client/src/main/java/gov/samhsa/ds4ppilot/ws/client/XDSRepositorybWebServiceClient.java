@@ -41,17 +41,30 @@ import org.springframework.util.StringUtils;
 import org.tempuri.DocumentRepositoryService;
 
 /**
- * The Class DS4PClinicallyAdaptiveRulesWebServiceClient.
+ * The Class XDSRepositorybWebServiceClient.
  */
 public class XDSRepositorybWebServiceClient {
 
 	/** The endpoint address. */
 	private final String endpointAddress;
 
+	/**
+	 * Instantiates a new xDS repositoryb web service client.
+	 * 
+	 * @param endpointAddress
+	 *            the endpoint address
+	 */
 	public XDSRepositorybWebServiceClient(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
+	/**
+	 * Retrieve document set request.
+	 * 
+	 * @param retrieveDocumentSet
+	 *            the retrieve document set
+	 * @return the retrieve document set response
+	 */
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			RetrieveDocumentSetRequest retrieveDocumentSet) {
 		XDSRepository port = createPort();
@@ -59,6 +72,13 @@ public class XDSRepositorybWebServiceClient {
 		return port.retrieveDocumentSet(retrieveDocumentSet);
 	}
 
+	/**
+	 * Provide and register document set reponse.
+	 * 
+	 * @param provideAndRegisterDocumentSet
+	 *            the provide and register document set
+	 * @return the registry response
+	 */
 	public RegistryResponse provideAndRegisterDocumentSetReponse(
 			ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSet) {
 		XDSRepository port = createPort();
@@ -67,6 +87,11 @@ public class XDSRepositorybWebServiceClient {
 
 	}
 
+	/**
+	 * Creates the port.
+	 * 
+	 * @return the xDS repository
+	 */
 	private XDSRepository createPort() {
 		final URL WSDL_LOCATION = this.getClass().getClassLoader()
 				.getResource("XDS.b_repository.net.wsdl");
