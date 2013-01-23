@@ -13,9 +13,13 @@
 
 package org.hl7.v3;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
@@ -63,7 +67,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ED", propOrder = {
     "reference",
-    "thumbnail"
+    "thumbnail",
+    "content"
 })
 @XmlSeeAlso({
     Thumbnail.class,
@@ -87,7 +92,9 @@ public class ED
     protected byte[] integrityCheck;
     @XmlAttribute(name = "integrityCheckAlgorithm")
     protected IntegrityCheckAlgorithm integrityCheckAlgorithm;
-
+    @XmlMixed
+    protected List<Serializable> content;
+    
     /**
      * Gets the value of the reference property.
      * 
@@ -262,4 +269,10 @@ public class ED
         this.integrityCheckAlgorithm = value;
     }
 
+    public List<Serializable> getContent() {
+        if (content == null) {
+            content = new ArrayList<Serializable>();
+        }
+        return this.content;
+    }    
 }
