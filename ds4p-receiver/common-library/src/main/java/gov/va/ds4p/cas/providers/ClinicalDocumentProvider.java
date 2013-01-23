@@ -836,6 +836,7 @@ public class ClinicalDocumentProvider {
         
         media.setValue(ed);
         pdf.setObservationMedia(media);
+        pdf.getTemplateId().add(id);
         return pdf;
     }
     
@@ -856,6 +857,7 @@ public class ClinicalDocumentProvider {
         ed.getContent().add(xacmlarray);
         media.setValue(ed);
         xacml.setObservationMedia(media);
+        xacml.getTemplateId().add(id);
         return xacml;        
     }
     
