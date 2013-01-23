@@ -127,7 +127,7 @@
   </binding>
   <service name="DS4PClinicallyAdaptiveRulesInterface">
     <port name="DS4PClinicallyAdaptiveRulesInterfacePort" binding="tns:DS4PClinicallyAdaptiveRulesInterfacePortBinding">
-      <soap:address location="REPLACE_WITH_ACTUAL_URL"/>
+      <soap:address location="http://localhost:8080/DS4PACSServices/DS4PClinicallyAdaptiveRulesInterface"/>
     </port>
   </service>
 </definitions>

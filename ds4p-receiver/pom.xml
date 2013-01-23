@@ -16,6 +16,7 @@
     <module>xdm-service-client-dp</module>
     <module>rdata-service-client-rd</module>
     <module>rxnorm-restful-client</module>
-    <module>ds4p-admin-test-harness</module>
+    <module>ds4p-admin-test-harness-p2</module>
+    <module>cda-consent-service-client</module>
   </modules>
 </project>

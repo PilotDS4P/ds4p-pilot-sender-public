@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<XspaPatientObligations xmlns="urn:hl7-org:v3"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 file:/C:/projects/DS4P/DS4PCommonLibrary/src/main/resources/casref.xsd">
+    <XspaPatientObligation name="urn:oasis:tc:names:tc:xpsa:2.0:patient:redact:ETH" sensitivity="ETH" impliedAction="REDACT"/>
+    <XspaPatientObligation name="urn:oasis:tc:names:tc:xpsa:2.0:patient:redact:PSY" sensitivity="PSY" impliedAction="REDACT"/>
+    <XspaPatientObligation name="urn:oasis:tc:names:tc:xpsa:2.0:patient:redact:HIV" sensitivity="HIV" impliedAction="REDACT"/>
+    <XspaPatientObligation name="urn:oasis:tc:names:tc:xpsa:2.0:patient:mask:ETH" sensitivity="ETH" impliedAction="MASK"/>
+    <XspaPatientObligation name="urn:oasis:tc:names:tc:xpsa:2.0:patient:mask:PSY" sensitivity="PSY" impliedAction="MASK"/>
+    <XspaPatientObligation name="urn:oasis:tc:names:tc:xpsa:2.0:patient:mask:HIV" sensitivity="HIV" impliedAction="MASK"/>
+</XspaPatientObligations>
