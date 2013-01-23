@@ -23,6 +23,7 @@
 		<module>document-processor</module>
 		<module>context-handler-client</module>
 		<module>orchestration</module>
+                <module>secured-context-handler</module>
 	</modules>
 
 	<properties>
