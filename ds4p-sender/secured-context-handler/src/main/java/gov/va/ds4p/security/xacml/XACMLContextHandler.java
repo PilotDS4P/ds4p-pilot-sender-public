@@ -19,7 +19,6 @@ import com.jerichosystems.esds.evaluation.xacml.policy.ObligationsType;
 import com.jerichosystems.esds.evaluation.xacml.policy.PolicySetType;
 import com.jerichosystems.services.xacmlpolicyevaluationservice._1.XACMLPolicyEvaluationService;
 import com.jerichosystems.services.xacmlpolicyevaluationservice._1.XACMLPolicyEvaluationServiceService;
-import com.microsoft.schemas.message.RegistryStoredQueryResult;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
@@ -536,7 +535,7 @@ public class XACMLContextHandler {
             statusSlotType.setValueList(statusValueListType);
             adhocQueryType.getSlot().add(statusSlotType);
 
-            RegistryStoredQueryResult result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
+            AdhocQueryResponse result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
 
             RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
 
