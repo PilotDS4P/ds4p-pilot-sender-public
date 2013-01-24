@@ -20,7 +20,7 @@
 
 	<jaxws:endpoint id="HealthcareClassificationService"
 		implementor="#healthcareClassificationServiceWsImpl"
-		wsdlLocation="WEB-INF/wsdl/HealthcareClassificationService.wsdl"
+		wsdlLocation="classpath:HealthcareClassificationService.wsdl"
 		address="/healthcareClassificationService">
 	</jaxws:endpoint>
 	

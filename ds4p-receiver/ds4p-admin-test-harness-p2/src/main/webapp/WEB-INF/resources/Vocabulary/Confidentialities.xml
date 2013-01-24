@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<ApplicableConfidentialities xmlns="urn:hl7-org:v3"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 file:/C:/projects/DS4P/DS4PCommonLibrary/src/main/resources/casref.xsd">
+ <Confidentiality code="L" codeSystem="2.16.840.1.113883.5.25" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="L (low)">
+        <Description>Description0</Description>
+    </Confidentiality>
+ <Confidentiality code="M" codeSystem="2.16.840.1.113883.5.25" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="M (moderate)">
+        <Description>Description1</Description>
+    </Confidentiality>
+ <Confidentiality code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="N (normal)">
+        <Description>Description2</Description>
+    </Confidentiality>
+ <Confidentiality code="R" codeSystem="2.16.840.1.113883.5.25" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="R (restricted)">
+        <Description>Description3</Description>
+    </Confidentiality>
+ <Confidentiality code="U" codeSystem="2.16.840.1.113883.5.25" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="U (unrestricted)">
+        <Description>Description4</Description>
+    </Confidentiality>
+ <Confidentiality code="V" codeSystem="2.16.840.1.113883.5.25" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="V (very restricted)">
+        <Description>Description5</Description>
+    </Confidentiality>
+</ApplicableConfidentialities>

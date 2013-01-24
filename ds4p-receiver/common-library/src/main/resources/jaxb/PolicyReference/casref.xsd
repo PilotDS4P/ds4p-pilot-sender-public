@@ -565,10 +565,138 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" minOccurs="0" ref="OrganizationTaggingRules"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="organizationConsentPolicyInfo"/>
             </xs:sequence>
             <xs:attribute name="orgName" type="xs:string"/>
             <xs:attribute name="homeCommunityId" type="xs:string"/>
             <xs:attribute name="usPrivacyLaw" type="xs:string"/>
         </xs:complexType>
     </xs:element>
+    <xs:element name="assignedAuthoringDevice">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="manufacturingModelName"/>
+                <xs:element ref="softwareName"/>
+                <xs:element ref="patientAuthor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="manufacturingModelName">
+        <xs:complexType>
+            <xs:attribute name="displayName"/>
+            <xs:attribute name="code"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="softwareName">
+        <xs:complexType>
+            <xs:attribute name="displayName"/>
+            <xs:attribute name="code"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="addr">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="streetAddressLine"/>
+                <xs:element ref="city"/>
+                <xs:element ref="state"/>
+                <xs:element ref="postalCode"/>
+                <xs:element ref="county"/>
+                <xs:element ref="country"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="streetAddressLine" type="xs:string"/>
+    <xs:element name="city" type="xs:string"/>
+    <xs:element name="postalCode" type="xs:string"/>
+    <xs:element name="county" type="xs:string"/>
+    <xs:element name="country" type="xs:string"/>
+    <xs:element name="organizationConsentPolicyInfo">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="addr"/>
+                <xs:element ref="assignedAuthoringDevice"/>
+                <xs:element ref="defaultCustodianInfo"/>
+                <xs:element ref="humanReadibleText"/>
+                <xs:element ref="assignedAuthor"/>
+                <xs:element ref="defaultPatientDemographics"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="defaultCustodianInfo">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="organizationName"/>
+                <xs:element ref="telcom"/>
+                <xs:element ref="addr"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="organizationName" type="xs:string"/>
+    <xs:element name="telcom" type="xs:string"/>
+    <xs:element name="humanReadibleText">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="displayText"/>
+                <xs:element ref="imageURL"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="displayText" type="xs:string"/>
+    <xs:element name="imageURL" type="xs:string"/>
+    <xs:element name="author">
+        <xs:complexType>
+            <xs:attribute default="1.3.5.35.1.4436.7" name="templateId" type="xs:string"/>
+            <xs:attribute name="time" type="xs:time"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="assignedPerson">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+            </xs:sequence>
+            <xs:attribute name="typeId" type="xs:string"/>
+            <xs:attribute default="PSN" name="classCode" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="name">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="given"/>
+                <xs:element ref="family"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="given" type="xs:string"> </xs:element>
+    <xs:element name="family" type="xs:string"> </xs:element>
+    <xs:element name="defaultAuthorInfo">
+        <xs:complexType>
+            <xs:sequence/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="assignedAuthor">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="addr"/>
+                <xs:element ref="assignedPerson"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="root" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="patientGender" type="xs:string"/>
+    <xs:element name="patientTelcom" type="xs:string"/>
+    <xs:element name="defaultPatientBirthDate" type="xs:time"/>
+    <xs:element name="defaultPatientDemographics">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="patientGender"/>
+                <xs:element ref="patientTelcom"/>
+                <xs:element ref="defaultPatientBirthDate"/>
+                <xs:element ref="addr"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="state" type="xs:string"/>
+    <xs:element name="patientAuthor" type="xs:boolean"/>
 </xs:schema>

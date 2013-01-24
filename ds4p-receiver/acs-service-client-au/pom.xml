@@ -28,7 +28,7 @@
                         <wsdlFiles>
                             <wsdlFile>DS4PAuditService.wsdl</wsdlFile>                      
                         </wsdlFiles>
-                        <wsdlLocation>http://vmcentral:8080/DS4PACSServices/DS4PAuditService?wsdl</wsdlLocation>
+                        <wsdlLocation>http://localhost:8080/DS4PACSServices/DS4PAuditService?wsdl</wsdlLocation>
                         <wsdlDirectory>${basedir}/../acs-services/target/classes/META-INF</wsdlDirectory>
                         <staleFile>${project.build.directory}/jaxws/stale/DS4PAuditService.stale</staleFile>
                         <packageName>gov.va.ehtac.ds4p.ws.au</packageName>

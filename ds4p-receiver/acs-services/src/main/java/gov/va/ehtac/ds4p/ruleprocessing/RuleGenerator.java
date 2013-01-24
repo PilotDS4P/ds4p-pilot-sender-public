@@ -95,7 +95,7 @@ public class RuleGenerator {
                     currentClinicalRule = (ClinicalTaggingRule)iter.next();
                     String rS = "";
                     String pou = currentClinicalRule.getActReason().getCode();
-                    System.out.println("DOES POU MATCH: -"+purposeofuse+"-"+pou+"-");
+                    //System.out.println("DOES POU MATCH: -"+purposeofuse+"-"+pou+"-");
                     if (pou.equals(purposeofuse)) {
                         //pou matches so gen rules based on org policy
 
@@ -116,7 +116,7 @@ public class RuleGenerator {
                     currentClinicalRule = (ClinicalTaggingRule)iter.next();
                     String rS = "";
                     String pou = currentClinicalRule.getActReason().getCode();
-                    System.out.println("DOES POU MATCH: -"+purposeofuse+"-"+pou+"-");
+                    //System.out.println("DOES POU MATCH: -"+purposeofuse+"-"+pou+"-");
                     if (pou.equals(purposeofuse)) {
                         //pou matches so gen rules based on org policy
 

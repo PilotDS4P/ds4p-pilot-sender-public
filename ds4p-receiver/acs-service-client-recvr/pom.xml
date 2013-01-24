@@ -28,7 +28,7 @@
                         <wsdlFiles>
                             <wsdlFile>NwHINDirectAuthorizationServices.wsdl</wsdlFile>                      
                         </wsdlFiles>
-                        <wsdlLocation>http://vmcentral:8080/DS4PACSServices/NwHINDirectAuthorizationServices?wsdl</wsdlLocation>
+                        <wsdlLocation>http://localhost:8080/DS4PACSServices/NwHINDirectAuthorizationServices?wsdl</wsdlLocation>
                         <wsdlDirectory>${basedir}/../acs-services/target/classes/META-INF</wsdlDirectory>
                         <staleFile>${project.build.directory}/jaxws/stale/NwHINDirectAuthorizationServices.stale</staleFile>
                         <packageName>gov.va.ehtac.ds4p.ws.recvr</packageName>

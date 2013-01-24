@@ -86,4 +86,8 @@ public class DS4PConstants {
     public static String RESOURCE_SENSITIVITY_PERMISSIONS = "urn:oasis:names:tc:xspa:2.0:resource:required:sensitivity:permissions";
     public static String RESOURCE_INTENDED_RECIPIENT = "urn:oasis:names:tc:xspa:2.0:resource:intended:recipient";
     public static String RESOURCE_INTENDED_PURPOSEOFUSE = "urn:oasis:names:tc:xspa:2.0:resource:intended:purposeofuse";
+    
+    //CDA ITEMS
+    public static String XACML_POLICY_TEMPLATE_ID = "2.16.840.1.113883.3.445.16";
+    
 }
