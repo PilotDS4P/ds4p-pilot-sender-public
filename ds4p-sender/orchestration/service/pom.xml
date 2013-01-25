@@ -157,6 +157,11 @@
 												${basedir}/src/main/resources/XDSDocumentService.wsdl
 											</wsdl>
 										</wsdlOption>
+										<wsdlOption>
+											<wsdl>
+												${basedir}/src/main/resources/XDSDocumentService.wsdl
+											</wsdl>
+										</wsdlOption>
 									</wsdlOptions>
 								</configuration>
 								<goals>
