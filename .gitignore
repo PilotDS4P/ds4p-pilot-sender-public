@@ -4,6 +4,7 @@
 .classpath
 # Generated Artifacts #
 target
+bin
 *.class
 # Package Files #
 *.jar
