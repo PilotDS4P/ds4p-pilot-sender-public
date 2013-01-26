@@ -27,6 +27,13 @@
 		</jaxws:properties>
 	</jaxws:endpoint>
 	
+	<jaxws:endpoint id="pushfilterc32service" implementor="#pushfilterC32ServiceImpl"
+		wsdlLocation="classpath:PushFilterC32Service.wsdl" address="/pushfilterc32service">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
 	<jaxws:endpoint id="xdsdocumentservice" implementor="#XDSDocumentServiceImpl"
 		wsdlLocation="classpath:XDSDocumentService.wsdl" address="/xdsdocumentservice">
 	</jaxws:endpoint>
@@ -37,6 +44,10 @@
 		
 		<bean id="filterC32ServiceImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.ws.FilterC32ServiceImpl"
+		scope="prototype" autowire="byType" />
+		
+		<bean id="pushfilterC32ServiceImpl"
+		class="gov.samhsa.ds4ppilot.orchestrator.ws.PushFilterC32ServiceImpl"
 		scope="prototype" autowire="byType" />
 
 	<bean id="orchestratorImpl"

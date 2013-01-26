@@ -159,7 +159,7 @@
 										</wsdlOption>
 										<wsdlOption>
 											<wsdl>
-												${basedir}/src/main/resources/XDSDocumentService.wsdl
+												${basedir}/src/main/resources/PushFilterC32Service.wsdl
 											</wsdl>
 										</wsdlOption>
 									</wsdlOptions>
