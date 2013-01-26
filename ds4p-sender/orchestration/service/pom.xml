@@ -162,6 +162,11 @@
 												${basedir}/src/main/resources/PushFilterC32Service.wsdl
 											</wsdl>
 										</wsdlOption>
+										<wsdlOption>
+											<wsdl>
+												${basedir}/src/main/resources/SecuredFilterC32Service.wsdl
+											</wsdl>
+										</wsdlOption>
 									</wsdlOptions>
 								</configuration>
 								<goals>

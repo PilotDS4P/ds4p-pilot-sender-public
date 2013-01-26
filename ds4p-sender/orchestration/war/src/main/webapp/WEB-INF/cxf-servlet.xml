@@ -26,14 +26,19 @@
 			<entry key="mtom-enabled" value="true" />
 		</jaxws:properties>
 	</jaxws:endpoint>
-	
+
+	<jaxws:endpoint id="securedfilterc32service"
+		implementor="#securedfilterC32ServiceImpl" wsdlLocation="classpath:SecuredFilterC32Service.wsdl"
+		address="/securedfilterc32service">
+	</jaxws:endpoint>
+
 	<jaxws:endpoint id="pushfilterc32service" implementor="#pushfilterC32ServiceImpl"
 		wsdlLocation="classpath:PushFilterC32Service.wsdl" address="/pushfilterc32service">
 		<jaxws:properties>
 			<entry key="mtom-enabled" value="true" />
 		</jaxws:properties>
 	</jaxws:endpoint>
-	
+
 	<jaxws:endpoint id="xdsdocumentservice" implementor="#XDSDocumentServiceImpl"
 		wsdlLocation="classpath:XDSDocumentService.wsdl" address="/xdsdocumentservice">
 	</jaxws:endpoint>
@@ -41,17 +46,20 @@
 	<bean id="XDSDocumentServiceImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.ws.XDSDocumentServiceImpl"
 		scope="prototype" autowire="byType" />
-		
-		<bean id="filterC32ServiceImpl"
+
+	<bean id="filterC32ServiceImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.ws.FilterC32ServiceImpl"
 		scope="prototype" autowire="byType" />
-		
-		<bean id="pushfilterC32ServiceImpl"
+
+	<bean id="securedfilterC32ServiceImpl"
+		class="gov.samhsa.ds4ppilot.orchestrator.ws.SecuredFilterC32ServiceImpl"
+		scope="prototype" autowire="byType" />
+
+	<bean id="pushfilterC32ServiceImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.ws.PushFilterC32ServiceImpl"
 		scope="prototype" autowire="byType" />
 
-	<bean id="orchestratorImpl"
-		class="gov.samhsa.ds4ppilot.orchestrator.OrchestratorImpl"
+	<bean id="orchestratorImpl" class="gov.samhsa.ds4ppilot.orchestrator.OrchestratorImpl"
 		scope="prototype">
 		<constructor-arg ref="c32GetterImpl" />
 		<constructor-arg ref="contextHandlerImpl" />
@@ -67,6 +75,28 @@
 		<property name="resourceName" value="#{parameterConfigProperties.resourceName}" />
 		<property name="resourceType" value="#{parameterConfigProperties.resourceType}" />
 		<property name="resourceAction" value="#{parameterConfigProperties.resourceAction}" />
+	</bean>
+
+	<bean id="securedOrchestratorImpl"
+		class="gov.samhsa.ds4ppilot.orchestrator.SecuredOrchestratorImpl"
+		scope="prototype">
+		<constructor-arg ref="c32GetterImpl" />
+		<constructor-arg ref="contextHandlerImpl" />
+		<constructor-arg ref="documentProcessorImpl" />
+		<constructor-arg ref="dataHandlerToBytesConverterImpl" />
+		<constructor-arg ref="xdsbRepositoryImpl" />
+		<constructor-arg ref="xdsbRegistryImpl" />
+		<property name="subjectPurposeOfUse"
+			value="#{parameterConfigProperties.subjectPurposeOfUse}" />
+		<property name="subjectLocality" value="#{parameterConfigProperties.subjectLocality}" />
+		<property name="organization" value="#{parameterConfigProperties.organization}" />
+		<property name="organizationId" value="#{parameterConfigProperties.organizationId}" />
+		<property name="resourceName" value="#{parameterConfigProperties.resourceName}" />
+		<property name="resourceType" value="#{parameterConfigProperties.resourceType}" />
+		<property name="resourceAction" value="#{parameterConfigProperties.resourceAction}" />
+		<property name="homeCommunityId" value="#{parameterConfigProperties.homeCommunityId}" />
+		<property name="repositoryUniqueId" value="#{parameterConfigProperties.repositoryUniqueId}" />
+		<property name="subjectEmailAddress" value="#{parameterConfigProperties.subjectEmailAddress}" />
 	</bean>
 
 	<bean id="c32GetterImpl"
@@ -91,13 +121,13 @@
 		class="gov.samhsa.ds4ppilot.orchestrator.DataHandlerToBytesConverterImpl"
 		scope="prototype">
 	</bean>
-	
+
 	<bean id="xdsbRepositoryImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepositoryImpl"
 		scope="prototype">
 		<constructor-arg value="#{endpointAddressProperties.xdsbRepository}" />
 	</bean>
-	
+
 	<bean id="xdsbRegistryImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.xdsbregistry.XdsbRegistryImpl"
 		scope="prototype">
