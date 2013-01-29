@@ -29,6 +29,14 @@
 	<xs:element name="getAuthorizationEventByHIEMsgIdResponse"
 		type="tns:getAuthorizationEventByHIEMsgIdResponse" />
 
+	<xs:element name="getObligationsByMessageId" type="tns:getObligationsByMessageId" />
+
+	<xs:element name="getObligationsByMessageIdResponse" type="tns:getObligationsByMessageIdResponse" />
+
+	<xs:element name="getPurposeOfUseByMessageId" type="tns:getPurposeOfUseByMessageId" />
+
+	<xs:element name="getPurposeOfUseByMessageIdResponse" type="tns:getPurposeOfUseByMessageIdResponse" />
+
 	<xs:element name="saveAuthorizationEvent" type="tns:saveAuthorizationEvent" />
 
 	<xs:element name="saveAuthorizationEventResponse" type="tns:saveAuthorizationEventResponse" />
@@ -102,6 +110,31 @@
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:complexType name="getPurposeOfUseByMessageId">
+		<xs:sequence>
+			<xs:element name="messageId" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getPurposeOfUseByMessageIdResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getObligationsByMessageId">
+		<xs:sequence>
+			<xs:element name="messageId" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getObligationsByMessageIdResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:string" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:complexType name="updateAuthorizationEventWithExecRules">
 		<xs:sequence>
 			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
@@ -166,6 +199,19 @@
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:complexType name="updateAuthorizationEventWithDRL">
+		<xs:sequence>
+			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
+			<xs:element name="genDrl" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="updateAuthorizationEventWithDRLResponse">
+		<xs:sequence>
+			<xs:element name="return" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:complexType name="getAuthorizationByHealthCareObject">
 		<xs:sequence>
 			<xs:element name="healthcareobject" type="xs:string"
@@ -177,19 +223,6 @@
 		<xs:sequence>
 			<xs:element name="return" type="tns:authLog" minOccurs="0"
 				maxOccurs="unbounded" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="updateAuthorizationEventWithDRL">
-		<xs:sequence>
-			<xs:element name="hie_msg_id" type="xs:string" minOccurs="0" />
-			<xs:element name="genDrl" type="xs:string" minOccurs="0" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="updateAuthorizationEventWithDRLResponse">
-		<xs:sequence>
-			<xs:element name="return" type="xs:boolean" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
