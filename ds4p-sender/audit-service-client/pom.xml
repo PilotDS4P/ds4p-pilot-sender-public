@@ -29,7 +29,7 @@
 									<wsdlLocation>classpath:DS4PAuditService.wsdl</wsdlLocation>
 									<extraargs>
 										<extraarg>-client</extraarg>
-										<!-- <extraarg>-impl</extraarg -->
+										<extraarg>-impl</extraarg>
 									</extraargs>
 								</wsdlOption>
 							</wsdlOptions>

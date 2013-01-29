@@ -29,6 +29,8 @@ import gov.va.ehtac.ds4p.ws.DS4PAudit;
 import gov.va.ehtac.ds4p.ws.DS4PAuditService;
 
 import java.net.URL;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
@@ -79,6 +81,20 @@ public class AuditWebServiceClient {
 		DS4PAudit port = createPort();
 
 		return port.updateAuthorizationEventWithExecRules(messageId, execRules);
+	}
+	
+	
+	public List<String> getObligationsByMessageId(String messageId) {
+		DS4PAudit port = createPort();
+		
+		return port.getObligationsByMessageId(messageId);		 
+	}
+
+
+	
+	public String getPurposeOfUseByMessageId(String messageId) {
+		DS4PAudit port = createPort();
+		return port.getPurposeOfUseByMessageId(messageId);
 	}
 
 	/**

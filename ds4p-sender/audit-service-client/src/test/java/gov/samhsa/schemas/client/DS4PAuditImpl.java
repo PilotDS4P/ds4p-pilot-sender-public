@@ -7,6 +7,8 @@ package gov.samhsa.schemas.client;
 
 import gov.va.ehtac.ds4p.ws.DS4PAudit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -37,7 +39,46 @@ public class DS4PAuditImpl implements DS4PAudit {
     
     protected static boolean returnedValueOfUpdateAuthorizationEventWithAnnotatedDoc;
     protected static boolean returnedValueOfupdateAuthorizationEventWithExecRules;
+    protected  static List<String> returnedValueOfGetObligationsByMessageId;
+    protected  static String returnedValueOfGetPurposeOfUseByMessageId;
+  
 
+    /* (non-Javadoc)
+     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#updateAuthorizationEventWithAnnotatedDoc(java.lang.String  hieMsgId ,)java.lang.String  doc )*
+     */
+    public java.lang.Boolean updateAuthorizationEventWithAnnotatedDoc(java.lang.String hieMsgId,java.lang.String doc) { 
+        LOG.info("Executing operation updateAuthorizationEventWithAnnotatedDoc");
+        System.out.println(hieMsgId);
+        System.out.println(doc);
+        try {
+            java.lang.Boolean _return = returnedValueOfUpdateAuthorizationEventWithAnnotatedDoc;
+            return _return;
+        } catch (java.lang.Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+
+    
+
+    /* (non-Javadoc)
+     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#updateAuthorizationEventWithExecRules(java.lang.String  hieMsgId ,)java.lang.String  execRules )*
+     */
+    public java.lang.Boolean updateAuthorizationEventWithExecRules(java.lang.String hieMsgId,java.lang.String execRules) { 
+        LOG.info("Executing operation updateAuthorizationEventWithExecRules");
+        System.out.println(hieMsgId);
+        System.out.println(execRules);
+        try {
+            java.lang.Boolean _return =returnedValueOfupdateAuthorizationEventWithExecRules;
+            return _return;
+        } catch (java.lang.Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    
+    
     /* (non-Javadoc)
      * @see gov.va.ehtac.ds4p.ws.DS4PAudit#getAllAuthorizationEvent(*
      */
@@ -60,6 +101,21 @@ public class DS4PAuditImpl implements DS4PAudit {
         System.out.println(hieMsgId);
         try {
             gov.va.ehtac.ds4p.ws.AuthLog _return = null;
+            return _return;
+        } catch (java.lang.Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#getPurposeOfUseByMessageId(java.lang.String  messageId )*
+     */
+    public java.lang.String getPurposeOfUseByMessageId(java.lang.String messageId) { 
+        LOG.info("Executing operation getPurposeOfUseByMessageId");
+        System.out.println(messageId);
+        try {
+            java.lang.String _return = returnedValueOfGetPurposeOfUseByMessageId;
             return _return;
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
@@ -98,21 +154,6 @@ public class DS4PAuditImpl implements DS4PAudit {
         }
     }
 
-    /* (non-Javadoc)
-     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#updateAuthorizationEventWithAnnotatedDoc(java.lang.String  hieMsgId ,)java.lang.String  doc )*
-     */
-    public java.lang.Boolean updateAuthorizationEventWithAnnotatedDoc(java.lang.String hieMsgId,java.lang.String doc) { 
-        LOG.info("Executing operation updateAuthorizationEventWithAnnotatedDoc");
-        System.out.println(hieMsgId);
-        System.out.println(doc);
-        try {
-            java.lang.Boolean _return = returnedValueOfUpdateAuthorizationEventWithAnnotatedDoc;
-            return _return;
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
-    }
 
     /* (non-Javadoc)
      * @see gov.va.ehtac.ds4p.ws.DS4PAudit#getAuthorizationByUId(java.lang.String  uniqueId )*
@@ -130,14 +171,30 @@ public class DS4PAuditImpl implements DS4PAudit {
     }
 
     /* (non-Javadoc)
-     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#updateAuthorizationEventWithExecRules(java.lang.String  hieMsgId ,)java.lang.String  execRules )*
+     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#getObligationsByMessageId(java.lang.String  messageId )*
      */
-    public java.lang.Boolean updateAuthorizationEventWithExecRules(java.lang.String hieMsgId,java.lang.String execRules) { 
-        LOG.info("Executing operation updateAuthorizationEventWithExecRules");
+    public java.util.List<java.lang.String> getObligationsByMessageId(java.lang.String messageId) { 
+        LOG.info("Executing operation getObligationsByMessageId");
+        System.out.println(messageId);
+        try {        	
+            java.util.List<java.lang.String> _return = returnedValueOfGetObligationsByMessageId;
+            return _return;
+        } catch (java.lang.Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    /* (non-Javadoc)
+     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#updateAuthorizationEventWithDRL(java.lang.String  hieMsgId ,)java.lang.String  genDrl )*
+     */
+    public java.lang.Boolean updateAuthorizationEventWithDRL(java.lang.String hieMsgId,java.lang.String genDrl) { 
+        LOG.info("Executing operation updateAuthorizationEventWithDRL");
         System.out.println(hieMsgId);
-        System.out.println(execRules);
+        System.out.println(genDrl);
         try {
-            java.lang.Boolean _return =returnedValueOfupdateAuthorizationEventWithExecRules;
+            java.lang.Boolean _return = null;
             return _return;
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
@@ -159,22 +216,5 @@ public class DS4PAuditImpl implements DS4PAudit {
             throw new RuntimeException(ex);
         }
     }
-
-    /* (non-Javadoc)
-     * @see gov.va.ehtac.ds4p.ws.DS4PAudit#updateAuthorizationEventWithDRL(java.lang.String  hieMsgId ,)java.lang.String  genDrl )*
-     */
-    public java.lang.Boolean updateAuthorizationEventWithDRL(java.lang.String hieMsgId,java.lang.String genDrl) { 
-        LOG.info("Executing operation updateAuthorizationEventWithDRL");
-        System.out.println(hieMsgId);
-        System.out.println(genDrl);
-        try {
-            java.lang.Boolean _return = null;
-            return _return;
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
-    }
-
 }
 
