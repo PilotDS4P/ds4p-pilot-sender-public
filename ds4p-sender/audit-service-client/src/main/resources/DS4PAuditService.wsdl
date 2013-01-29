@@ -70,6 +70,18 @@
 	<message name="updateAuthorizationEventWithAnnotatedDocResponse">
 		<part name="parameters" element="tns:updateAuthorizationEventWithAnnotatedDocResponse" />
 	</message>
+	<message name="getObligationsByMessageId">
+		<part name="parameters" element="tns:getObligationsByMessageId" />
+	</message>
+	<message name="getObligationsByMessageIdResponse">
+		<part name="parameters" element="tns:getObligationsByMessageIdResponse" />
+	</message>
+	<message name="getPurposeOfUseByMessageId">
+		<part name="parameters" element="tns:getPurposeOfUseByMessageId" />
+	</message>
+	<message name="getPurposeOfUseByMessageIdResponse">
+		<part name="parameters" element="tns:getPurposeOfUseByMessageIdResponse" />
+	</message>
 	<portType name="DS4PAudit">
 		<operation name="saveAuthorizationEvent">
 			<input
@@ -142,6 +154,22 @@
 			<output
 				wsam:Action="http://ws.ds4p.ehtac.va.gov/DS4PAudit/updateAuthorizationEventWithAnnotatedDocResponse"
 				message="tns:updateAuthorizationEventWithAnnotatedDocResponse" />
+		</operation>
+		<operation name="getObligationsByMessageId">
+			<input
+				wsam:Action="http://ws.ds4p.ehtac.va.gov/DS4PAudit/getObligationsByMessageIdRequest"
+				message="tns:getObligationsByMessageId" />
+			<output
+				wsam:Action="http://ws.ds4p.ehtac.va.gov/DS4PAudit/getObligationsByMessageIdResponse"
+				message="tns:getObligationsByMessageIdResponse" />
+		</operation>
+		<operation name="getPurposeOfUseByMessageId">
+			<input
+				wsam:Action="http://ws.ds4p.ehtac.va.gov/DS4PAudit/getPurposeOfUseByMessageIdRequest"
+				message="tns:getPurposeOfUseByMessageId" />
+			<output
+				wsam:Action="http://ws.ds4p.ehtac.va.gov/DS4PAudit/getPurposeOfUseByMessageIdResponse"
+				message="tns:getPurposeOfUseByMessageIdResponse" />
 		</operation>
 	</portType>
 	<binding name="DS4PAuditPortBinding" type="tns:DS4PAudit">
@@ -220,6 +248,24 @@
 			</output>
 		</operation>
 		<operation name="updateAuthorizationEventWithAnnotatedDoc">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="getObligationsByMessageId">
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="getPurposeOfUseByMessageId">
 			<soap:operation soapAction="" />
 			<input>
 				<soap:body use="literal" />
