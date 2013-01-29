@@ -9,7 +9,6 @@
   </parent>
   <groupId>gov.va.ds4p</groupId>
   <artifactId>secured-context-handler</artifactId>
-  <version>1.0</version>
   <name>secured-context-handler</name>
   <url>http://maven.apache.org</url>
     <build>
@@ -75,12 +74,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>gov.hhs.samhsa.ds4p</groupId>
       <artifactId>xdsb-registry-client</artifactId>
