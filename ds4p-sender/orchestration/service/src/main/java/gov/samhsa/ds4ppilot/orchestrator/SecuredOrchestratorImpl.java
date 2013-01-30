@@ -27,6 +27,7 @@ package gov.samhsa.ds4ppilot.orchestrator;
 
 import gov.samhsa.ds4ppilot.common.beans.XacmlResult;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
+import gov.samhsa.ds4ppilot.orchestrator.audit.AuditService;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
 import gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandler;
 import gov.samhsa.ds4ppilot.orchestrator.documentprocessor.DocumentProcessor;
@@ -118,6 +119,9 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 	/** The xdsbRepository. */
 	private final XdsbRepository xdsbRepository;
 
+	/** The audit service. */
+	private final AuditService auditService;
+
 	/** The xdsbRegistry. */
 	private final XdsbRegistry xdsbRegistry;
 
@@ -162,6 +166,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 	 */
 	public SecuredOrchestratorImpl(ContextHandler contextHandler,
 			C32Getter c32Getter, DocumentProcessor documentProcessor,
+			AuditService auditService,
 			DataHandlerToBytesConverter dataHandlerToBytesConverter,
 			XdsbRepository xdsbRepository, XdsbRegistry xdsbRegistry) {
 		super();
@@ -171,6 +176,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		this.dataHandlerToBytesConverter = dataHandlerToBytesConverter;
 		this.xdsbRepository = xdsbRepository;
 		this.xdsbRegistry = xdsbRegistry;
+		this.auditService = auditService;
 	}
 
 	@Override
@@ -189,24 +195,24 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 			documentRequest.setDocumentUniqueId(documentUniqueId);
 			retrieveDocumentSetRequest.getDocumentRequest()
 					.add(documentRequest);
-
-			// TODO: Need to get obligations
-
-			/*
-			 * XacmlResult xacmlResult = new XacmlResult();
-			 * xacmlResult.setHomeCommunityId(result.getHomeCommunityId());
-			 * xacmlResult.setMessageId(result.getMessageId());
-			 * xacmlResult.setPdpDecision(result.getPdpDecision());
-			 * xacmlResult.setPdpObligations(result.getPdpObligation());
-			 * xacmlResult.setSubjectPurposeOfUse(result.getPurposeOfUse());
-			 * 
-			 * JAXBContext jaxbContext = JAXBContext
-			 * .newInstance(XacmlResult.class); Marshaller marshaller =
-			 * jaxbContext.createMarshaller();
-			 * marshaller.setProperty("com.sun.xml.bind.xmlDeclaration",
-			 * Boolean.FALSE); marshaller.marshal(xacmlResult,
-			 * xacmlResponseXml);
-			 */
+			
+			List<String> obligations = auditService.getObligationsByMessageId(messageId);
+			String purposeOfUse = auditService.getPurposeOfUseByMessageId(messageId);			
+			
+			  XacmlResult xacmlResult = new XacmlResult();
+			 xacmlResult.setHomeCommunityId(homeCommunityId);
+			  xacmlResult.setMessageId(messageId);
+			  xacmlResult.setPdpDecision(PERMIT);
+			  xacmlResult.setPdpObligations(obligations);
+			  xacmlResult.setSubjectPurposeOfUse(purposeOfUse);
+			  
+			  JAXBContext jaxbContext = JAXBContext
+			  .newInstance(XacmlResult.class); Marshaller marshaller =
+			 jaxbContext.createMarshaller();
+			  marshaller.setProperty("com.sun.xml.bind.xmlDeclaration",
+			  Boolean.FALSE); marshaller.marshal(xacmlResult,
+			  xacmlResponseXml);
+			 
 
 			xdsbRetrieveDocumentSetResponse = xdsbRepository
 					.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
@@ -221,10 +227,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 			if (!isConsentDocument(originalDocument)) {
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
 						.processDocument(
-								originalDocument, /*
-												 * xacmlResponseXml .toString()
-												 */
-								"<xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>4617a579-1881-4e40-9f98-f85bd81d6502</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:mask:HIV</pdpObligation></xacmlResult>",
+								originalDocument, xacmlResponseXml .toString(),
 								false, true,
 								"leo.smith@direct.obhita-stage.org",
 								subjectEmailAddress);
