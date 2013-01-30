@@ -49,6 +49,7 @@ public class DS4PConstants {
     public static final String ORG_OBLIGATIONS = "urn:oasis:names:tc:xspa:2.0:resource:org:obligations";
     public static final String ORG_PRIVACY_LAW_CONSTRUCT = "urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:";
     public static final String ORG_REFRAIN_POLICY_CONSTRUCT = "urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:";
+    public static final String ORG_DOCUMENT_HANDLING_CONSTRUCT = "urn:oasis:names:tc:xspa:2.0:resource:org:document-handling:";
             
     public static final String MITRE_PATIENT_AUTHORIZATION = "urn:org:mitre:resource:patient:authorization";
     
@@ -89,5 +90,23 @@ public class DS4PConstants {
     
     //CDA ITEMS
     public static String XACML_POLICY_TEMPLATE_ID = "2.16.840.1.113883.3.445.16";
+    
+    //Obligation Resource Names
+    public static String RESOURCE_DATA_REDACTION = "DS4PRedactAuthorization";
+    public static String RESOURCE_DATA_MASKING = "DS4PMaskAuthorization";
+    public static String RESOURCE_US_PRIVACY_LAW = "DS4PUSPrivacyLaw";
+    public static String RESOURCE_REFRAIN_POLICY = "DS4PRefrainPolicy";
+    public static String RESOURCE_DOCUMENT_HANDLING = "DS4PDocumentHandling";
+    //Obligation Resource Namespace
+    public static String RESOURCE_DATA_REDACTION_NS = "urn:oasis:names:tc:xspa:2.0:resource:redactauthorization";
+    public static String RESOURCE_DATA_MASKING_NS = "urn:oasis:names:tc:xspa:2.0:resource:maskauthorization";
+    public static String RESOURCE_US_PRIVACY_LAW_NS = "urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law";
+    public static String RESOURCE_REFRAIN_POLICY_NS = "urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy";
+    public static String RESOURCE_DOCUMENT_HANDLING_NS = "urn:oasis:names:tc:xspa:2.0:resource:org:document-handling";
+    
+    
+    //Exchange Resource Names
+    public static String RESOURCE_DOCUMENT_QUERY = "DocumentQuery";
+    public static String RESOURCE_DOCUMENT_RETRIEVE = "DocumentRetrieve";
     
 }
