@@ -75,7 +75,7 @@ public class CDAR2ConsentDirective {
         OrganizationPolicy p2 = provider.createOrganizationPolicyObjectFromXML(p.getOrganizationalRules());
         
         String pdfText = "test pdf";
-        String xacmlText = xProvider.createPatientConsentXACMLPolicy(p2, patientId, authorization, allowedPOU, allowedRecipients, maskingActions);
+        String xacmlText = xProvider.createPatientConsentXACMLPolicy(p2, patientId, authorization, allowedPOU, allowedRecipients, redactActions, maskingActions);
         System.out.println("XACML:\n"+xacmlText);
         
         

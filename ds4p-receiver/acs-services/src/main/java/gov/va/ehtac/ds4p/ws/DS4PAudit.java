@@ -13,6 +13,7 @@ package gov.va.ehtac.ds4p.ws;
 import gov.va.ehtac.ds4p.jpa.AuthLog;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -281,5 +282,64 @@ public class DS4PAudit {
         }
         return res;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getObligationsByMessageId")
+    public List<String> getObligationsByMessageId(@WebParam(name = "messageId") String messageId) {
+        List<String> res = new ArrayList();
+        try {
+            EntityManager em = getEntityManager().createEntityManager();
+            EntityTransaction t = em.getTransaction();
+            t.begin();
+            Query q = em.createNamedQuery("AuthLog.findByHieMsgId");
+            q.setParameter("hieMsgId", messageId);
+            AuthLog obj = (AuthLog)q.getSingleResult();
+            String oList = obj.getObligations();
+            oList = oList.replaceAll("\n", " ");
+            StringTokenizer st = new StringTokenizer(oList);
+            try {
+                while (st.hasMoreTokens()) {
+                    String token = st.nextToken();
+                    if (token != null || token.length() > 1) {
+                        res.add(token);
+                    }
+                }
+            }
+            catch (Exception stx) {
+                stx.printStackTrace();
+            }
+            t.commit();
+        }
+        catch (Exception ex) {
+            System.err.println(baseERR + ex.getMessage());
+        }        
+        return res;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getPurposeOfUseByMessageId")
+    public String getPurposeOfUseByMessageId(@WebParam(name = "messageId") String messageId) {
+        String res = "";
+        try {
+            EntityManager em = getEntityManager().createEntityManager();
+            EntityTransaction t = em.getTransaction();
+            t.begin();
+            Query q = em.createNamedQuery("AuthLog.findByHieMsgId");
+            q.setParameter("hieMsgId", messageId);
+            AuthLog obj = (AuthLog)q.getSingleResult();
+            res = obj.getPurposeOfUse();
+            t.commit();
+        }
+        catch (Exception ex) {
+            System.err.println(baseERR + ex.getMessage());
+        }        
+        return res;
+    }
+    
+    
     
 }
