@@ -24,6 +24,15 @@ import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
 import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
 import gov.va.ds4p.cas.constants.DS4PConstants;
 import gov.va.ds4p.cas.providers.ClinicalDocumentProvider;
+import gov.va.ds4p.cas.providers.VocabularyProvider;
+import gov.va.ds4p.policy.reference.ActInformationSensitivityPolicy;
+import gov.va.ds4p.policy.reference.ActUSPrivacyLaw;
+import gov.va.ds4p.policy.reference.ApplicableObligationPolicies;
+import gov.va.ds4p.policy.reference.ApplicableRefrainPolicies;
+import gov.va.ds4p.policy.reference.ApplicableSensitivityCodes;
+import gov.va.ds4p.policy.reference.ApplicableUSLaws;
+import gov.va.ds4p.policy.reference.ObligationPolicy;
+import gov.va.ds4p.policy.reference.RefrainPolicy;
 import gov.va.ds4p.registry.xdsbregistry.XdsbRegistry;
 import gov.va.ds4p.repository.xdsbrepository.XdsbRepository;
 import gov.va.ehtac.ds4p.ws.AuthLog;
@@ -111,7 +120,9 @@ public class XACMLContextHandler {
     private Date requestcomplete;
     
     //Clinical Document Transforms
-    ClinicalDocumentProvider cProvider = new ClinicalDocumentProvider();
+    private ClinicalDocumentProvider cProvider = new ClinicalDocumentProvider();
+    //Vocabulary
+    private VocabularyProvider vProvider = new VocabularyProvider();
 
     
     private static DatatypeFactory dateFac;
@@ -149,6 +160,9 @@ public class XACMLContextHandler {
             response = port.evaluatePolicySet(query, policy);
             
             processDecision();
+            if (DS4PConstants.PERMIT.equals(decisionObject.getPdpDecision()) && currResource.getResourceName().equals("DocumentRetrieve")) {
+                processObligationRequirements();
+            }
             
         }
         catch (Exception ex) {
@@ -708,5 +722,163 @@ public class XACMLContextHandler {
         return xcal;
     }
     
+    private void processObligationRequirements() {
+        processRedactionObligations();
+        processMaskingObligations();
+        processUSPrivacyLawObligations();
+        processRefrainObligations();
+        processDocumentHandlingObligations();  
+    }
+    
+    private void processRedactionObligations() {
+        ApplicableSensitivityCodes codes = vProvider.getDataSegmentationObligations();
+        List<ActInformationSensitivityPolicy> codeList = codes.getActInformationSensitivityPolicy();
+        Iterator iter = codeList.iterator();
+        while (iter.hasNext()) {
+            ActInformationSensitivityPolicy policy = (ActInformationSensitivityPolicy)iter.next();
+            String codeValue = policy.getCode();
+            query.getResource().clear();
+            ResourceType rType = createResourceTypeForObligationDecision(DS4PConstants.RESOURCE_DATA_REDACTION_NS, codeValue, DS4PConstants.RESOURCE_DATA_REDACTION);
+            query.getResource().add(rType);
+            String decision = getObligationDecision();
+            if (DS4PConstants.PERMIT.equals(decision)) {
+                String obligation = DS4PConstants.PATIENT_REDACT_CONSTRUCT + codeValue;
+                decisionObject.getPdpObligation().add(obligation);
+            }   
+        }
+    }
+    
+    private void processMaskingObligations() {
+        ApplicableSensitivityCodes codes = vProvider.getDataSegmentationObligations();
+        List<ActInformationSensitivityPolicy> codeList = codes.getActInformationSensitivityPolicy();
+        Iterator iter = codeList.iterator();
+        while (iter.hasNext()) {
+            ActInformationSensitivityPolicy policy = (ActInformationSensitivityPolicy)iter.next();
+            String codeValue = policy.getCode();
+            query.getResource().clear();
+            ResourceType rType = createResourceTypeForObligationDecision(DS4PConstants.RESOURCE_DATA_MASKING_NS, codeValue, DS4PConstants.RESOURCE_DATA_MASKING);
+            query.getResource().add(rType);
+            String decision = getObligationDecision();
+            if (DS4PConstants.PERMIT.equals(decision)) {
+                String obligation = DS4PConstants.PATIENT_MASK_CONSTRUCT + codeValue;
+                decisionObject.getPdpObligation().add(obligation);
+            }   
+        }
+    }
+    
+    private void processUSPrivacyLawObligations() {
+        ApplicableUSLaws codes = vProvider.getPrivacyLawObligations();
+        List<ActUSPrivacyLaw> codeList = codes.getActUSPrivacyLaw();
+        Iterator iter = codeList.iterator();
+        while (iter.hasNext()) {
+            ActUSPrivacyLaw policy = (ActUSPrivacyLaw)iter.next();
+            String codeValue = policy.getCode();
+            query.getResource().clear();
+            ResourceType rType = createResourceTypeForObligationDecision(DS4PConstants.RESOURCE_US_PRIVACY_LAW_NS, codeValue, DS4PConstants.RESOURCE_US_PRIVACY_LAW);
+            query.getResource().add(rType);
+            String decision = getObligationDecision();
+            if (DS4PConstants.PERMIT.equals(decision)) {
+                String obligation = DS4PConstants.ORG_PRIVACY_LAW_CONSTRUCT + codeValue;
+                decisionObject.getPdpObligation().add(obligation);
+            }   
+        }
+    }
+    
+    private void processRefrainObligations() {
+        ApplicableRefrainPolicies codes = vProvider.getRefrainObligations();
+        List<RefrainPolicy> codeList = codes.getRefrainPolicy();
+        Iterator iter = codeList.iterator();
+        while (iter.hasNext()) {
+            RefrainPolicy policy = (RefrainPolicy)iter.next();
+            String codeValue = policy.getCode();
+            query.getResource().clear();
+            ResourceType rType = createResourceTypeForObligationDecision(DS4PConstants.RESOURCE_REFRAIN_POLICY_NS, codeValue, DS4PConstants.RESOURCE_REFRAIN_POLICY);
+            query.getResource().add(rType);
+            String decision = getObligationDecision();
+            if (DS4PConstants.PERMIT.equals(decision)) {
+                String obligation = DS4PConstants.ORG_REFRAIN_POLICY_CONSTRUCT + codeValue;
+                decisionObject.getPdpObligation().add(obligation);
+            }   
+        }
+    }
+    
+    private void processDocumentHandlingObligations() {
+        ApplicableObligationPolicies codes = vProvider.getDocumentHandlingObligations();
+        List<ObligationPolicy> codeList = codes.getObligationPolicy();
+        Iterator iter = codeList.iterator();
+        while (iter.hasNext()) {
+            ObligationPolicy policy = (ObligationPolicy)iter.next();
+            String codeValue = policy.getCode();
+            query.getResource().clear();
+            ResourceType rType = createResourceTypeForObligationDecision(DS4PConstants.RESOURCE_DOCUMENT_HANDLING_NS, codeValue, DS4PConstants.RESOURCE_DOCUMENT_HANDLING);
+            query.getResource().add(rType);
+            String decision = getObligationDecision();
+            if (DS4PConstants.PERMIT.equals(decision)) {
+                String obligation = DS4PConstants.ORG_DOCUMENT_HANDLING_CONSTRUCT + codeValue;
+                decisionObject.getPdpObligation().add(obligation);
+            }   
+        }
+    }
+    
+    
+    private ResourceType createResourceTypeForObligationDecision(String evaluationAttributeName, String value, String serviceTypeName) {
+        //Set Resource Attributes - Organization and Region
+        ResourceType resource = new ResourceType();
+        
+        AttributeType at = new AttributeType();
+        AttributeValueType avt = new AttributeValueType();
+        at.setAttributeId(DS4PConstants.RESOURCE_NWHIN_SERVICE_NS);
+        at.setDataType(DS4PConstants.STRING);
+        avt = new AttributeValueType();
+        avt.getContent().add(serviceTypeName);
+        at.getAttributeValue().add(avt);
+        resource.getAttribute().add(at);
+
+        at = new AttributeType();
+        at.setAttributeId(DS4PConstants.RESOURCE_LOCALITY_NS);
+        at.setDataType(DS4PConstants.STRING);
+        avt = new AttributeValueType();
+        avt.getContent().add(homeCommunityId);
+        at.getAttributeValue().add(avt);
+        resource.getAttribute().add(at);
+
+        //Kairon Patient Consent
+        at = new AttributeType();
+        at.setAttributeId(DS4PConstants.MITRE_PATIENT_AUTHORIZATION);
+        at.setDataType(DS4PConstants.STRING);
+        avt = new AttributeValueType();
+        avt.getContent().add(patientAuthorization);
+        at.getAttributeValue().add(avt);
+        resource.getAttribute().add(at);
+        
+        //add obligation values
+        at = new AttributeType();
+        at.setAttributeId(evaluationAttributeName);
+        at.setDataType(DS4PConstants.STRING);
+        avt = new AttributeValueType();
+        avt.getContent().add(value);
+        at.getAttributeValue().add(avt);
+        resource.getAttribute().add(at);
+        
+        
+        return resource;
+        
+    }
+    private String getObligationDecision() {
+        String decision = "Deny";  //default
+         try {
+            XACMLPolicyEvaluationServiceService service = new XACMLPolicyEvaluationServiceService();
+            XACMLPolicyEvaluationService port = service.getXACMLPolicyEvaluationServicePort();
+            ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, pdpEndpoint);
+            
+            response = port.evaluatePolicySet(query, policy);
+            
+            decision = response.getResult().get(0).getDecision().value();    
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return decision;
+    }
 
 }
