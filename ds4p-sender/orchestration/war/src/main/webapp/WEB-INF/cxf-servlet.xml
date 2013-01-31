@@ -86,6 +86,7 @@
 		<constructor-arg ref="dataHandlerToBytesConverterImpl" />
 		<constructor-arg ref="xdsbRepositoryImpl" />
 		<constructor-arg ref="xdsbRegistryImpl" />
+		<constructor-arg ref="auditServiceImpl"/>
 		<property name="subjectPurposeOfUse"
 			value="#{parameterConfigProperties.subjectPurposeOfUse}" />
 		<property name="subjectLocality" value="#{parameterConfigProperties.subjectLocality}" />
@@ -109,6 +110,12 @@
 		class="gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandlerImpl"
 		scope="prototype">
 		<constructor-arg value="#{endpointAddressProperties.contextHandler}" />
+	</bean>
+	
+	<bean id="auditServiceImpl"
+		class="gov.samhsa.ds4ppilot.orchestrator.audit.AuditServiceImpl"
+		scope="prototype">
+		<constructor-arg value="#{endpointAddressProperties.auditService}" />
 	</bean>
 
 	<bean id="documentProcessorImpl"

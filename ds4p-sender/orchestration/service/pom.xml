@@ -28,14 +28,20 @@
 			<artifactId>document-processor-client-jar-with-dependencies</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>audit-service-client-jar-with-dependencies</groupId>
 			<artifactId>audit-service-client-jar-with-dependencies</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>common-library-jar-with-dependencies</groupId>
 			<artifactId>common-library-jar-with-dependencies</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>secured-context-handler-jar-with-dependencies</groupId>
+			<artifactId>secured-context-handler-jar-with-dependencies</artifactId>
 			<version>1.0</version>
 		</dependency>
 

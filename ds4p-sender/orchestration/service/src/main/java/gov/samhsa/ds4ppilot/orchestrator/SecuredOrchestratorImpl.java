@@ -36,6 +36,7 @@ import gov.samhsa.ds4ppilot.orchestrator.xdsbrepository.XdsbRepository;
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import gov.samhsa.ds4ppilot.schema.securedorchestrator.RegisteryStoredQueryResponse;
 import gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetResponse;
+
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest.Document;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
@@ -62,6 +63,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.ws.BindingProvider;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -150,7 +152,8 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 
 	private String subjectEmailAddress;
 
-	private String homeCommunityId;
+	private String homeCommunityId;	
+	
 
 	/**
 	 * Instantiates a new orchestrator impl.
@@ -197,7 +200,18 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 					.add(documentRequest);
 			
 			List<String> obligations = auditService.getObligationsByMessageId(messageId);
-			String purposeOfUse = auditService.getPurposeOfUseByMessageId(messageId);			
+			String purposeOfUse = auditService.getPurposeOfUseByMessageId(messageId);		
+			
+			 /*try {
+				 String auditServiceEndpoint = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService
+		          gov.va.ehtac.ds4p.ws.DS4PAuditService service = new gov.va.ehtac.ds4p.ws.DS4PAuditService();
+		          gov.va.ehtac.ds4p.ws.DS4PAudit port = service.getDS4PAuditPort();
+		          ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, auditEndpoint);  
+		          port.saveAuthorizationEvent(authlog);
+		      }
+		      catch (Exception ex) {
+		          throw new DS4PException (ex.getMessage(), ex);
+		      }*/
 			
 			  XacmlResult xacmlResult = new XacmlResult();
 			 xacmlResult.setHomeCommunityId(homeCommunityId);
