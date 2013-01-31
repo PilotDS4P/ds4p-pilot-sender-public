@@ -10,15 +10,18 @@ import com.sun.xml.wss.XWSSecurityException;
 import com.sun.xml.wss.impl.callback.SAMLAssertionValidator;
 import com.sun.xml.wss.impl.callback.SAMLAssertionValidator.SAMLValidationException;
 import com.sun.xml.wss.saml.Evidence;
+import com.sun.xml.wss.saml.NameID;
 import com.sun.xml.wss.saml.SAMLAssertionFactory;
 import com.sun.xml.wss.saml.SAMLException;
 import com.sun.xml.wss.saml.Subject;
+import com.sun.xml.wss.saml.SubjectConfirmation;
 import com.sun.xml.wss.saml.assertion.saml20.jaxb20.Assertion;
 import com.sun.xml.wss.saml.internal.saml20.jaxb20.AttributeStatementType;
 import com.sun.xml.wss.saml.internal.saml20.jaxb20.AttributeType;
 import com.sun.xml.wss.saml.internal.saml20.jaxb20.ConditionsType;
 import com.sun.xml.wss.saml.internal.saml20.jaxb20.NameIDType;
 import com.sun.xml.wss.saml.internal.saml20.jaxb20.StatementAbstractType;
+import com.sun.xml.wss.saml.internal.saml20.jaxb20.SubjectType;
 import com.sun.xml.wss.saml.util.SAMLUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,10 +59,6 @@ public class SAMLValidator implements SAMLAssertionValidator {
     }
 
     public void validate(XMLStreamReader arg0) throws SAMLValidationException {
-        throw new UnsupportedOperationException("SAMLAssertionValidator : Operation Should not be Called1.");
-    }
-
-    public void validate(XMLStreamReader arg0, Map arg1, Subject arg2) throws SAMLValidationException {
        try {
            Element samlAssertion = SAMLUtil.createSAMLAssertion(arg0);
 
@@ -89,7 +88,7 @@ public class SAMLValidator implements SAMLAssertionValidator {
                throw new SAMLValidationException("Failed Date Range Check");
            }
            
-           //validate issuer
+           //validate issuer          
            String samlissuer = assertion.getSamlIssuer();
            if (samlissuer == null) {
                System.out.println("==== SAML Issuer can not be blank ====");
@@ -113,6 +112,11 @@ public class SAMLValidator implements SAMLAssertionValidator {
            System.out.println("==== End XSPA-SAML Network ACD ====");
                       
            System.out.println("==== Begin Service Provider ACD ====");
+           
+           //for testing purposes
+           NameID nameId = samlFactory.createNameID(name.getValue(), null, null);
+           SubjectConfirmation conf = samlFactory.createSubjectConfirmation(nameId, "urn:oasis:names:tc:SAML:2.0:cm:bearer");
+           Subject subject = samlFactory.createSubject(nameId, conf);
            
            //detail stuff needed by PEP
            XspaResource xresource = new XspaResource();
@@ -176,7 +180,8 @@ public class SAMLValidator implements SAMLAssertionValidator {
                            }
                            Evidence evidence = null;
                            
-                           StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(arg2, xresource.getResourceName(), decision, actions, evidence);
+                           //StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(arg2, xresource.getResourceName(), decision, actions, evidence);
+                           StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(subject, decision, decision, satlist, evidence);
                            int aSize = assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().size();
                            assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().add(aSize, dStatement);
                        }

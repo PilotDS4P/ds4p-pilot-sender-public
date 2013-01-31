@@ -4,6 +4,8 @@
 		<handler>
 			<handler-name>gov.va.ds4p.security.saml.SAMLValidator</handler-name>
 			<handler-class>gov.va.ds4p.security.saml.SAMLValidator</handler-class>
+			<!-- <handler-name>gov.samhsa.ds4ppilot.orchestrator.ws.SAMLRequestHandler</handler-name>
+			<handler-class>gov.samhsa.ds4ppilot.orchestrator.ws.SAMLRequestHandler</handler-class> -->
 		</handler>
 	</handler-chain>
 </handler-chains>

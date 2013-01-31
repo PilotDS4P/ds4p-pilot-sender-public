@@ -106,7 +106,7 @@ public class SecuredOrchestratorImplTest {
 		ContextHandlerImpl contextHandler = new ContextHandlerImpl(
 				contextHandlerEndpointAddress);
 		
-		final String endpointAddressForAuditServcie = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService";
+		final String endpointAddressForAuditServcie = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService?wsdl";
 		gov.samhsa.ds4ppilot.orchestrator.audit.AuditServiceImpl auditService = new AuditServiceImpl(endpointAddressForAuditServcie);
 
 		final String endpointAddress = "http://localhost/Rem.Web/C32Service.svc";
