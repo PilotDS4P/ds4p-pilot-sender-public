@@ -9,7 +9,7 @@
 	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
 	xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy"
 	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
-	
+
 	<wsdl:types>
 		<xsd:schema
 			targetNamespace="http://www.samhsa.gov/ds4ppilot/schema/securedorchestrator">
@@ -87,7 +87,7 @@
 	</wsdl:portType>
 
 	<wsdl:binding name="SecuredFilterC32ServiceBinding" type="tsu:SecuredFilterC32ServicePortType">
-		<wsp:PolicyReference URI="#SecuredFilterC32ServiceBindingPolicy"/>
+		<wsp:PolicyReference URI="#SecuredFilterC32ServiceBindingPolicy" />
 		<soap:binding style="document"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 
@@ -95,9 +95,11 @@
 			<soap:operation soapAction="" />
 			<wsdl:input>
 				<soap:body use="literal" />
+				 <wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Input_Policy"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
+				<wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Output_Policy"/>
 			</wsdl:output>
 		</wsdl:operation>
 
@@ -105,8 +107,10 @@
 			<soap:operation soapAction="" />
 			<wsdl:input>
 				<soap:body use="literal" />
+				<wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Input_Policy"/>
 			</wsdl:input>
 			<wsdl:output>
+				 <wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Output_Policy"/>
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
@@ -129,7 +133,7 @@
 						<sp:Basic128 />
 					</wsp:Policy>
 				</sp:AlgorithmSuite>
-				
+
 				<sp:InitiatorToken>
 					<wsp:Policy>
 						<sp:SamlToken
@@ -166,5 +170,23 @@
 			</wsp:Policy>
 		</sp:Wss10>
 		<wsam:Addressing />
+	</wsp:Policy>
+	<wsp:Policy xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+		wsu:Id="SecuredFilterC32ServicePortBinding_document_Input_Policy">
+		<sp:EncryptedParts>
+			<sp:Body />
+		</sp:EncryptedParts>
+		<sp:SignedParts>
+			<sp:Body />
+		</sp:SignedParts>
+	</wsp:Policy>
+	<wsp:Policy xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+		wsu:Id="SecuredFilterC32ServicePortBinding_document_Output_Policy">
+		<sp:EncryptedParts>
+			<sp:Body />
+		</sp:EncryptedParts>
+		<sp:SignedParts>
+			<sp:Body />
+		</sp:SignedParts>
 	</wsp:Policy>
 </wsdl:definitions>
