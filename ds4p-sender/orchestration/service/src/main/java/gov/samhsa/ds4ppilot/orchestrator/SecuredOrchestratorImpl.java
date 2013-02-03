@@ -152,8 +152,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 
 	private String subjectEmailAddress;
 
-	private String homeCommunityId;	
-	
+	private String homeCommunityId;
 
 	/**
 	 * Instantiates a new orchestrator impl.
@@ -198,35 +197,25 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 			documentRequest.setDocumentUniqueId(documentUniqueId);
 			retrieveDocumentSetRequest.getDocumentRequest()
 					.add(documentRequest);
-			
-			List<String> obligations = auditService.getObligationsByMessageId(messageId);
-			String purposeOfUse = auditService.getPurposeOfUseByMessageId(messageId);		
-			
-			 /*try {
-				 String auditServiceEndpoint = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService
-		          gov.va.ehtac.ds4p.ws.DS4PAuditService service = new gov.va.ehtac.ds4p.ws.DS4PAuditService();
-		          gov.va.ehtac.ds4p.ws.DS4PAudit port = service.getDS4PAuditPort();
-		          ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, auditEndpoint);  
-		          port.saveAuthorizationEvent(authlog);
-		      }
-		      catch (Exception ex) {
-		          throw new DS4PException (ex.getMessage(), ex);
-		      }*/
-			
-			  XacmlResult xacmlResult = new XacmlResult();
-			 xacmlResult.setHomeCommunityId(homeCommunityId);
-			  xacmlResult.setMessageId(messageId);
-			  xacmlResult.setPdpDecision(PERMIT);
-			  xacmlResult.setPdpObligations(obligations);
-			  xacmlResult.setSubjectPurposeOfUse(purposeOfUse);
-			  
-			  JAXBContext jaxbContext = JAXBContext
-			  .newInstance(XacmlResult.class); Marshaller marshaller =
-			 jaxbContext.createMarshaller();
-			  marshaller.setProperty("com.sun.xml.bind.xmlDeclaration",
-			  Boolean.FALSE); marshaller.marshal(xacmlResult,
-			  xacmlResponseXml);
-			 
+
+			List<String> obligations = auditService
+					.getObligationsByMessageId(messageId);
+			String purposeOfUse = auditService
+					.getPurposeOfUseByMessageId(messageId);
+
+			XacmlResult xacmlResult = new XacmlResult();
+			xacmlResult.setHomeCommunityId(homeCommunityId);
+			xacmlResult.setMessageId(messageId);
+			xacmlResult.setPdpDecision(PERMIT);
+			xacmlResult.setPdpObligations(obligations);
+			xacmlResult.setSubjectPurposeOfUse(purposeOfUse);
+
+			JAXBContext jaxbContext = JAXBContext
+					.newInstance(XacmlResult.class);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty("com.sun.xml.bind.xmlDeclaration",
+					Boolean.FALSE);
+			marshaller.marshal(xacmlResult, xacmlResponseXml);
 
 			xdsbRetrieveDocumentSetResponse = xdsbRepository
 					.retrieveDocumentSetRequest(retrieveDocumentSetRequest);
@@ -240,9 +229,8 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 
 			if (!isConsentDocument(originalDocument)) {
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
-						.processDocument(
-								originalDocument, xacmlResponseXml .toString(),
-								false, true,
+						.processDocument(originalDocument,
+								xacmlResponseXml.toString(), false, true,
 								"leo.smith@direct.obhita-stage.org",
 								subjectEmailAddress);
 				processedPayload = dataHandlerToBytesConverter

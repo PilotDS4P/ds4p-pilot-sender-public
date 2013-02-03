@@ -30,8 +30,24 @@
 	<jaxws:endpoint id="securedfilterc32service"
 		implementor="#securedfilterC32ServiceImpl" wsdlLocation="classpath:SecuredFilterC32Service.wsdl"
 		address="/securedfilterc32service">
+		
+		
 	</jaxws:endpoint>
-
+	
+	 <!-- <bean name="samlValidator" class="gov.va.ds4p.security.saml.SAMLValidator"/>
+	
+     <jaxws:service serviceClass="gov.samhsa.ds4ppilot.contract.securedorchestrator.SecuredFilterC32ServicePortType">
+         <jaxws:ws-security>
+             <jaxws:ws-config>
+                 <jaxws:action value="SAMLTokenUnsigned"/>
+             </jaxws:ws-config>
+             <jaxws:ws-custom-validator>
+                 <jaxws:saml1-token-validator ref="samlValidator" />
+                 <jaxws:saml2-token-validator ref="samlValidator"/>
+             </jaxws:ws-custom-validator>
+         </jaxws:ws-security>
+     </jaxws:service>  -->
+    
 	<jaxws:endpoint id="pushfilterc32service" implementor="#pushfilterC32ServiceImpl"
 		wsdlLocation="classpath:PushFilterC32Service.wsdl" address="/pushfilterc32service">
 		<jaxws:properties>
