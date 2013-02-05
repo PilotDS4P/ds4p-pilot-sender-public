@@ -861,5 +861,4 @@ public class ClinicalDocumentProvider {
         xacml.getTemplateId().add(id);
         return xacml;        
     }
-    
 }
