@@ -12,6 +12,7 @@
   <version>1.0</version>
   <name>cda-consent-service-client</name>
   <url>http://maven.apache.org</url>
+  <packaging>jar</packaging>
   <build>
     <plugins>
         <plugin>
@@ -28,7 +29,7 @@
                         <wsdlFiles>
                             <wsdlFile>CDAR2ConsentDirective.wsdl</wsdlFile>                      
                         </wsdlFiles>
-                        <wsdlLocation>http://174.78.146.228:8080/DS4PACSServices/CDAR2ConsentDirective?wsdl</wsdlLocation>
+                        <wsdlLocation>http://localhost:8080/DS4PACSServices/CDAR2ConsentDirective?wsdl</wsdlLocation>
                         <wsdlDirectory>${basedir}/../acs-services/target/classes/META-INF</wsdlDirectory>
                         <staleFile>${project.build.directory}/jaxws/stale/DS4PAuditService.stale</staleFile>
                         <packageName>gov.va.ehtac.ds4p.ws.cda</packageName>
@@ -37,6 +38,7 @@
                           <verbose>true</verbose>
                           <extension>true</extension>
                           <target>2.0</target>
+                          <keep>true</keep>
                     </configuration>
                 </execution>
             </executions>

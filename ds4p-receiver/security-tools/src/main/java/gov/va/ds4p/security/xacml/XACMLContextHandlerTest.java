@@ -19,12 +19,11 @@ import com.jerichosystems.esds.evaluation.xacml.policy.ObligationsType;
 import com.jerichosystems.esds.evaluation.xacml.policy.PolicySetType;
 import com.jerichosystems.services.xacmlpolicyevaluationservice._1.XACMLPolicyEvaluationService;
 import com.jerichosystems.services.xacmlpolicyevaluationservice._1.XACMLPolicyEvaluationServiceService;
-import gov.samhsa.ds4ppilot.common.exception.DS4PException;
-import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
-import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
+//import gov.samhsa.ds4ppilot.common.exception.DS4PException;
+//import gov.samhsa.ds4ppilot.schema.orchestrator.RegisteryStoredQueryResponse;
+//import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
 import gov.va.ds4p.cas.constants.DS4PConstants;
 import gov.va.ds4p.cas.providers.ClinicalDocumentProvider;
-import gov.va.ds4p.cas.providers.VocabularyProvider;
 import gov.va.ds4p.policy.reference.ActInformationSensitivityPolicy;
 import gov.va.ds4p.policy.reference.ActUSPrivacyLaw;
 import gov.va.ds4p.policy.reference.ApplicableObligationPolicies;
@@ -33,12 +32,17 @@ import gov.va.ds4p.policy.reference.ApplicableSensitivityCodes;
 import gov.va.ds4p.policy.reference.ApplicableUSLaws;
 import gov.va.ds4p.policy.reference.ObligationPolicy;
 import gov.va.ds4p.policy.reference.RefrainPolicy;
-import gov.va.ds4p.registry.xdsbregistry.XdsbRegistry;
-import gov.va.ds4p.repository.xdsbrepository.XdsbRepository;
-import gov.va.ehtac.ds4p.ws.AuthLog;
-import gov.va.ehtac.ds4p.ws.DS4PAudit;
-import gov.va.ehtac.ds4p.ws.DS4PAuditService;
-import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
+import gov.va.ehtac.ds4p.ws.au.AuthLog;
+import gov.va.ehtac.ds4p.ws.au.DS4PAudit;
+import gov.va.ehtac.ds4p.ws.au.DS4PAuditService;
+//import gov.va.ds4p.registry.xdsbregistry.XdsbRegistry;
+//import gov.va.ds4p.repository.xdsbrepository.XdsbRepository;
+//import gov.va.ehtac.ds4p.ws.AuthLog;
+//import gov.va.ehtac.ds4p.ws.DS4PAudit;
+//import gov.va.ehtac.ds4p.ws.DS4PAuditService;
+//import gov.va.ehtac.ds4p.ws.EnforcePolicyResponse.Return;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+import gov.va.ds4p.security.vocab.VocabularyProvider;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse.DocumentResponse;
@@ -62,7 +66,6 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.*;
-import org.apache.xml.security.utils.Base64;
 import org.hl7.v3.CD;
 import org.hl7.v3.ED;
 import org.hl7.v3.POCDMT000040Act;
@@ -86,7 +89,7 @@ import org.oasis.names.tc.xspa.v2.XspaSubject;
  *
  * @author Duane DeCouteau
  */
-public class XACMLContextHandler {
+public class XACMLContextHandlerTest {
     
     //for testing purposes create config file later....
     private String pdpEndpoint = "http://75.145.119.97/XACMLPolicyEvaluationService/soap?wsdl";
@@ -104,11 +107,11 @@ public class XACMLContextHandler {
     private PolicySetType policy = new PolicySetType();
     private ResponseType response = new ResponseType();
     
-    /** The xdsbRepository. */
-    private XdsbRepository xdsbRepository;
-
-    /** The xdsbRegistry. */
-    private XdsbRegistry xdsbRegistry;
+//    /** The xdsbRepository. */
+//    private XdsbRepository xdsbRepository;
+//
+//    /** The xdsbRegistry. */
+//    private XdsbRegistry xdsbRegistry;
     
     //patient consent id
     private String documentId;
@@ -134,7 +137,7 @@ public class XACMLContextHandler {
         }
     }
     
-    public XACMLContextHandler() {
+    public XACMLContextHandlerTest() {
         
     }
     
@@ -145,6 +148,9 @@ public class XACMLContextHandler {
         this.messageId = subject.getMessageId();
         this.requeststart = new Date();
         
+        this.response = new ResponseType();
+        this.query = new RequestType();
+        this.policy = new PolicySetType();
         
         //retrieve patient consent
         getAndProcessPatientConsent();
@@ -197,7 +203,7 @@ public class XACMLContextHandler {
                     detail.getXacmlStatusDetail().add(obj);
                 }
             }
-
+            System.out.println("XACMLCONTEXTHANDLER_DECISION: "+d.value());
             decisionObject.setPdpDecision(d.value());
             decisionObject.setPdpStatus("ok");
             //the following is a work around for XACML 2.0
@@ -208,17 +214,19 @@ public class XACMLContextHandler {
             decisionObject.setResponseTime(convertDateToXMLGregorianCalendar(new Date()));
             decisionObject.setResourceName(currResource.getResourceName());
             decisionObject.setResourceId(currResource.getResourceId());
-            decisionObject.setHomeCommunityId(currSubject.getSubjectLocality());        
+            decisionObject.setHomeCommunityId(currSubject.getSubjectLocality()); 
+            decisionObject.setMessageId(currSubject.getMessageId());
     }
     
     private void getAndProcessPatientConsent() {
         try {
             String cdaR2 = getXDSbPatientConsent();
+            //System.out.println("CLINICAL_DOCUMENT: "+cdaR2);
             POCDMT000040ClinicalDocument consentDocument = cProvider.createClinicalDocumentFromXMLString(cdaR2);
             processClinicalDocument(consentDocument);
         }
         catch (Exception ex) {
-            throw new DS4PException(ex.getMessage(), ex);
+            ex.printStackTrace();
         }
    
     }
@@ -238,13 +246,15 @@ public class XACMLContextHandler {
             while (iterRelationships.hasNext()) {
                 POCDMT000040EntryRelationship rel = (POCDMT000040EntryRelationship)iterRelationships.next();
                 POCDMT000040Act rAct = rel.getAct();
-                CD cd = rAct.getCode();
-                if (cd.getCode().equals("DISCLOSE")) {
-                    if (rAct.isNegationInd()) {
-                        patientAuthorization = "Deny";
-                    }
-                    else {
-                        patientAuthorization = "Disclose";
+                if (rAct != null) {
+                    CD cd = rAct.getCode();
+                    if (cd.getCode().equals("DISCLOSE")) {
+                        if (rAct.isNegationInd()) {
+                            patientAuthorization = "Deny";
+                        }
+                        else {
+                            patientAuthorization = "Disclose";
+                        }
                     }
                 }
                 try {
@@ -263,7 +273,7 @@ public class XACMLContextHandler {
             }
         }
         catch (Exception ex) {
-            throw new DS4PException(ex.getMessage(), ex);
+            ex.printStackTrace();
         }
     }
     
@@ -273,18 +283,20 @@ public class XACMLContextHandler {
         String cdaR2 = "";
         //get metadata 
         try {
-            RegisteryStoredQueryResponse resp = registeryStoredQueryRequest();
-            AdhocQueryResponse adhoc = getQueryResponse(resp.getReturn());
-            processMetaData(adhoc.getRegistryObjectList());
-            RetrieveDocumentSetResponse resp2 = retrieveDocumentSetRequest(documentId);
-            String currentDocument = resp2.getReturn();
-            ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = unmarshallFromXml(ihe.iti.xds_b._2007.RetrieveDocumentSetResponse.class, currentDocument);
-            DocumentResponse documentResponse = xdsbRetrieveDocumentSetResponse.getDocumentResponse().get(0);
-            byte[] processDocBytes = documentResponse.getDocument();
-            cdaR2 = new String(processDocBytes);  
+//            RegisteryStoredQueryResponse resp = registeryStoredQueryRequest();
+//            AdhocQueryResponse adhoc = getQueryResponse(resp.getReturn());
+//            processMetaData(adhoc.getRegistryObjectList());
+//            RetrieveDocumentSetResponse resp2 = retrieveDocumentSetRequest(documentId);
+//            String currentDocument = resp2.getReturn();
+//            ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = unmarshallFromXml(ihe.iti.xds_b._2007.RetrieveDocumentSetResponse.class, currentDocument);
+//            DocumentResponse documentResponse = xdsbRetrieveDocumentSetResponse.getDocumentResponse().get(0);
+//            byte[] processDocBytes = documentResponse.getDocument();
+//            cdaR2 = new String(processDocBytes);  
+            XACMLTestData testD = new XACMLTestData();
+            cdaR2 = testD.getPatientConsent();
         }
         catch (Exception ex) {
-            throw new DS4PException(ex.getMessage(), ex);
+            ex.printStackTrace();
         }
         return cdaR2;
     }
@@ -336,16 +348,18 @@ public class XACMLContextHandler {
         try {
             //this is a base65 value so decode
             String policyString = new String(Base64.decode(policy));
+            //System.out.println("POLICYSET_STRING: "+policyString);
             JAXBContext context = JAXBContext.newInstance(PolicySetType.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             StringReader sr = new StringReader(policyString);
 
             Object o = unmarshaller.unmarshal(sr);
-            res = (PolicySetType)o;
+            JAXBElement element = (JAXBElement)o;
+            res = (PolicySetType)element.getValue();
             
         }
         catch (Exception ex) {
-            throw new DS4PException(ex.getMessage(), ex);
+            ex.printStackTrace();
         }
         
         return res;
@@ -523,72 +537,72 @@ public class XACMLContextHandler {
         return identifier;
     }
     
-    private RegisteryStoredQueryResponse registeryStoredQueryRequest() {
-            AdhocQueryRequest registryStoredQuery = new AdhocQueryRequest();
-
-            ResponseOptionType responseOptionType = new ResponseOptionType();
-            responseOptionType.setReturnComposedObjects(true);
-            responseOptionType.setReturnType("LeafClass");
-            registryStoredQuery.setResponseOption(responseOptionType);
-
-            AdhocQueryType adhocQueryType = new AdhocQueryType();
-            adhocQueryType.setId("urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d"); // FindDocuments by patientId
-            registryStoredQuery.setAdhocQuery(adhocQueryType);
-
-            SlotType1 patientIdSlotType = new SlotType1();
-            patientIdSlotType.setName("$XDSDocumentEntryPatientId");
-            ValueListType patientIdValueListType = new ValueListType();
-            patientIdValueListType.getValue().add("'"+currResource.getResourceId()+"^^^&"+homeCommunityId+"'"); // PatientId
-            patientIdSlotType.setValueList(patientIdValueListType);
-            adhocQueryType.getSlot().add(patientIdSlotType);
-
-            SlotType1 statusSlotType = new SlotType1();
-            statusSlotType.setName("$XDSDocumentEntryStatus");
-            ValueListType statusValueListType = new ValueListType();
-            statusValueListType.getValue().add("('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')"); 
-            statusSlotType.setValueList(statusValueListType);
-            adhocQueryType.getSlot().add(statusSlotType);
-
-            AdhocQueryResponse result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
-
-            RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
-
-            try {
-                    String xmlResponse = marshall(result, result.getClass(), RegistryObjectListType.class);
-                    response.setReturn(xmlResponse);
-                    
-            } catch (Throwable e) {
-                    throw new DS4PException(e.toString(), e);
-            }
-
-            return response;
-    }
-    
-    public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String documentUniqueId) {
-            RetrieveDocumentSetResponse response = new RetrieveDocumentSetResponse();
-            RetrieveDocumentSetRequest retrieveDocumentSet = new RetrieveDocumentSetRequest();
-            DocumentRequest documentRequest = new DocumentRequest();
-            documentRequest.setHomeCommunityId(homeCommunityId);
-            documentRequest.setRepositoryUniqueId(repositoryId);
-            documentRequest.setDocumentUniqueId(documentUniqueId);
-            retrieveDocumentSet.getDocumentRequest().add(documentRequest);
-
-            Return result = null;
-
-            ihe.iti.xds_b._2007.RetrieveDocumentSetResponse retrieveDocumentSetResponse = null;
-
-            retrieveDocumentSetResponse = xdsbRepository
-                            .retrieveDocumentSetRequest(retrieveDocumentSet);
-            try {
-                    String xmlResponse = marshall(retrieveDocumentSetResponse, retrieveDocumentSetResponse.getClass());
-                    response.setReturn(xmlResponse);
-            } catch (Throwable e) {
-                    throw new DS4PException(e.toString(), e);
-            }
-
-            return response;
-    }
-    
+//    private RegisteryStoredQueryResponse registeryStoredQueryRequest() {
+//            AdhocQueryRequest registryStoredQuery = new AdhocQueryRequest();
+//
+//            ResponseOptionType responseOptionType = new ResponseOptionType();
+//            responseOptionType.setReturnComposedObjects(true);
+//            responseOptionType.setReturnType("LeafClass");
+//            registryStoredQuery.setResponseOption(responseOptionType);
+//
+//            AdhocQueryType adhocQueryType = new AdhocQueryType();
+//            adhocQueryType.setId("urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d"); // FindDocuments by patientId
+//            registryStoredQuery.setAdhocQuery(adhocQueryType);
+//
+//            SlotType1 patientIdSlotType = new SlotType1();
+//            patientIdSlotType.setName("$XDSDocumentEntryPatientId");
+//            ValueListType patientIdValueListType = new ValueListType();
+//            patientIdValueListType.getValue().add("'"+currResource.getResourceId()+"^^^&"+homeCommunityId+"'"); // PatientId
+//            patientIdSlotType.setValueList(patientIdValueListType);
+//            adhocQueryType.getSlot().add(patientIdSlotType);
+//
+//            SlotType1 statusSlotType = new SlotType1();
+//            statusSlotType.setName("$XDSDocumentEntryStatus");
+//            ValueListType statusValueListType = new ValueListType();
+//            statusValueListType.getValue().add("('urn:oasis:names:tc:ebxml-regrep:StatusType:Approved')"); 
+//            statusSlotType.setValueList(statusValueListType);
+//            adhocQueryType.getSlot().add(statusSlotType);
+//
+//            AdhocQueryResponse result = xdsbRegistry.registryStoredQuery(registryStoredQuery);
+//
+//            RegisteryStoredQueryResponse response = new RegisteryStoredQueryResponse();
+//
+//            try {
+//                    String xmlResponse = marshall(result, result.getClass(), RegistryObjectListType.class);
+//                    response.setReturn(xmlResponse);
+//                    
+//            } catch (Throwable e) {
+//                    throw new DS4PException(e.toString(), e);
+//            }
+//
+//            return response;
+//    }
+//    
+//    public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String documentUniqueId) {
+//            RetrieveDocumentSetResponse response = new RetrieveDocumentSetResponse();
+//            RetrieveDocumentSetRequest retrieveDocumentSet = new RetrieveDocumentSetRequest();
+//            DocumentRequest documentRequest = new DocumentRequest();
+//            documentRequest.setHomeCommunityId(homeCommunityId);
+//            documentRequest.setRepositoryUniqueId(repositoryId);
+//            documentRequest.setDocumentUniqueId(documentUniqueId);
+//            retrieveDocumentSet.getDocumentRequest().add(documentRequest);
+//
+//            Return result = null;
+//
+//            ihe.iti.xds_b._2007.RetrieveDocumentSetResponse retrieveDocumentSetResponse = null;
+//
+//            retrieveDocumentSetResponse = xdsbRepository
+//                            .retrieveDocumentSetRequest(retrieveDocumentSet);
+//            try {
+//                    String xmlResponse = marshall(retrieveDocumentSetResponse, retrieveDocumentSetResponse.getClass());
+//                    response.setReturn(xmlResponse);
+//            } catch (Throwable e) {
+//                    throw new DS4PException(e.toString(), e);
+//            }
+//
+//            return response;
+//    }
+//    
     
     private String marshall(Object obj, Class<?>... classesToBeBound) throws Throwable {
             JAXBContext context = JAXBContext.newInstance(classesToBeBound);
@@ -597,7 +611,7 @@ public class XACMLContextHandler {
             StringWriter stringWriter = new StringWriter();
             marshaller.marshal(obj, stringWriter);
 
-            System.out.println(stringWriter.toString());
+            //System.out.println(stringWriter.toString());
 
             return stringWriter.toString();
     }
@@ -613,8 +627,7 @@ public class XACMLContextHandler {
             res = sw.toString();
         }
         catch (Exception ex) {
-            throw new DS4PException("Unable to Dump Request ToString", ex);
-//            ex.printStackTrace();
+            ex.printStackTrace();
         }
         return res;
     }
@@ -632,8 +645,7 @@ public class XACMLContextHandler {
             res = sw.toString();
         }
         catch (Exception ex) {
-            throw new DS4PException("Unable to Dump Response toString",ex);
-//            ex.printStackTrace();
+            ex.printStackTrace();
         }  
         return res;
     }
@@ -685,7 +697,7 @@ public class XACMLContextHandler {
           port.saveAuthorizationEvent(authlog);
       }
       catch (Exception ex) {
-          throw new DS4PException (ex.getMessage(), ex);
+          ex.printStackTrace();
       }
    }
 
@@ -697,7 +709,7 @@ public class XACMLContextHandler {
         xgc = dtf.newXMLGregorianCalendar(gc);
        }
        catch (Exception ex) {
-          throw new DS4PException (ex.getMessage(), ex);
+          ex.printStackTrace();
        }
         return xgc;
    }
@@ -717,7 +729,7 @@ public class XACMLContextHandler {
             xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
         }
         catch (Exception ex) {
-            throw new DS4PException(ex.getMessage(), ex);
+            ex.printStackTrace();
         }
         return xcal;
     }

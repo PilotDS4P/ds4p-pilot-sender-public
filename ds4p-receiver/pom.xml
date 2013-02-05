@@ -18,5 +18,6 @@
     <module>rxnorm-restful-client</module>
     <module>ds4p-admin-test-harness-p2</module>
     <module>cda-consent-service-client</module>
+    <module>security-tools</module>
   </modules>
 </project>

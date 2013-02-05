@@ -48,6 +48,7 @@ import gov.va.ds4p.security.xacml.XACMLContextHandler;
  */
 public class SAMLValidator implements SAMLAssertionValidator {
     
+    private Element samlAssertion;
     
     private SimpleDateFormat ds = new SimpleDateFormat("MM/dd/yyyy");
     // todo move this out into config file
@@ -55,14 +56,27 @@ public class SAMLValidator implements SAMLAssertionValidator {
     private XACMLContextHandler handler = new XACMLContextHandler();
     
     public void validate(Element arg0) throws SAMLValidationException {
-        throw new UnsupportedOperationException("SAMLAssertionValidator : Operation Should not be Called1.");
+        try {
+            samlAssertion = arg0;
+            validate();
+        }
+        catch (Exception ex) {
+            throw new SAMLValidationException("Invalid Element Assertion"); 
+        }
     }
 
     public void validate(XMLStreamReader arg0) throws SAMLValidationException {
        try {
-           Element samlAssertion = SAMLUtil.createSAMLAssertion(arg0);
+           samlAssertion = SAMLUtil.createSAMLAssertion(arg0);
+           validate();
+       }
+       catch (Exception ex) {
+          throw new SAMLValidationException("Invalid Stream Assertion");  
+       }
+    }
 
-                     
+     private void validate() throws SAMLValidationException {
+         try {         
            SAMLAssertionFactory samlFactory = SAMLAssertionFactory.newInstance(SAMLAssertionFactory.SAML2_0);
            Assertion assertion = (com.sun.xml.wss.saml.assertion.saml20.jaxb20.Assertion)samlFactory.createAssertion(samlAssertion);
            
@@ -196,10 +210,6 @@ public class SAMLValidator implements SAMLAssertionValidator {
             System.err.println(ex.getMessage());
             throw new SAMLValidationException(ex);
        } 
-       catch (XMLStreamException ex) {
-            System.err.println(ex.getMessage());
-            throw new SAMLValidationException(ex);
-       }
        catch (SAMLException ex) {
            System.err.println(ex.getMessage());
            throw new SAMLValidationException(ex);

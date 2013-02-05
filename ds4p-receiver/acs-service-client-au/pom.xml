@@ -12,6 +12,7 @@
   <version>1.0</version>
   <name>acs-service-client-au</name>
   <url>http://maven.apache.org</url>
+  <packaging>jar</packaging>
   <build>
     <plugins>
         <plugin>
@@ -36,6 +37,7 @@
                           <xnocompile>true</xnocompile>
                           <verbose>true</verbose>
                           <extension>true</extension>
+                          <keep>true</keep>
                           <target>2.0</target>
                     </configuration>
                 </execution>
