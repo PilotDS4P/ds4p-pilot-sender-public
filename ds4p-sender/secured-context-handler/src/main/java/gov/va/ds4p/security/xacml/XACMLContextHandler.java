@@ -91,9 +91,14 @@ public class XACMLContextHandler {
 
 	// for testing purposes create config file later....
 	private String pdpEndpoint = "http://75.145.119.97/XACMLPolicyEvaluationService/soap?wsdl";
+	
+	/*  Modified by Burak Tasel 2/4/2013 - Added needed endpoints */
+	/* begin */
 	private String auditEndpoint = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService?wsdl";
-	private String xdsbRepositoryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
+	private String xdsbRepositoryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";	 
 	private String xdsbRegistryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
+	/* end */
+	
 	private String homeCommunityId = "2.16.840.1.113883.3.467";
 	private String repositoryId = "1.3.6.1.4.1.21367.2010.1.2.1040";
 
@@ -148,7 +153,13 @@ public class XACMLContextHandler {
 		this.messageId = subject.getMessageId();
 		this.requeststart = new Date();
 
-		// retrieve patient consent
+        
+                //initialize interactions
+                this.response = new ResponseType();
+                this.query = new RequestType();
+                this.policy = new PolicySetType();
+        
+        //retrieve patient consent
 		getAndProcessPatientConsent();
 
 		// create xacml request
@@ -216,6 +227,7 @@ public class XACMLContextHandler {
 		decisionObject.setResourceName(currResource.getResourceName());
 		decisionObject.setResourceId(currResource.getResourceId());
 		decisionObject.setHomeCommunityId(currSubject.getSubjectLocality());
+                decisionObject.setMessageId(currSubject.getMessageId());
 	}
 
 	private void getAndProcessPatientConsent() {
@@ -247,14 +259,16 @@ public class XACMLContextHandler {
 				POCDMT000040EntryRelationship rel = (POCDMT000040EntryRelationship) iterRelationships
 						.next();
 				POCDMT000040Act rAct = rel.getAct();
-				CD cd = rAct.getCode();
-				if (cd.getCode().equals("DISCLOSE")) {
+                                if (rAct != null) {
+                                    CD cd = rAct.getCode();
+                                    if (cd.getCode().equals("DISCLOSE")) {
 					if (rAct.isNegationInd()) {
 						patientAuthorization = "Deny";
 					} else {
 						patientAuthorization = "Disclose";
 					}
-				}
+                                    }
+                                }
 				try {
 					POCDMT000040ObservationMedia obs = rel
 							.getObservationMedia();
@@ -333,12 +347,15 @@ public class XACMLContextHandler {
 						if (CONSENT_NOTE_TYPE
 								.equals(extractDocumentType(extrinsicObject))) {
 							
+							/*  Modified by Burak Tasel 2/4/2013 - Extract most recent consent documentId */
+							/* begin */
 							Date creationDateTime = extractcreationDateTime(extrinsicObject);
 							
 							if (creationDateTime.after(theLatestConsentDocumentEntryCreationTime)) {
 								theLatestConsentDocumentEntryCreationTime = creationDateTime;
 								documentId = extractDocumentID(extrinsicObject);								
 							}
+							/* end */
 						}
 					}
 				}
@@ -357,7 +374,8 @@ public class XACMLContextHandler {
 			StringReader sr = new StringReader(policyString);
 
 			Object o = unmarshaller.unmarshal(sr);
-			res = (PolicySetType) o;
+                        JAXBElement element = (JAXBElement)o;
+                        res = (PolicySetType)element.getValue();
 
 		} catch (Exception ex) {
 			throw new DS4PException(ex.getMessage(), ex);
@@ -531,7 +549,9 @@ public class XACMLContextHandler {
 
 		return documentID;
 	}
-
+	
+	/*  Modified by Burak Tasel 2/4/2013 - Extract most recent consent documentId */
+	/* begin */
 	private Date extractcreationDateTime(ExtrinsicObjectType extrinsicObjectType) {
 		Date creationDateTime = new Date(Long.MIN_VALUE);	
 
@@ -563,6 +583,7 @@ public class XACMLContextHandler {
 
 		return creationDateTime;
 	}
+	/* end */
 
 	private ExternalIdentifierType extractIndentifierType(
 			ExtrinsicObjectType extrinsicObject, String identificationScheme) {
@@ -598,9 +619,13 @@ public class XACMLContextHandler {
 		SlotType1 patientIdSlotType = new SlotType1();
 		patientIdSlotType.setName("$XDSDocumentEntryPatientId");
 		ValueListType patientIdValueListType = new ValueListType();
+		
+		/*  Modified by Burak Tasel 2/4/2013 - Appended &ISO to patientId and trim homeCommunityId */
+		/* begin */
 		patientIdValueListType.getValue().add(
 				"'" + currResource.getResourceId().trim() + "^^^&"
 						+ homeCommunityId.trim() + "&ISO'"); // PatientId
+		/* end */
 		patientIdSlotType.setValueList(patientIdValueListType);
 		adhocQueryType.getSlot().add(patientIdSlotType);
 
@@ -641,10 +666,12 @@ public class XACMLContextHandler {
 		retrieveDocumentSet.getDocumentRequest().add(documentRequest);
 
 		Return result = null;
-
+		/*  Modified by Burak Tasel 2/4/2013 - Initialize xdsbRepository with endpoints */
+		/* begin */
 		ihe.iti.xds_b._2007.RetrieveDocumentSetResponse retrieveDocumentSetResponse = null;
 		xdsbRepository = new gov.va.ds4p.repository.xdsbrepository.XdsbRepositoryImpl(
 				xdsbRepositoryEndpoint);
+		/* end */
 		retrieveDocumentSetResponse = xdsbRepository
 				.retrieveDocumentSetRequest(retrieveDocumentSet);
 		try {
