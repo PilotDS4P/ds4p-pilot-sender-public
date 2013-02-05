@@ -403,7 +403,7 @@ public class OrchestratorImpl implements Orchestrator {
 
 			// TODO: Check the result here to see if the CA code is return. If
 			// not throws exception
-			System.out.println(result);
+			//System.out.println(result);
 		}
 
 		String metadataString = new XdsbMetadataGeneratorImpl(
@@ -421,7 +421,7 @@ public class OrchestratorImpl implements Orchestrator {
 			e1.printStackTrace();
 		}
 
-		System.out.println(metadataString);
+		//System.out.println(metadataString);
 
 		String documentId = null;
 
@@ -478,12 +478,12 @@ public class OrchestratorImpl implements Orchestrator {
 			registryResponse = xdsbRepository
 					.provideAndRegisterDocumentSetRequest(request);
 
-			try {
+			/*try {
 				System.out.println(marshall(registryResponse));
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 
 			RegistryErrorList registryErrorList = registryResponse
 					.getRegistryErrorList();
@@ -984,12 +984,12 @@ public class OrchestratorImpl implements Orchestrator {
 			}
 		}
 
-		try {
+		/*try {
 			System.out.println(marshall(adhocQueryResponse));
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		return adhocQueryResponse;
 	}

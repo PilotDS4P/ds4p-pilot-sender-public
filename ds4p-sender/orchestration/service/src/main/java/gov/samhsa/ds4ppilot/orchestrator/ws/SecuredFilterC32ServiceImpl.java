@@ -34,12 +34,13 @@ import gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetRespon
 
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
+import javax.xml.ws.soap.Addressing;
 
 /**
  * The Class FilterC32ServiceImpl.
  */
 @WebService(targetNamespace = "http://www.samhsa.gov/ds4ppilot/contract/securedorchestrator", portName = "SecuredFilterC32Port", serviceName = "SecuredFilterC32Service", endpointInterface = "gov.samhsa.ds4ppilot.contract.securedorchestrator.SecuredFilterC32ServicePortType")
-@HandlerChain(file = "samlhandler.xml")
+@HandlerChain(file = "/samlhandler.xml")
 public class SecuredFilterC32ServiceImpl implements SecuredFilterC32ServicePortType {
 
 	/** The secured orchestrator. */

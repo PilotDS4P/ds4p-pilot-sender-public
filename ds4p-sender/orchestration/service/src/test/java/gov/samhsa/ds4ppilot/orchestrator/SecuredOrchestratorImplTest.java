@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
+import gov.samhsa.ds4ppilot.orchestrator.audit.AuditServiceImpl;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32Getter;
 import gov.samhsa.ds4ppilot.orchestrator.c32getter.C32GetterImpl;
 import gov.samhsa.ds4ppilot.orchestrator.contexthandler.ContextHandler;
@@ -104,6 +105,9 @@ public class SecuredOrchestratorImplTest {
 		final String contextHandlerEndpointAddress = "http://174.78.146.228:8080/DS4PACSServices/DS4PContextHandler";
 		ContextHandlerImpl contextHandler = new ContextHandlerImpl(
 				contextHandlerEndpointAddress);
+		
+		final String endpointAddressForAuditServcie = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService?wsdl";
+		gov.samhsa.ds4ppilot.orchestrator.audit.AuditServiceImpl auditService = new AuditServiceImpl(endpointAddressForAuditServcie);
 
 		final String endpointAddress = "http://localhost/Rem.Web/C32Service.svc";
 		C32GetterImpl c32Getter = new C32GetterImpl(endpointAddress);
@@ -122,7 +126,7 @@ public class SecuredOrchestratorImplTest {
 				xdsbRegistryEndpointAddress);
 
 		SecuredOrchestratorImpl securedOrchestrator = new SecuredOrchestratorImpl(contextHandler,
-				c32Getter, documentProcessor, dataHandlerToBytesConverter,
+				c32Getter, documentProcessor, auditService, dataHandlerToBytesConverter,
 				xdsbRepository, xdsbRegistry);
 
 		securedOrchestrator.setSubjectPurposeOfUse("TREAT");
@@ -145,6 +149,9 @@ public class SecuredOrchestratorImplTest {
 	@Test
 	public void testSamlRegisteryStoredQueryRequest() {
 		final String xdsbRepositoryEndpointAddress = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";
+		
+		final String endpointAddressForAuditServcie = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService";
+		gov.samhsa.ds4ppilot.orchestrator.audit.AuditServiceImpl auditService = new AuditServiceImpl(endpointAddressForAuditServcie);
 
 		final String contextHandlerEndpointAddress = "http://174.78.146.228:8080/DS4PACSServices/DS4PContextHandler";
 		ContextHandlerImpl contextHandler = new ContextHandlerImpl(
@@ -167,7 +174,7 @@ public class SecuredOrchestratorImplTest {
 				xdsbRegistryEndpointAddress);
 
 		SecuredOrchestratorImpl securedOrchestrator = new SecuredOrchestratorImpl(contextHandler,
-				c32Getter, documentProcessor, dataHandlerToBytesConverter,
+				c32Getter, documentProcessor, auditService, dataHandlerToBytesConverter,
 				xdsbRepository, xdsbRegistry);
 
 		securedOrchestrator.setSubjectPurposeOfUse("TREAT");

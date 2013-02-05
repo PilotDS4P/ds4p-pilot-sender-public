@@ -105,10 +105,9 @@ public class ClinicalDocumentProvider {
             StringReader sr = new StringReader(xml);
 
             Object o = unmarshaller.unmarshal(sr);
+
             JAXBElement element = (JAXBElement)o;
             obj = (POCDMT000040ClinicalDocument)element.getValue();
-            
-
         }
         catch (Exception e) {
             //log.warn("",e);

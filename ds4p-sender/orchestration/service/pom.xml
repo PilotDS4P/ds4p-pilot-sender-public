@@ -29,8 +29,19 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
+			<groupId>audit-service-client-jar-with-dependencies</groupId>
+			<artifactId>audit-service-client-jar-with-dependencies</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>common-library-jar-with-dependencies</groupId>
 			<artifactId>common-library-jar-with-dependencies</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>secured-context-handler-jar-with-dependencies</groupId>
+			<artifactId>secured-context-handler-jar-with-dependencies</artifactId>
 			<version>1.0</version>
 		</dependency>
 
@@ -51,6 +62,11 @@
                         <artifactId>commons-io</artifactId>
                         <version>2.4</version>
                 </dependency>
+                <dependency> 
+        <groupId>sun-jaxws</groupId>
+        <artifactId>stax-ex</artifactId>
+        <version>2.1.1</version>
+      </dependency>
             
 	</dependencies>
 	<build>
