@@ -23,14 +23,10 @@
 		<module>document-processor</module>
 		<module>context-handler-client</module>
 		<module>orchestration</module>
-<<<<<<< HEAD
-                <module>secured-context-handler</module>
-            </modules>
-=======
+
 		<module>secured-context-handler</module>
 	</modules>
 
->>>>>>> 65532f26bef120b6a75f51d29783422ee2a73b2c
 	<properties>
 		<!-- Version Information for dependencies -->
 		<junit-version>4.8.2</junit-version>

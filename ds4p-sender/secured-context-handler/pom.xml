@@ -23,17 +23,14 @@
             </resource>
         </resources>
         <plugins>
-        
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-			</plugin>
-		
-<<<<<<< HEAD
+            <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <configuration>
+                            <descriptorRefs>
+                                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                    </configuration>
+            </plugin>
             <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <configuration>
@@ -42,6 +39,8 @@
                             </descriptorRefs>
                     </configuration>
             </plugin>		
+=======
+>>>>>>> 65532f26bef120b6a75f51d29783422ee2a73b2c
 =======
 >>>>>>> 65532f26bef120b6a75f51d29783422ee2a73b2c
             <plugin>
