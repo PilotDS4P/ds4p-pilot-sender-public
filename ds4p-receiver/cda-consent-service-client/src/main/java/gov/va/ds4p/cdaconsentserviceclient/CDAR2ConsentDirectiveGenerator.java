@@ -17,7 +17,6 @@ import javax.xml.ws.BindingProvider;
  * @author Duane DeCouteau
  */
 public class CDAR2ConsentDirectiveGenerator {
-
     private String endpoint = "http://174.78.146.228:8080/DS4PACSServices/CDAR2ConsentDirective?wsdl";
     private String patientName;
     private String patientId;

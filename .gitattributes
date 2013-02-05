@@ -27,4 +27,8 @@
 *.docx binary
 *.jar binary
 *.war binary
+<<<<<<< HEAD
 *.ear binary
+=======
+*.ear binary
+>>>>>>> 65532f26bef120b6a75f51d29783422ee2a73b2c
