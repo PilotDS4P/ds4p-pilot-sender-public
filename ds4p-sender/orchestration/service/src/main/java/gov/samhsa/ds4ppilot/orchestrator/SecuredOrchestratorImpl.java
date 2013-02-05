@@ -630,12 +630,12 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 			}
 		}
 
-		try {
+		/*try {
 			System.out.println(marshall(adhocQueryResponse));
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		return adhocQueryResponse;
 	}
