@@ -33,6 +33,7 @@
 				</configuration>
 			</plugin>
 		
+<<<<<<< HEAD
             <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <configuration>
@@ -41,6 +42,8 @@
                             </descriptorRefs>
                     </configuration>
             </plugin>		
+=======
+>>>>>>> 65532f26bef120b6a75f51d29783422ee2a73b2c
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
