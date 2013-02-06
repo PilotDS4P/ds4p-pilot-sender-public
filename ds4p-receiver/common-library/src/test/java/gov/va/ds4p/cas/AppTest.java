@@ -5,6 +5,11 @@
  */
 package gov.va.ds4p.cas;
 
+import gov.va.ds4p.cas.providers.VocabularyProvider;
+import gov.va.ds4p.policy.reference.ActInformationSensitivityPolicy;
+import gov.va.ds4p.policy.reference.ApplicableSensitivityCodes;
+import java.util.Iterator;
+import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -38,6 +43,14 @@ public class AppTest
      */
     public void testApp()
     {
+        VocabularyProvider v = new VocabularyProvider();
+        ApplicableSensitivityCodes codes = v.getDataSegmentationObligations();
+        List<ActInformationSensitivityPolicy> codeList = codes.getActInformationSensitivityPolicy();
+        Iterator iter = codeList.iterator();
+        while (iter.hasNext()) {
+            ActInformationSensitivityPolicy p = (ActInformationSensitivityPolicy)iter.next();
+            System.out.println(p.getCode());
+        }
         assertTrue( true );
     }
 }

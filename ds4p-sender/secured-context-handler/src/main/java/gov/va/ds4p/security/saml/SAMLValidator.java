@@ -81,6 +81,7 @@ public class SAMLValidator implements SAMLAssertionValidator {
            Assertion assertion = (com.sun.xml.wss.saml.assertion.saml20.jaxb20.Assertion)samlFactory.createAssertion(samlAssertion);
            
            System.out.println("==== Begin XSPA-SAML Network ACD ====");
+           String msgId = assertion.getAssertionID();
            //validate date range
            ConditionsType cond = assertion.getConditions();
            XMLGregorianCalendar dbefore = cond.getNotBefore();
@@ -135,6 +136,7 @@ public class SAMLValidator implements SAMLAssertionValidator {
            //detail stuff needed by PEP
            XspaResource xresource = new XspaResource();
            XspaSubject xsubject = new XspaSubject();
+           xsubject.setMessageId(msgId);
            //Resultant policy decisions seperate in case we choose to log differently
            PolicyEnforcementObject policyReturn = new PolicyEnforcementObject();
            List<StatementAbstractType> las = assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement();

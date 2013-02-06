@@ -111,11 +111,6 @@
       </dependency>
     <dependency>
       <groupId>gov.hhs.samhsa.ds4p</groupId>
-      <artifactId>audit-service-client</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>gov.hhs.samhsa.ds4p</groupId>
       <artifactId>context-handler-client</artifactId>
       <version>1.0</version>
     </dependency>
@@ -123,6 +118,11 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>gov.hhs.samhsa.ds4p</groupId>
+      <artifactId>audit-service-client</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
 </project>

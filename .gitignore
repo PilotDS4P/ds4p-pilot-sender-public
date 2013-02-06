@@ -10,3 +10,12 @@ bin
 *.jar
 *.war
 *.ear
+/ds4p-receiver/TestVAWebServices/nbproject/private/
+/ds4p-receiver/TestVAWebServices/build/
+/ds4p-receiver/TestVAWebServices/dist/
+/ds4p-receiver/TestVAWebClient/nbproject/private/
+/ds4p-receiver/TestVAWebClient/build/
+/ds4p-receiver/TestVAWebClient/dist/
+/ds4p-receiver/TestVAWebClientLib/nbproject/private/
+/ds4p-receiver/TestVAWebClientLib/build/
+/ds4p-receiver/TestVAWebClientLib/dist/
