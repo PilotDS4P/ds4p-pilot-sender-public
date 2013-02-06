@@ -105,7 +105,8 @@ public class ClinicalDocumentProvider {
             StringReader sr = new StringReader(xml);
 
             Object o = unmarshaller.unmarshal(sr);
-            obj = (POCDMT000040ClinicalDocument)o;
+            JAXBElement element = (JAXBElement)o;
+            obj = (POCDMT000040ClinicalDocument)element.getValue();
 
         }
         catch (Exception e) {
@@ -860,5 +861,4 @@ public class ClinicalDocumentProvider {
         xacml.getTemplateId().add(id);
         return xacml;        
     }
-    
 }
