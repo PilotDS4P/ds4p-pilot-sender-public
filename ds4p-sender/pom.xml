@@ -22,8 +22,9 @@
 		<module>healthcare-classification-service</module>
 		<module>document-processor</module>
 		<module>context-handler-client</module>
-		<module>orchestration</module>
 		<module>secured-context-handler</module>
+		<module>orchestration</module>
+		
 	</modules>
 
 	<properties>
