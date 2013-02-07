@@ -124,7 +124,7 @@ public class XACMLPolicyProviderForCDA {
         buffer.append("<Condition>");
         buffer.append("<Apply FunctionId=\"urn:oasis:names:tc:xacml:1.0:function:string-equal\">");
         buffer.append("<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Disclose</AttributeValue>");
-        buffer.append("<ResourceAttributeDesignator AttributeId=\"urn:org:mitre:resource:patient:authorization\" DataType=\"http://www.w3.org/2001/XMLSchema#string\"/>");
+        buffer.append("<ResourceAttributeDesignator AttributeId=\"urn:oasis:names:tc:xspa:2.0:resource:patient:authorization\" DataType=\"http://www.w3.org/2001/XMLSchema#string\"/>");
         buffer.append("</Apply>");
         buffer.append("</Condition>");
         buffer.append("</Rule>");

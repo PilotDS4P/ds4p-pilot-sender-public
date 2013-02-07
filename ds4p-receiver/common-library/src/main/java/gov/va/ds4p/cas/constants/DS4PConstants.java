@@ -51,7 +51,7 @@ public class DS4PConstants {
     public static final String ORG_REFRAIN_POLICY_CONSTRUCT = "urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:";
     public static final String ORG_DOCUMENT_HANDLING_CONSTRUCT = "urn:oasis:names:tc:xspa:2.0:resource:org:document-handling:";
             
-    public static final String MITRE_PATIENT_AUTHORIZATION = "urn:org:mitre:resource:patient:authorization";
+    public static final String MITRE_PATIENT_AUTHORIZATION = "urn:oasis:names:tc:xspa:2.0:resource:patient:authorization";
     
     //XSPA CONSTANTS FOR DS4P PUSH
     public static String RESOURCE_NWHIN_SERVICE_NS = "urn:gov:hhs:fha:nhinc:service-type";

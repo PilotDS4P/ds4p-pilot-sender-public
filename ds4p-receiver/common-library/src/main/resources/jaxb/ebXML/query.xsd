@@ -4,7 +4,9 @@
   targetNamespace="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0"
   xmlns="http://www.w3.org/2001/XMLSchema" xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
   xmlns:rs="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0"
-  xmlns:tns="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0">
+  xmlns:tns="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0"
+  >
+        
   <!-- Import the rim.xsd file with XML schema mappaing from RIM -->
   <import namespace="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" schemaLocation="rim.xsd"/>
   <import namespace="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" schemaLocation="rs.xsd"/>

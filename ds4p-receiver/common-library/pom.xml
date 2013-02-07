@@ -71,7 +71,6 @@
                                 <include>jaxb/ebXML/rim.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ebXML-rim.episode</episodeFile>
-                            <generatePackage>oasis.names.tc.ebxml_regrep.xsd.rim._3</generatePackage>
                         </configuration>
                         <id>jaxb-generate-ebXML-rim</id>
                     </execution>
@@ -84,7 +83,6 @@
                                 <include>jaxb/ebXML/lcm.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ebXML-lcm.episode</episodeFile>
-                            <generatePackage>oasis.names.tc.ebxml_regrep.xsd.lcm._3</generatePackage>
                         </configuration>
                         <id>jaxb-generate-ebXML-lcm</id>
                     </execution>
@@ -97,7 +95,6 @@
                                 <include>jaxb/ebXML/query.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ebXML-query.episode</episodeFile>
-                            <generatePackage>oasis.names.tc.ebxml_regrep.xsd.query._3</generatePackage>
                         </configuration>
                         <id>jaxb-generate-ebXML-query</id>
                     </execution>
@@ -110,7 +107,6 @@
                                 <include>jaxb/ebXML/rs.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ebXML-rs.episode</episodeFile>
-                            <generatePackage>oasis.names.tc.ebxml_regrep.xsd.rs._3</generatePackage>
                         </configuration>
                         <id>jaxb-generate-ebXML-rs</id>
                     </execution>                    
