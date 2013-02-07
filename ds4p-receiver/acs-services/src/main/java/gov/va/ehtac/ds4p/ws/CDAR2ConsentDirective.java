@@ -6,6 +6,7 @@ package gov.va.ehtac.ds4p.ws;
 
 import gov.va.ds4p.cas.providers.ClinicalDocumentProvider;
 import gov.va.ds4p.cas.providers.OrganizationPolicyProvider;
+import gov.va.ds4p.cas.providers.PDFBuilderForCDA;
 import gov.va.ds4p.cas.providers.XACMLPolicyProviderForCDA;
 import gov.va.ds4p.policy.reference.OrganizationPolicy;
 import gov.va.ehtac.ds4p.jpa.OrganizationalPolicy;
@@ -25,6 +26,7 @@ public class CDAR2ConsentDirective {
     OrganizationPolicyProvider provider = new OrganizationPolicyProvider();
     ClinicalDocumentProvider cProvider = new ClinicalDocumentProvider();
     XACMLPolicyProviderForCDA xProvider = new XACMLPolicyProviderForCDA();
+    PDFBuilderForCDA pdfProvider;
     
 
     /**
@@ -74,18 +76,13 @@ public class CDAR2ConsentDirective {
         OrganizationalPolicy p = rule.getOrganizationalPolicy(homeCommunityId);
         OrganizationPolicy p2 = provider.createOrganizationPolicyObjectFromXML(p.getOrganizationalRules());
         
-        String pdfText = "test pdf";
+        //create human readible form
+        pdfProvider = new PDFBuilderForCDA(p2, patientId, patientName, authorization, allowedPOU, allowedRecipients, redactActions, maskingActions);        
+        String pdfText = pdfProvider.getPDFConsentDirective();
+        //create computable policy
         String xacmlText = xProvider.createPatientConsentXACMLPolicy(p2, patientId, authorization, allowedPOU, allowedRecipients, redactActions, maskingActions);
-        System.out.println("XACML:\n"+xacmlText);
-        
-        
-        try {
-            pdfText = p2.getOrganizationConsentPolicyInfo().getHumanReadibleText().getDisplayText();
-        }
-        catch (Exception px) {
-            px.printStackTrace();
-        }
-        
+
+                
         res = cProvider.createConsentDirective(p2, patientName, patientId, patientIdType, patientDateOfBirth, 
                                                 patientGender, authorization, primaryPOU, allowedPOU, 
                                                 intendedRecipient, allowedRecipients, maskingActions, redactActions, pdfText, xacmlText);
