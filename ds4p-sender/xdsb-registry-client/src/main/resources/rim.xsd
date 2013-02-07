@@ -1,24 +1,25 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
+<!-- $Header: /cvsroot/ebxmlrr/ebxmlrr-spec/misc/3.0/schema/rim.xsd,v 1.20 
+	2005/02/03 19:28:15 farrukh_najmi Exp $ -->
 <schema targetNamespace="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
 	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
 	xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
+
 	<annotation>
 		<documentation xml:lang="en">The schema for OASIS ebXML
-			Registry Information
-			Model
-		</documentation>
+			Registry Information Model</documentation>
 	</annotation>
 	<import namespace="http://www.w3.org/XML/1998/namespace"
-		schemaLocation="xml.xsd" />
+		schemaLocation="http://www.w3.org/2001/xml.xsd" />
 	<!-- Begin information model mapping from ebRIM. -->
 	<!-- Define Data Types -->
 	<simpleType name="referenceURI">
 		<annotation>
-			<documentation xml:lang="en"> referenceURI is used by
-				reference attributes within RIM. Each
-				attribute of type referenceURI references a RegistryObject with specified URI
-				as id.
+			<documentation xml:lang="en">
+				referenceURI is used by reference attributes within RIM.
+				Each attribute of type referenceURI references a RegistryObject with
+				specified URI as id.
 			</documentation>
 		</annotation>
 		<restriction base="anyURI" />
@@ -58,6 +59,7 @@
 			<maxLength value="1024" />
 		</restriction>
 	</simpleType>
+
 	<complexType name="InternationalStringType">
 		<sequence maxOccurs="unbounded" minOccurs="0">
 			<element ref="tns:LocalizedString" />
@@ -66,12 +68,14 @@
 	<element name="InternationalString" type="tns:InternationalStringType" />
 	<element name="Name" type="tns:InternationalStringType" />
 	<element name="Description" type="tns:InternationalStringType" />
+
 	<complexType name="LocalizedStringType">
 		<attribute ref="xml:lang" default="en-US" />
 		<attribute default="UTF-8" name="charset" />
 		<attribute name="value" type="tns:FreeFormText" use="required" />
 	</complexType>
 	<element name="LocalizedString" type="tns:LocalizedStringType" />
+
 	<complexType name="SlotType1">
 		<sequence>
 			<element maxOccurs="1" minOccurs="1" ref="tns:ValueList" />
@@ -95,14 +99,15 @@
 		</sequence>
 	</complexType>
 	<element name="SlotList" type="tns:SlotListType" />
+
 	<complexType name="IdentifiableType">
 		<annotation>
-			<documentation xml:lang="en"> Common base type for all types
-				that have unique identity. If id
-				is provided and is not in proper URN syntax then it is used for
-				linkage within document and
-				is ignored by the registry. In this case the registry generates a UUID
-				URN for id attribute.
+			<documentation xml:lang="en">
+				Common base type for all types that have unique identity.
+				If id is provided and is not in proper URN syntax then it is used for
+				linkage within document and is ignored by the registry. In this case
+				the
+				registry generates a UUID URN for id attribute.
 				id must not be null when object is retrieved from the registry.
 			</documentation>
 		</annotation>
@@ -114,13 +119,15 @@
 		<attribute name="home" type="anyURI" use="optional" />
 	</complexType>
 	<element name="Identifiable" type="tns:IdentifiableType" />
+
 	<complexType name="ObjectRefType">
 		<annotation>
-			<documentation xml:lang="en"> Use to reference an Object by
-				its id. Specifies the id attribute
-				of the object as its id attribute. id attribute in ObjectAttributes is
-				exactly the same
-				syntax and semantics as id attribute in RegistryObject.
+			<documentation xml:lang="en">
+				Use to reference an Object by its id.
+				Specifies the id attribute of the object as its id attribute.
+				id attribute in ObjectAttributes is exactly the same syntax and
+				semantics as
+				id attribute in RegistryObject.
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -139,6 +146,7 @@
 	<element name="ObjectRefList" type="tns:ObjectRefListType" />
 	<element name="ObjectRef" type="tns:ObjectRefType"
 		substitutionGroup="tns:Identifiable" />
+
 	<complexType name="RegistryObjectType">
 		<complexContent>
 			<extension base="tns:IdentifiableType">
@@ -160,21 +168,23 @@
 	</complexType>
 	<element name="RegistryObject" type="tns:RegistryObjectType"
 		substitutionGroup="tns:Identifiable" />
+
 	<complexType name="RegistryObjectListType">
 		<sequence>
 			<element maxOccurs="unbounded" minOccurs="0" ref="tns:Identifiable" />
 		</sequence>
 	</complexType>
 	<element name="RegistryObjectList" type="tns:RegistryObjectListType" />
+
 	<complexType name="AssociationType1">
 		<annotation>
-			<documentation xml:lang="en"> Association is the mapping of
-				the same named interface in ebRIM.
-				It extends RegistryObject. An Association specifies references to two
-				previously submitted
-				registry entrys. The sourceObject is id of the sourceObject in association
-				The targetObject
-				is id of the targetObject in association
+			<documentation xml:lang="en">
+				Association is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
+				An Association specifies references to two previously submitted
+				registry entrys.
+				The sourceObject is id of the sourceObject in association
+				The targetObject is id of the targetObject in association
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -193,9 +203,7 @@
 	<complexType name="AuditableEventType">
 		<annotation>
 			<documentation xml:lang="en">An Event that forms an audit
-				trail in ebXML
-				Registry.
-			</documentation>
+				trail in ebXML Registry.</documentation>
 		</annotation>
 		<complexContent>
 			<extension base="tns:RegistryObjectType">
@@ -215,13 +223,13 @@
 		substitutionGroup="tns:Identifiable" />
 	<complexType name="ClassificationType">
 		<annotation>
-			<documentation xml:lang="en"> Classification is the mapping
-				of the same named interface in
-				ebRIM. It extends RegistryObject. A Classification specifies references to
-				two registry
-				entrys. The classifiedObject is id of the Object being classified. The
-				classificationNode is
-				id of the ClassificationNode classying the object
+			<documentation xml:lang="en">
+				Classification is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
+				A Classification specifies references to two registry entrys.
+				The classifiedObject is id of the Object being classified.
+				The classificationNode is id of the ClassificationNode classying the
+				object
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -241,14 +249,13 @@
 		substitutionGroup="tns:Identifiable" />
 	<complexType name="ClassificationNodeType">
 		<annotation>
-			<documentation xml:lang="en"> ClassificationNode is the
-				mapping of the same named interface in
-				ebRIM. It extends RegistryObject. ClassificationNode is used to submit a
-				Classification tree
-				to the Registry. The parent attribute is the id to the parent node.
-				code is an optional code
-				value for a ClassificationNode often defined by an external taxonomy
-				(e.g. NAICS)
+			<documentation xml:lang="en">
+				ClassificationNode is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
+				ClassificationNode is used to submit a Classification tree to the Registry.
+				The parent attribute is the id to the parent node. code is an optional
+				code value for a ClassificationNode
+				often defined by an external taxonomy (e.g. NAICS)
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -267,9 +274,9 @@
 		substitutionGroup="tns:Identifiable" />
 	<complexType name="ClassificationSchemeType">
 		<annotation>
-			<documentation xml:lang="en"> ClassificationScheme is the
-				mapping of the same named interface
-				in ebRIM. It extends RegistryObject.
+			<documentation xml:lang="en">
+				ClassificationScheme is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -287,9 +294,9 @@
 		substitutionGroup="tns:Identifiable" />
 	<complexType name="ExternalIdentifierType">
 		<annotation>
-			<documentation xml:lang="en"> ExternalIdentifier is the
-				mapping of the same named interface in
-				ebRIM. It extends RegistryObject.
+			<documentation xml:lang="en">
+				ExternalIdentifier is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -306,9 +313,9 @@
 		substitutionGroup="tns:Identifiable" />
 	<complexType name="ExternalLinkType">
 		<annotation>
-			<documentation xml:lang="en"> ExternalLink is the mapping of
-				the same named interface in
-				ebRIM. It extends RegistryObject.
+			<documentation xml:lang="en">
+				ExternalLink is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -321,9 +328,9 @@
 		substitutionGroup="tns:Identifiable" />
 	<complexType name="ExtrinsicObjectType">
 		<annotation>
-			<documentation xml:lang="en"> ExtrinsicObject is the mapping
-				of the same named interface in
-				ebRIM. It extends RegistryObject.
+			<documentation xml:lang="en">
+				ExtrinsicObject is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -396,17 +403,19 @@
 		<attribute name="streetNumber" type="tns:String32" use="optional" />
 	</complexType>
 	<element name="PostalAddress" type="tns:PostalAddressType" />
+
 	<complexType name="VersionInfoType">
 		<attribute name="versionName" type="tns:String16" use="optional"
 			default="1.1" />
 		<attribute name="comment" type="string" use="optional" />
 	</complexType>
+
 	<complexType name="RegistryPackageType">
 		<annotation>
-			<documentation xml:lang="en"> RegistryPackage is the mapping
-				of the same named interface in
-				ebRIM. It extends RegistryObject. A RegistryPackage is a named collection
-				of objects.
+			<documentation xml:lang="en">
+				RegistryPackage is the mapping of the same named interface in ebRIM.
+				It extends RegistryObject.
+				A RegistryPackage is a named collection of objects.
 			</documentation>
 		</annotation>
 		<complexContent>
@@ -469,9 +478,7 @@
 	<complexType name="TelephoneNumberType">
 		<annotation>
 			<documentation xml:lang="en">TelephoneNumber is the mapping
-				of the same named interface in
-				ebRIM.
-			</documentation>
+				of the same named interface in ebRIM.</documentation>
 		</annotation>
 		<attribute name="areaCode" type="tns:String8" use="optional" />
 		<attribute name="countryCode" type="tns:String8" use="optional" />
@@ -558,25 +565,26 @@
 	</complexType>
 	<element name="Federation" type="tns:FederationType"
 		substitutionGroup="tns:Identifiable" />
+
 	<complexType name="AdhocQueryType">
 		<annotation>
-			<documentation xml:lang="en"> A registry query. A
-				QueryExpression child element is not
-				required when invoking a stored query.
+			<documentation xml:lang="en">
+				A registry query.
+				A QueryExpression child element is not required when invoking a
+				stored query.
 			</documentation>
 		</annotation>
 		<complexContent>
 			<extension base="tns:RegistryObjectType">
 				<sequence>
 					<element ref="tns:QueryExpression" minOccurs="0" maxOccurs="1" />
-					<!-- Added to fulfill requirements by heios -->
-					<element maxOccurs="unbounded" minOccurs="0" ref="tns:Slot" />
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 	<element name="AdhocQuery" type="tns:AdhocQueryType"
 		substitutionGroup="tns:RegistryObject" />
+
 	<complexType name="QueryExpressionType" mixed="true">
 		<sequence>
 			<!-- MAY be any query language syntax supported. MUST support FilterQuery. 
@@ -587,6 +595,7 @@
 		<attribute name="queryLanguage" type="tns:referenceURI" use="required" />
 	</complexType>
 	<element name="QueryExpression" type="tns:QueryExpressionType" />
+
 	<complexType name="NotificationType">
 		<annotation>
 			<documentation>Notification of registry events.</documentation>
@@ -603,13 +612,12 @@
 		</complexContent>
 	</complexType>
 	<element name="Notification" type="tns:NotificationType" />
+
 	<element name="Action" type="tns:ActionType" />
 	<complexType name="SubscriptionType">
 		<annotation>
 			<documentation xml:lang="en">A Subscription for specified
-				Events in an ebXML V3+
-				registry.
-			</documentation>
+				Events in an ebXML V3+ registry.</documentation>
 		</annotation>
 		<complexContent>
 			<extension base="tns:RegistryObjectType">
@@ -636,9 +644,7 @@
 	<complexType name="NotifyActionType">
 		<annotation>
 			<documentation xml:lang="en">Abstract Base type for all
-				types of Notify
-				Actions
-			</documentation>
+				types of Notify Actions</documentation>
 		</annotation>
 		<complexContent>
 			<extension base="tns:ActionType">
