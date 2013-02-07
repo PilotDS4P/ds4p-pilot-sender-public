@@ -63,6 +63,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.BindingProvider;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.*;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.*;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.w3c.dom.Document;
