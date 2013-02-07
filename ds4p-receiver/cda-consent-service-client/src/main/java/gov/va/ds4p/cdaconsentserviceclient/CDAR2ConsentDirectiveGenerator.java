@@ -72,7 +72,7 @@ public class CDAR2ConsentDirectiveGenerator {
             byte[] bRes = port.getCDAR2ConsentDirective(patientName, patientId, patientIDType, patientGender, patientDateOfBirth, authorization, intendedPOU, allowedPOU, primaryRecipient, allowedRecipients, maskingActions, redactActions, homeCommunityId);
             res = new String(bRes);
             //for testing purposes write output to temp workspace area
-            //writeOutputFile(res);
+            writeOutputFile(res);
         }
         catch (Exception ex) {
             ex.printStackTrace();
