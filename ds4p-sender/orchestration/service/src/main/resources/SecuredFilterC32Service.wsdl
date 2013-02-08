@@ -95,11 +95,10 @@
 			<soap:operation soapAction="" />
 			<wsdl:input>
 				<soap:body use="literal" />
-				 <wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Input_Policy"/>
 			</wsdl:input>
 			<wsdl:output>
 				<soap:body use="literal" />
-				<wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Output_Policy"/>
+
 			</wsdl:output>
 		</wsdl:operation>
 
@@ -107,10 +106,8 @@
 			<soap:operation soapAction="" />
 			<wsdl:input>
 				<soap:body use="literal" />
-				<wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Input_Policy"/>
 			</wsdl:input>
 			<wsdl:output>
-				 <wsp:PolicyReference URI="#SecuredFilterC32ServicePortBinding_document_Output_Policy"/>
 				<soap:body use="literal" />
 			</wsdl:output>
 		</wsdl:operation>
@@ -165,28 +162,11 @@
 			</wsp:Policy>
 		</sp:AsymmetricBinding>
 		<sp:Wss10>
-			<wsp:Policy>
+			<wsp:Policy>				
 				<sp:MustSupportRefIssuerSerial />
 			</wsp:Policy>
 		</sp:Wss10>
 		<wsam:Addressing />
 	</wsp:Policy>
-	<wsp:Policy xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
-		wsu:Id="SecuredFilterC32ServicePortBinding_document_Input_Policy">
-		<sp:EncryptedParts>
-			<sp:Body />
-		</sp:EncryptedParts>
-		<sp:SignedParts>
-			<sp:Body />
-		</sp:SignedParts>
-	</wsp:Policy>
-	<wsp:Policy xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
-		wsu:Id="SecuredFilterC32ServicePortBinding_document_Output_Policy">
-		<sp:EncryptedParts>
-			<sp:Body />
-		</sp:EncryptedParts>
-		<sp:SignedParts>
-			<sp:Body />
-		</sp:SignedParts>
-	</wsp:Policy>
+
 </wsdl:definitions>

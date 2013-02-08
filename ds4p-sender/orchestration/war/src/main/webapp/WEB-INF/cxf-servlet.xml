@@ -30,23 +30,11 @@
 	<jaxws:endpoint id="securedfilterc32service"
 		implementor="#securedfilterC32ServiceImpl" wsdlLocation="classpath:SecuredFilterC32Service.wsdl"
 		address="/securedfilterc32service">
-		
-		
-	</jaxws:endpoint>
-	
-	 <!-- <bean name="samlValidator" class="gov.va.ds4p.security.saml.SAMLValidator"/>
-	
-     <jaxws:service serviceClass="gov.samhsa.ds4ppilot.contract.securedorchestrator.SecuredFilterC32ServicePortType">
-         <jaxws:ws-security>
-             <jaxws:ws-config>
-                 <jaxws:action value="SAMLTokenUnsigned"/>
-             </jaxws:ws-config>
-             <jaxws:ws-custom-validator>
-                 <jaxws:saml1-token-validator ref="samlValidator" />
-                 <jaxws:saml2-token-validator ref="samlValidator"/>
-             </jaxws:ws-custom-validator>
-         </jaxws:ws-security>
-     </jaxws:service>  -->
+		<jaxws:properties>
+		<entry key="ws-security.callback-handler" value="gov.samhsa.ds4ppilot.orchestrator.ws.ServerPasswordCallback"/>
+          <entry key="ws-security.signature.properties" value="crypto.properties"/>
+          </jaxws:properties>
+	</jaxws:endpoint>		
     
 	<jaxws:endpoint id="pushfilterc32service" implementor="#pushfilterC32ServiceImpl"
 		wsdlLocation="classpath:PushFilterC32Service.wsdl" address="/pushfilterc32service">
@@ -58,6 +46,18 @@
 	<jaxws:endpoint id="xdsdocumentservice" implementor="#XDSDocumentServiceImpl"
 		wsdlLocation="classpath:XDSDocumentService.wsdl" address="/xdsdocumentservice">
 	</jaxws:endpoint>
+
+	<!--  WSS4JInInterceptor for decrypting and validating the signature of inbound SOAP -->
+    <!-- <bean id="inbound-security" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="Timestamp Signature Encrypt"/>
+                <entry key="signaturePropFile" value="crypto.properties"/>
+                <entry key="decryptionPropFile" value="crypto.properties"/>
+                <entry key="passwordCallbackClass" value="gov.samhsa.ds4ppilot.orchestrator.ws.ServerPasswordCallback"/>
+            </map>
+        </constructor-arg>
+    </bean> -->
 
 	<bean id="XDSDocumentServiceImpl"
 		class="gov.samhsa.ds4ppilot.orchestrator.ws.XDSDocumentServiceImpl"
