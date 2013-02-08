@@ -11,6 +11,7 @@
   <artifactId>rdata-service-client-rd</artifactId>
   <version>1.0</version>
   <name>rdata-service-client-rd</name>
+  <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>

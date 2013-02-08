@@ -11,6 +11,7 @@
   <artifactId>acs-service-client-recvr</artifactId>
   <version>1.0</version>
   <name>acs-service-client-recvr</name>
+  <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>

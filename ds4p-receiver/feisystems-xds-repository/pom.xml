@@ -8,9 +8,9 @@
     <version>1.0</version>
   </parent>
   <groupId>gov.va.ds4p</groupId>
-  <artifactId>cas-service-client-ri</artifactId>
-  <version>1.0</version>
-  <name>cas-service-client-ri</name>
+  <artifactId>feisystems-xds-repository</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>feisystems-xds-repository</name>
   <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   <build>
@@ -21,18 +21,18 @@
             <version>2.2</version>
             <executions>
                 <execution>
-                    <id>cas-service-wsimport</id>
+                    <id>feixds-service-wsimport</id>
                     <goals>
                         <goal>wsimport</goal>
                     </goals>
                     <configuration>
                         <wsdlFiles>
-                            <wsdlFile>DS4PClinicallyAdaptiveRulesInterface.wsdl</wsdlFile>                      
+                            <wsdlFile>filterc32service.wsdl</wsdlFile>                      
                         </wsdlFiles>
-                        <wsdlLocation>http://localhost:8080/DS4PACSServices/DS4PClinicallyAdaptiveRulesInterface?wsdl</wsdlLocation>
-                        <wsdlDirectory>${basedir}/../acs-services/target/classes/META-INF</wsdlDirectory>
-                        <staleFile>${project.build.directory}/jaxws/stale/DS4PClinicallyAdaptiveRulesInterface.stale</staleFile>
-                        <packageName>gov.va.ehtac.ds4p.ws.ri</packageName>
+                        <wsdlLocation>http://xds-demo.feisystems.com/Orchestrator/services/filterc32service?wsdl</wsdlLocation>
+                        <wsdlDirectory>${basedir}/src/wsdl/xds-demo.feisystems.com/Orchestrator/services/</wsdlDirectory>
+                        <staleFile>${project.build.directory}/jaxws/stale/filterc32service.stale</staleFile>
+                        <packageName>gov.va.ehtac.ds4p.ws.ch</packageName>
                         <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir>
                           <xnocompile>true</xnocompile>
                           <verbose>true</verbose>
@@ -66,7 +66,7 @@
             </configuration>
         </plugin>                
     </plugins>
-  </build>
+  </build>  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -77,11 +77,25 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sun.xml.ws</groupId>
-      <artifactId>webservices-rt</artifactId>
-      <version>1.4</version>
-      <scope>compile</scope>
-    </dependency>
+        <dependency>
+            <groupId>xml-security</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ds4p-common-library</groupId>
+            <artifactId>common-library</artifactId>
+            <version>2.0</version>
+        </dependency>                
   </dependencies>
 </project>

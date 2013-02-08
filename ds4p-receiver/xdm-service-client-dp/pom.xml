@@ -11,6 +11,7 @@
   <artifactId>xdm-service-client-dp</artifactId>
   <version>1.0</version>
   <name>xdm-service-client-dp</name>
+  <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>

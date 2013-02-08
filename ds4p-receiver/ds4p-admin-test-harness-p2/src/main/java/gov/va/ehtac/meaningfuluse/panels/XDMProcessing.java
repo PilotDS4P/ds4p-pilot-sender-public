@@ -42,13 +42,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.BindingProvider;
-import oasis.names.tc.ebxml_regrep.xsd.lcm._3.ClassificationType;
-import oasis.names.tc.ebxml_regrep.xsd.lcm._3.ExtrinsicObjectType;
-import oasis.names.tc.ebxml_regrep.xsd.lcm._3.IdentifiableType;
-import oasis.names.tc.ebxml_regrep.xsd.lcm._3.RegistryObjectListType;
-import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
-import oasis.names.tc.ebxml_regrep.xsd.lcm._3.ValueListType;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.*;
 
 /**
  *

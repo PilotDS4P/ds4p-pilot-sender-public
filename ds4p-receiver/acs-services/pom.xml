@@ -22,9 +22,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>ds4p-common-library</groupId>
             <artifactId>common-library</artifactId>
-            <version>${project.version}</version>
+            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -167,6 +167,7 @@
                                 <sei>gov.va.ehtac.ds4p.ws.DS4PReferenceData</sei>
                                 <sei>gov.va.ehtac.ds4p.ws.NwHINDirectAuthorizationServices</sei>
                                 <sei>gov.va.ehtac.ds4p.ws.NwHINDirectDocumentProcessing</sei>
+                                <sei>gov.va.ehtac.ds4p.ws.CDAR2ConsentDirective</sei>
                             </seis>
                             <verbose>false</verbose>
                             <genWsdl>true</genWsdl>

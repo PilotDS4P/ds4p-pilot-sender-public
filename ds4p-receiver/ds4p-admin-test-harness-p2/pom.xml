@@ -21,10 +21,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>ds4p-common-library</groupId>
             <artifactId>common-library</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+            <version>2.0</version>
+        </dependency>        
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>cas-service-client-ri</artifactId>
