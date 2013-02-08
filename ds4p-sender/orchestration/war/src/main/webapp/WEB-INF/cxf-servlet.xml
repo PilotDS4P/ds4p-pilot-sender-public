@@ -32,6 +32,7 @@
 		address="/securedfilterc32service">
 		<jaxws:properties>
           <entry key="ws-security.signature.properties" value="crypto.properties"/>
+           <entry key="ws-security.callback-handler" value="gov.samhsa.ds4ppilot.orchestrator.ws.ServerPasswordCallback"/>
         </jaxws:properties>
 	</jaxws:endpoint>		
     
