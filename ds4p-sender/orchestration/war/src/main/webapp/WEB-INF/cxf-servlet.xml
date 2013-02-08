@@ -31,9 +31,8 @@
 		implementor="#securedfilterC32ServiceImpl" wsdlLocation="classpath:SecuredFilterC32Service.wsdl"
 		address="/securedfilterc32service">
 		<jaxws:properties>
-		<entry key="ws-security.callback-handler" value="gov.samhsa.ds4ppilot.orchestrator.ws.ServerPasswordCallback"/>
           <entry key="ws-security.signature.properties" value="crypto.properties"/>
-          </jaxws:properties>
+        </jaxws:properties>
 	</jaxws:endpoint>		
     
 	<jaxws:endpoint id="pushfilterc32service" implementor="#pushfilterC32ServiceImpl"
