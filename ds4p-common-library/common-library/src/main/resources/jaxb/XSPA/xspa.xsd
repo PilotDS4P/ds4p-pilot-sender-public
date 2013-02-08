@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+    xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+    <xs:element name="subjectId" type="xs:string"/>
+    <xs:element name="subjectPurposeOfUse" type="xs:string"/>
+    <xs:element name="subjectLocality" type="xs:string"/>
+    <xs:element name="subjectStructuredRole" type="xs:string"/>
+    <xs:element name="subjectFunctionalRole" type="xs:string"/>
+    <xs:element name="subjectNPI" type="xs:string"/>
+    <xs:element name="subjectEmailAddress" type="xs:string"/>
+    <xs:element name="subjectPermissions" type="xs:string"/>
+    <xs:element name="organization" type="xs:string"/>
+    <xs:element name="organizationId" type="xs:string"/>
+    <xs:element name="xspaSubject">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="subjectId"/>
+                <xs:element ref="userName"/>
+                <xs:element ref="userId"/>
+                <xs:element ref="subjectPurposeOfUse"/>
+                <xs:element minOccurs="0" ref="subjectNPI"/>
+                <xs:element ref="subjectLocality"/>
+                <xs:element ref="organization"/>
+                <xs:element minOccurs="0" ref="organizationId"/>
+                <xs:element maxOccurs="unbounded" ref="subjectStructuredRole"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="subjectFunctionalRole"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="subjectPermissions"/>
+                <xs:element minOccurs="0" ref="subjectEmailAddress"/>
+                <xs:element minOccurs="0" ref="messageId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resourceId" type="xs:string"/>
+    <xs:element name="resourceName" type="xs:string"/>
+    <xs:element name="resourceType" type="xs:string"/>
+    <xs:element name="resourceAction" type="xs:string"/>
+    <xs:element name="xspaResource">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="resourceId"/>
+                <xs:element ref="resourceName"/>
+                <xs:element ref="resourceType"/>
+                <xs:element ref="resourceAction"/>
+                <xs:element minOccurs="0" ref="resourceDestination"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pdpDecision" type="xs:string"/>
+    <xs:element name="pdpStatus" type="xs:string"/>
+    <xs:element name="pdpObligation" type="xs:string"/>
+    <xs:element name="pdpRequest" type="xs:string"/>
+    <xs:element name="pdpResponse" type="xs:string"/>
+    <xs:element name="requestTime" type="xs:dateTime"/>
+    <xs:element name="responseTime" type="xs:dateTime"/>
+    <xs:element name="policyEnforcementObject">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="messageId"/>
+                <xs:element ref="resourceId"/>
+                <xs:element ref="resourceName"/>
+                <xs:element ref="homeCommunityId"/>
+                <xs:element ref="purposeOfUse"/>
+                <xs:element ref="pdpDecision"/>
+                <xs:element ref="pdpStatus"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="pdpObligation"/>
+                <xs:element ref="pdpRequest"/>
+                <xs:element ref="pdpResponse"/>
+                <xs:element ref="requestTime"/>
+                <xs:element ref="responseTime"/>
+                <xs:element ref="xacmlResultType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xacmlResultTypeDecision" type="xs:string"/>
+    <xs:element name="xacmlResultTypeResourceId" type="xs:string"/>
+    <xs:element name="xacmlStatusDetail" type="xs:string"/>
+    <xs:element name="xacmlStatusCodeType" type="xs:string"/>
+    <xs:element name="xacmlStatusDetailType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="xacmlStatusDetail"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xacmlStatusMessage" type="xs:string"/>
+    <xs:element name="xacmlStatusType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xacmlStatusCodeType"/>
+                <xs:element ref="xacmlStatusDetailType"/>
+                <xs:element ref="xacmlStatusMessage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xacmlResultType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xacmlResultTypeDecision"/>
+                <xs:element ref="xacmlResultTypeResourceId"/>
+                <xs:element ref="xacmlStatusType"/>
+                <xs:element ref="xacmlObligationsType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xacmlObligations" type="xs:string"/>
+    <xs:element name="xacmlObligationsType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="xacmlObligations"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resourceDestination" type="xs:string"/>
+    <xs:element name="messageId" type="xs:string"/>
+    <xs:element name="xspaTestObject">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xspaSubject"/>
+                <xs:element ref="xspaResource"/>
+            </xs:sequence>
+            <xs:attribute name="testName" type="xs:string"/>
+            <xs:attribute name="testDescription" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="xspaTestGroup">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="xspaTestObject"/>
+            </xs:sequence>
+            <xs:attribute name="testGroupName" type="xs:string"/>
+            <xs:attribute name="testGroupDescription" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pdpRefrain" type="xs:string"/>
+    <xs:element name="groupId" type="xs:string"/>
+    <xs:element name="groupName" type="xs:string"/>
+    <xs:element name="userName" type="xs:string"/>
+    <xs:element name="userId" type="xs:string"/>
+    <xs:element name="supportedObligations" type="xs:string"/>
+    <xs:element name="supportedRefrainPolicies" type="xs:string"/>
+    <xs:element name="purposeOfUse" type="xs:string"/>
+    <xs:element name="homeCommunityId" type="xs:string"/>
+</xs:schema>

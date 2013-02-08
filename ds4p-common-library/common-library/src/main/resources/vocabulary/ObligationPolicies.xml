@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<ApplicableObligationPolicies xmlns="urn:hl7-org:v3"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 file:/C:/projects/DS4P/DS4PCommonLibrary/src/main/resources/casref.xsd">
+ <ObligationPolicy code="ANONY" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="ANONY">
+        <Description>Description0</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="AOD" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="AOD">
+  <Description>AOD</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="AUDIT" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="AUDIT">
+        <Description>Description2</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="AUDTR" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="AUDTR">
+        <Description>Description3</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="CPLYCC" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="CPLYCC">
+        <Description>Description4</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="CPLYCD" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="CPLYCD">
+        <Description>Description5</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="CPLYJPP" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="CPLYJPP">
+        <Description>Description6</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="CPLYOPP" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="CPLYOPP">
+        <Description>Description7</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="CPLYOSP" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="CPLYOSP">
+        <Description>Description8</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="CPLYPOL" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="CPLYPOL">
+        <Description>Description9</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="DEID" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="DEID">
+        <Description>Description10</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="DELAU" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="DELAU">
+        <Description>Description11</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="ENCRYPT" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="ENCRYPT">
+        <Description>Description12</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="HUAPRV" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="HUAPRV">
+        <Description>Description13</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="MASK" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="MASK">
+        <Description>Description14</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="MINEC" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="MINEC">
+        <Description>Description14</Description>
+    </ObligationPolicy>    
+ <ObligationPolicy code="PSEUD" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="PSEUD">
+        <Description>Description15</Description>
+    </ObligationPolicy>
+ <ObligationPolicy code="REDACT" codeSystem="2.16.840.1.113883.1.11.20445" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="REDACT">
+        <Description>Description16</Description>
+    </ObligationPolicy>
+</ApplicableObligationPolicies>

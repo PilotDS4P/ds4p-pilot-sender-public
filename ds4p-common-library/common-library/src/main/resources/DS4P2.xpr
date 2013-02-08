@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="12.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns=""
+            positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="DS4P2.xpr">
+        <file name="cas.xsd"/>
+        <file name="casref.xsd"/>
+        <file name="CDA.xsd"/>
+        <file name="classificationrule.xsd"/>
+        <file name="medicalclassification.xsd"/>
+        <file name="xspa.xsd"/>
+    </projectTree>
+</project>

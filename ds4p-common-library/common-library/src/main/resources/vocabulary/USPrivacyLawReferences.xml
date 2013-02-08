@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<ApplicableUSLaws xmlns="urn:hl7-org:v3"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:hl7-org:v3 file:/C:/projects/DS4P/DS4PCommonLibrary/src/main/resources/casref.xsd">
+ <ActUSPrivacyLaw code="42CFRPart2" codeSystem="2.16.840.1.113883.5.1138" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="42CFRPart2">
+        <Description>Description for 42CFRPart2</Description>
+    </ActUSPrivacyLaw>
+ <ActUSPrivacyLaw code="CommonRule" codeSystem="2.16.840.1.113883.5.1138" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+         displayName="CommonRule">
+        <Description>Description for Common Rule</Description>
+ </ActUSPrivacyLaw>
+ <ActUSPrivacyLaw code="HIPAAOPP" codeSystem="2.16.840.1.113883.5.1138" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="HIPPAOPP">
+  <Description>Description for HIPPAOPP</Description>
+ </ActUSPrivacyLaw>
+ <ActUSPrivacyLaw code="HIPAAPsyNotes" codeSystem="2.16.840.1.113883.5.1138" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="HIPPAPsyNotes">
+  <Description>Description for HIPAA Psy Notes</Description>
+ </ActUSPrivacyLaw>
+ <ActUSPrivacyLaw code="HIPAASelfPay" codeSystem="2.16.840.1.113883.5.1138" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="HIPAASelfPay">
+  <Description>Description for HIPAA Self Pay</Description>
+ </ActUSPrivacyLaw>
+ <ActUSPrivacyLaw code="Title38Section7332" codeSystem="2.16.840.1.113883.5.1138" codeSystemName="www.hl7.org" codeSystemVersion="3.0"
+  displayName="Title38Section7332">
+  <Description>Description for Veteran Title 38 Section 7332</Description>
+ </ActUSPrivacyLaw>
+</ApplicableUSLaws>

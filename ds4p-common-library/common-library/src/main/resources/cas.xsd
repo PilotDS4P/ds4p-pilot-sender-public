@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="documentType"/>
+    <xs:element name="factType" type="xs:string"/>
+    <xs:element name="clinicalDomain" type="xs:string"/>
+    <xs:element name="code" type="xs:string"/>
+    <xs:element default="" name="codeSystem" type="xs:string"/>
+    <xs:element name="codeSystemName" type="xs:string"/>
+    <xs:element name="displayName" type="xs:string"/>
+    <xs:element name="confidentiality" type="xs:string"/>
+    <xs:element name="sensitivity" type="xs:string"/>
+    <xs:element name="itemAction" type="xs:string"/>
+    <xs:element name="clinicalDomainConfidentiality" type="xs:string"/>
+    <xs:element name="clinicalDomainSenitivity" type="xs:string"/>
+    <xs:element name="clinicalDomainAction" type="xs:string"/>
+    <xs:element name="documentObligations" type="xs:string"/>
+    <xs:element name="documentRefrainPolicies" type="xs:string"/>
+    <xs:element name="RuleExecutionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="confidentiality"/>
+                <xs:element ref="sensitivity"/>
+                <xs:element ref="itemAction"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="clinicalDomainConfidentiality"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="clinicalDomainSenitivity"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="clinicalDomainAction"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="documentObligations"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="documentRefrainPolicies"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="casRule">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="documentType"/>
+                <xs:element ref="clinicalDomain"/>
+                <xs:element ref="factType"/>
+                <xs:element ref="code"/>
+                <xs:element ref="codeSystem"/>
+                <xs:element ref="codeSystemName"/>
+                <xs:element ref="displayName"/>
+                <xs:element ref="RuleExecutionResponse"/>
+                <xs:element ref="drlSnippet"/>
+            </xs:sequence>
+            <xs:attribute name="ruleId" type="xs:integer"/>
+            <xs:attribute name="ruleTitle" type="xs:string"/>
+            <xs:attribute name="ruleDescription"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="drlSnippet" type="xs:string"/>
+</xs:schema>

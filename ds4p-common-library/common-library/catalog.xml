@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    This software is being provided per FARS 52.227-14 Rights in Data - General.
+    Any redistribution or request for copyright requires written consent by the
+    Department of Veterans Affairs.
+
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/java/main/resources/xspa.xsd" uri="src/main/resources/jaxb/XSPA/xspa.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/casref.xsd" uri="src/main/resources/jaxb/PolicyReference/casref.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/lcm.xsd" uri="src/main/resources/jaxb/ebXML/lcm.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/rim.xsd" uri="src/main/resources/jaxb/ebXML/rim.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/rs.xsd" uri="src/main/resources/jaxb/ebXML/rs.xsd"/>
+    <system systemId="http://www.w3.org/2001/xml.xsd" uri="src/main/resources/jaxb/ebXML/www.w3.org/2001/xml.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/medicalclassification.xsd" uri="src/main/resources/jaxb/HCS/medicalclassification.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/CDA.xsd" uri="src/main/resources/jaxb/CDA/CDA.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/POCD_MT000040.xsd" uri="src/main/resources/jaxb/CDA/POCD_MT000040.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/datatypes.xsd" uri="src/main/resources/jaxb/CDA/datatypes.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/voc.xsd" uri="src/main/resources/jaxb/CDA/voc.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/NarrativeBlock.xsd" uri="src/main/resources/jaxb/CDA/NarrativeBlock.xsd"/>
+    <system systemId="file:/C:/github/ds4p-pilot-public/ds4p-receiver/common-library/src/main/resources/datatypes-base.xsd" uri="src/main/resources/jaxb/CDA/datatypes-base.xsd"/>
+</catalog>
