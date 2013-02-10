@@ -129,9 +129,9 @@ public class SAMLValidator implements SAMLAssertionValidator {
            System.out.println("==== Begin Service Provider ACD ====");
            
            //for testing purposes
-           NameID nameId = samlFactory.createNameID(name.getValue(), null, null);
+           /*NameID nameId = samlFactory.createNameID(name.getValue(), null, null);
            SubjectConfirmation conf = samlFactory.createSubjectConfirmation(nameId, "urn:oasis:names:tc:SAML:2.0:cm:bearer");
-           Subject subject = samlFactory.createSubject(nameId, conf);
+           Subject subject = samlFactory.createSubject(nameId, conf);*/ 
            
            //detail stuff needed by PEP
            XspaResource xresource = new XspaResource();
@@ -197,9 +197,9 @@ public class SAMLValidator implements SAMLAssertionValidator {
                            Evidence evidence = null;
                            
                            //StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(arg2, xresource.getResourceName(), decision, actions, evidence);
-                           StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(subject, decision, decision, satlist, evidence);
+                           /*StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(subject, decision, decision, satlist, evidence);
                            int aSize = assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().size();
-                           assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().add(aSize, dStatement);
+                           assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().add(aSize, dStatement);*/
                        }
                    }
                    catch (Exception ex) {
