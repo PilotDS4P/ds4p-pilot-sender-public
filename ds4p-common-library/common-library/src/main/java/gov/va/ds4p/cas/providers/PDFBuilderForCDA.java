@@ -201,6 +201,10 @@ public class PDFBuilderForCDA {
             try {
                 URL imageURL = getClass().getResource("/images/logo.png");                 
                 Image logo = Image.getInstance(imageURL);
+                float x = logo.getWidth();
+                float y = logo.getHeight();
+                
+                System.out.println("IMAGE HEIGHT: "+ y +"IMAGE WIDTH: "+ x);
                 document.add(logo);
                 
             } catch (Exception ex) {
