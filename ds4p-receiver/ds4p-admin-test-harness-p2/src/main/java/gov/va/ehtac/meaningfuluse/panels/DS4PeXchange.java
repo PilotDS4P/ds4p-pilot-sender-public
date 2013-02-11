@@ -4,12 +4,16 @@
  */
 package gov.va.ehtac.meaningfuluse.panels;
 
+import org.apache.commons.codec.binary.Base64;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.terminal.Resource;
+import com.vaadin.terminal.StreamResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -19,6 +23,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
+import gov.va.ds4p.cas.providers.ClinicalDocumentProvider;
+import gov.va.ehtac.ds4p.ws.cda.CDAR2ConsentDirective;
+import gov.va.ehtac.ds4p.ws.cda.CDAR2ConsentDirective_Service;
 import gov.va.ehtac.ds4p.ws.ch.EnforcePolicy;
 import gov.va.ehtac.ds4p.ws.ch.EnforcePolicy.Xsparesource;
 import gov.va.ehtac.ds4p.ws.ch.EnforcePolicy.Xspasubject;
@@ -31,9 +38,12 @@ import gov.va.ehtac.ds4p.ws.ch.RetrieveDocumentSetResponse;
 import gov.va.ehtac.meaningfuluse.displayobjects.ExchangeResults;
 import gov.va.ehtac.meaningfuluse.encryption.DecryptTool;
 import gov.va.ehtac.meaningfuluse.session.ProviderAttributes;
+import gov.va.ehtac.meaningfuluse.testdata.MitreConsentData;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse.DocumentResponse;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -43,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import javax.crypto.SecretKey;
@@ -66,6 +77,17 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.*;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.*;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.utils.EncryptionConstants;
+import org.hl7.v3.CD;
+import org.hl7.v3.ED;
+import org.hl7.v3.POCDMT000040Act;
+import org.hl7.v3.POCDMT000040ClinicalDocument;
+import org.hl7.v3.POCDMT000040Component2;
+import org.hl7.v3.POCDMT000040Component3;
+import org.hl7.v3.POCDMT000040Entry;
+import org.hl7.v3.POCDMT000040EntryRelationship;
+import org.hl7.v3.POCDMT000040ObservationMedia;
+import org.hl7.v3.POCDMT000040Section;
+import org.hl7.v3.POCDMT000040StructuredBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -81,6 +103,8 @@ public class DS4PeXchange extends Panel {
     private Button viewXMLBTN = new Button("Retrieve and View Document XML");
     private Button unEncryptBTN = new Button("View Decrypted XML");
     private Button transformBTN = new Button("View with StyleSheet");
+    private Button viewConsentPDFBTN = new Button("View Consent Directive PDF");
+    private Button viewConsentXACMLBTN = new Button("View Embedded XACML Policy");
     private Table table = new Table("Doc Query Results");
     private TextArea area = new TextArea();
     private ProviderAttributes provider = new ProviderAttributes();
@@ -105,6 +129,14 @@ public class DS4PeXchange extends Panel {
     Window subwindow;
     
     private String qTransform = "../../../../../../resources/transforms/CDA.xsl";
+    
+    private String cdaEndpoint = "http://localhost:8080/DS4PACSServices/CDAR2ConsentDirective?wsdl";
+    private ClinicalDocumentProvider cProvider = new ClinicalDocumentProvider();
+    private static String CONSENT_MEDIA_TYPE_PDF = "application/pdf";
+    private static String CONSENT_MEDIA_TYPE_XACML = "application/xacml+xml";
+    
+    //policy style sheet transform
+    private String xStyleSheet = "../../../../../../resources/transforms/xml2html.xsl";
     
     
     public DS4PeXchange() {
@@ -147,7 +179,22 @@ public class DS4PeXchange extends Panel {
                     docId = (String)table.getContainerProperty(rowId, "docId").getValue();
                     docType = (String)table.getContainerProperty(rowId, "docType").getValue();
                     respId = (String)table.getContainerProperty(rowId, "respId").getValue();
-                    messageId = (String)table.getContainerProperty(rowId, "msgId").getValue();                   
+                    messageId = (String)table.getContainerProperty(rowId, "msgId").getValue();
+                    if (docType.equals("Consent Notes")) {
+                        viewXMLBTN.setEnabled(true);
+                        unEncryptBTN.setEnabled(true);
+                        transformBTN.setEnabled(true);
+                        viewConsentPDFBTN.setEnabled(true);
+                        viewConsentXACMLBTN.setEnabled(true);
+                    }
+                    else {
+                        viewXMLBTN.setEnabled(true);
+                        unEncryptBTN.setEnabled(true);
+                        transformBTN.setEnabled(true);
+                        viewConsentPDFBTN.setEnabled(true);
+                        viewConsentXACMLBTN.setEnabled(true);
+                        
+                    }
                 }                
 
             }
@@ -162,9 +209,23 @@ public class DS4PeXchange extends Panel {
         
         HorizontalLayout h2 = new HorizontalLayout();
         h2.setWidth("100%");
+        viewXMLBTN.setStyleName(Runo.BUTTON_SMALL);
+        unEncryptBTN.setStyleName(Runo.BUTTON_SMALL);
+        transformBTN.setStyleName(Runo.BUTTON_SMALL);
+        viewConsentPDFBTN.setStyleName(Runo.BUTTON_SMALL);
+        viewConsentXACMLBTN.setStyleName(Runo.BUTTON_SMALL);
+        //once xds interface is right set following to false
+        viewXMLBTN.setEnabled(true);
+        unEncryptBTN.setEnabled(true);
+        transformBTN.setEnabled(true);
+        viewConsentPDFBTN.setEnabled(true);
+        viewConsentXACMLBTN.setEnabled(true);
+        
         h2.addComponent(viewXMLBTN);
         h2.addComponent(unEncryptBTN);
         h2.addComponent(transformBTN);
+        h2.addComponent(viewConsentPDFBTN);
+        h2.addComponent(viewConsentXACMLBTN);
         v.addComponent(h2);
         
         searchBTN.addListener(new Button.ClickListener() {
@@ -198,6 +259,12 @@ public class DS4PeXchange extends Panel {
                     refreshTable(xList);
                     displayErrorMessage(res);                    
                 }
+                viewXMLBTN.setEnabled(true);
+                unEncryptBTN.setEnabled(true);
+                transformBTN.setEnabled(true);
+                viewConsentPDFBTN.setEnabled(true);
+                viewConsentXACMLBTN.setEnabled(true);
+                 
             }
         });
         
@@ -265,6 +332,22 @@ public class DS4PeXchange extends Panel {
                     subwindow.addComponent(createHTMLVersionOfC32(decryptDocument));
                     getApplication().getMainWindow().addWindow(subwindow);                
                 }
+            }
+        });
+        
+        viewConsentPDFBTN.addListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                processPDFForViewing();
+            }
+        });
+        
+        viewConsentXACMLBTN.addListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                processXACMLForViewing();
             }
         });
         
@@ -751,4 +834,213 @@ public class DS4PeXchange extends Panel {
             return doc;
     }
     
+    private String getConsentDirective() {
+        String res = decryptDocument;
+        // for testing lets just go get test version
+//        try {
+//            MitreConsentData cd = new MitreConsentData();
+//            
+//            CDAR2ConsentDirective_Service service = new CDAR2ConsentDirective_Service();
+//            CDAR2ConsentDirective port = service.getCDAR2ConsentDirectivePort();
+//            ((BindingProvider)port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, cdaEndpoint);
+//            
+//            byte[] results = port.getCDAR2ConsentDirective(cd.getPatientName(), cd.getPatientId(), cd.getPatientIDType(), cd.getPatientGender(), cd.getPatientDateOfBirth(),
+//                                                cd.getAuthorization(), cd.getIntendedPOU(), cd.getAllowedPOU(), 
+//                                                cd.getPrimaryRecipient(), cd.getAllowedRecipients(), cd.getMaskingActions(), cd.getRedactActions(), cd.getHomeCommunityId());
+//            
+//            res = new String(results);
+//            decryptDocument = res;
+//            System.out.println("PDF STRING FROM WEB SERVICE: "+res.length());
+//        }
+//        catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+        //remove or comment testing block above
+        return res;
+    }
+    
+    private String processClinicalDocument(POCDMT000040ClinicalDocument doc, String contentType) {
+        String res = "";
+        try {
+            POCDMT000040Component2 comp2 = doc.getComponent();
+            POCDMT000040StructuredBody body = comp2.getStructuredBody();
+            POCDMT000040Component3 comp3 = body.getComponent().get(0);
+            POCDMT000040Section section = comp3.getSection();
+            POCDMT000040Entry entry = section.getEntry().get(0);
+            POCDMT000040Act act = entry.getAct();
+            List<POCDMT000040EntryRelationship> relationships = act.getEntryRelationship();
+            Iterator iterRelationships = relationships.iterator();
+            // determine if this is a negative disclosure
+            while (iterRelationships.hasNext()) {
+                POCDMT000040EntryRelationship rel = (POCDMT000040EntryRelationship)iterRelationships.next();
+                try {
+                    POCDMT000040ObservationMedia obs =  rel.getObservationMedia();
+                    if (obs != null) {
+                        ED eVal = obs.getValue();
+                        if (contentType.equals(eVal.getMediaType())) {
+                            res = (String)eVal.getContent().get(0);
+                        }
+                    }
+                }
+                catch (Exception px) {
+                    //just ignore as many will be null
+                }
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        System.out.println("PDF FILE LENGTH: "+res.length());
+        return res;
+    }
+    
+    private String getPDFFromCDA() {
+        String res = "";
+        try {
+            POCDMT000040ClinicalDocument consentDocument = cProvider.createClinicalDocumentFromXMLString(getConsentDirective());
+            String bPDF = processClinicalDocument(consentDocument, CONSENT_MEDIA_TYPE_PDF);
+            res = new String(Base64.decodeBase64(bPDF.getBytes()));
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return res;
+    }
+    private String getXACMLFromCDA() {
+        String res = "";
+        try {
+            POCDMT000040ClinicalDocument consentDocument = cProvider.createClinicalDocumentFromXMLString(getConsentDirective());
+            String bPDF = processClinicalDocument(consentDocument, CONSENT_MEDIA_TYPE_XACML);
+            res = new String(Base64.decodeBase64(bPDF.getBytes()));
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return res;        
+    }
+    
+    private void processPDFForViewing() {
+            final String pdfS = getPDFFromCDA();
+            
+            System.out.println("PDF STRING: "+pdfS.length());
+            
+            try {
+                Embedded pdf = new Embedded();
+                pdf.setType(Embedded.TYPE_BROWSER);
+                pdf.setMimeType("application/pdf");
+                pdf.setSizeFull();
+                pdf.setWidth("100%");
+                pdf.setHeight("700px");
+                
+                pdf.setSource(createPdf(pdfS));
+
+                subwindow = new Window("Patient Consent Directive");
+                subwindow.setWidth("700px");
+                subwindow.setHeight("100%");
+                
+                subwindow.setModal(true);
+                subwindow.addComponent(pdf);
+                getApplication().getMainWindow().addWindow(subwindow);                
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            
+    }
+    
+    private void processXACMLForViewing() {
+        String x = getXACMLFromCDA();
+            try {
+                Label l = new Label();
+                l.setContentMode(Label.CONTENT_XHTML);
+                l.setStyleName(Runo.LABEL_SMALL);
+                l.setValue(convertXMLtoXHTML(x));
+                Panel p = new Panel();
+                VerticalLayout vP = (VerticalLayout)p.getContent();
+                p.setStyleName(Runo.PANEL_LIGHT);
+                vP.setHeight("100%");
+                vP.setWidth("100%");
+                vP.addComponent(l);
+
+                subwindow = new Window("Patient Consent Computable(x)");
+                subwindow.setWidth("700px");
+                subwindow.setHeight("100%");
+                subwindow.setModal(true);
+                subwindow.addComponent(p);
+                getApplication().getMainWindow().addWindow(subwindow);                
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        
+    }
+    
+    private Resource createXACML(String xacml) {
+        StreamResource resource = new StreamResource(new XACMLPolicy(xacml), "text/xml" , this.getApplication());
+        resource.setMIMEType("text/xml");
+        return resource;
+    }
+    
+    
+    private static class XACMLPolicy implements com.vaadin.terminal.StreamResource.StreamSource {
+        private final ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        public XACMLPolicy(String xacml) {
+            try {
+                os.write(xacml.getBytes());
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }            
+        }
+        
+        @Override
+        public InputStream getStream() {
+            return new ByteArrayInputStream(os.toByteArray());
+        }
+        
+    }
+    
+    private Resource createPdf(String mpdf) {
+        StreamResource resource = new StreamResource(new Pdf(mpdf), "test.pdf?" + System.currentTimeMillis(), this.getApplication());
+        resource.setMIMEType("application/pdf");
+        return resource;
+    }
+    
+    public static class Pdf implements com.vaadin.terminal.StreamResource.StreamSource {
+        private final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        
+        public Pdf(String mpdf) {
+            try {
+                os.write(mpdf.getBytes());
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+        @Override
+        public InputStream getStream() {
+            return new ByteArrayInputStream(os.toByteArray());
+        }
+        
+
+    }
+    
+    private String convertXMLtoXHTML(String xml) {
+        String res = "";
+        try {
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(xStyleSheet)));
+            Transformer transformer = tFactory.newTransformer(new StreamSource(reader));
+            StringWriter out = new StringWriter();
+            Result result = new StreamResult(out);
+            transformer.transform(new StreamSource(new StringReader(xml)), result);
+            res = out.toString();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return res;
+    }
 }
