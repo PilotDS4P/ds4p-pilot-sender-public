@@ -494,7 +494,7 @@ public class DS4PContextHandler {
 
         //Kairon Patient Consent
         at = new AttributeType();
-        at.setAttributeId(DS4PConstants.MITRE_PATIENT_AUTHORIZATION);
+        at.setAttributeId("urn:org:mitre:resource:patient:authorization");
         at.setDataType(DS4PConstants.STRING);
         avt = new AttributeValueType();
         avt.getContent().add(kaironauthz);
