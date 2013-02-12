@@ -136,7 +136,8 @@
 						<sp:SamlToken
 							sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
 							<wsp:Policy>
-								<sp:WssSamlV11Token10 />
+								<!-- sp:WssSamlV11Token10 /-->
+								<sp:WssSamlV2/>
 							</wsp:Policy>
 						</sp:SamlToken>
 					</wsp:Policy>
