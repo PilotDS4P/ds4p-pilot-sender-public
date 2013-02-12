@@ -7,7 +7,6 @@
   <packaging>pom</packaging>
   <name>ds4p-receiver</name>
   <modules>
-    <module>common-library</module>
     <module>acs-services</module>
     <module>acs-service-client-au</module>
     <module>acs-service-client-ch</module>
@@ -16,8 +15,8 @@
     <module>xdm-service-client-dp</module>
     <module>rdata-service-client-rd</module>
     <module>rxnorm-restful-client</module>
-    <module>ds4p-admin-test-harness-p2</module>
     <module>cda-consent-service-client</module>
-    <module>security-tools</module>
+    <module>feisystems-xds-repository</module>
+    <module>ds4p-admin-test-harness-p2</module>
   </modules>
 </project>
