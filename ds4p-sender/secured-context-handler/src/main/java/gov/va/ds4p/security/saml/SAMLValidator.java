@@ -196,10 +196,6 @@ public class SAMLValidator implements SAMLAssertionValidator {
                            }
                            Evidence evidence = null;
                            
-                           //StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(arg2, xresource.getResourceName(), decision, actions, evidence);
-                           /*StatementAbstractType dStatement = (StatementAbstractType)samlFactory.createAuthorizationDecisionStatement(subject, decision, decision, satlist, evidence);
-                           int aSize = assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().size();
-                           assertion.getStatementOrAuthnStatementOrAuthzDecisionStatement().add(aSize, dStatement);*/
                        }
                    }
                    catch (Exception ex) {
