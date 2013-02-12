@@ -112,7 +112,7 @@ public class SecuredOrchestratorImplTest {
 		final String endpointAddress = "http://localhost/Rem.Web/C32Service.svc";
 		C32GetterImpl c32Getter = new C32GetterImpl(endpointAddress);
 
-		final String documentProcessorEndpointAddress = "http://localhost:90/DocumentProcessor/services/processdocumentservice";
+		final String documentProcessorEndpointAddress = "http://xds-demo.feisystems.com:80/DocumentProcessor/services/processdocumentservice";
 		DocumentProcessorImpl documentProcessor = new DocumentProcessorImpl(
 				documentProcessorEndpointAddress);
 
@@ -137,10 +137,12 @@ public class SecuredOrchestratorImplTest {
 		securedOrchestrator.setResourceName("NwHINDirectSend");
 		securedOrchestrator.setResourceType("C32");
 		securedOrchestrator.setResourceAction("Execute");
+		securedOrchestrator.setHomeCommunityId("2.16.840.1.113883.3.467");
+		securedOrchestrator.setRepositoryUniqueId("1.3.6.1.4.1.21367.2010.1.2.1040");
 
 		gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetResponse response = securedOrchestrator
-				.retrieveDocumentSetRequest("16807046.11206.4380.81335.421575012145604"/*"88101412251.133129.4131014.8141111.159001521200914"*/, 
-						UUID.randomUUID().toString());
+				.retrieveDocumentSetRequest("7943611141.010126.414155.110610.11414711212812562"/*"88101412251.133129.4131014.8141111.159001521200914"*/, 
+						"b85d7714-401a-4780-93ae-6d950f1949bb");
 
 		assertNotNull(response);
 	}
