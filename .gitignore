@@ -15,4 +15,5 @@ bin
 /ds4p-receiver/TestVAWebClientLib/*
 /ds4p-receiver/security-tools/*
 /ds4p-receiver/DS4PMobilePortal/*
+/DS4PVAProviderPortal/*
 
