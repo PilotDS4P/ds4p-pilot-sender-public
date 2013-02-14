@@ -189,6 +189,8 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			String additonalMetadataGeneratorForProcessedC32 = additionalMetadataGeneratorForProcessedC32Impl
 					.generateMetadataXml(executionResponseContainer,
 							senderEmailAddress, recipientEmailAddress);
+			FileHelper.writeStringToFile(additonalMetadataGeneratorForProcessedC32, "additional_metadata.xml");
+			
 			processDocumentResponse
 					.setPostProcessingMetadata(additonalMetadataGeneratorForProcessedC32);
 

@@ -54,7 +54,7 @@ public class FileHelper {
 	public static void writeStringToFile(String stringContent, String fileName)
 			throws Exception {
 
-		PrintWriter printOut = new PrintWriter(fileName);
+		PrintWriter printOut = new PrintWriter("c:\\temp\\" + fileName);
 		printOut.println(stringContent);
 		printOut.close();
 	}
@@ -70,7 +70,7 @@ public class FileHelper {
 	 */
 	public static void writeDocToFile(Document doc, String fileName)
 			throws Exception {
-		File encryptionFile = new File(fileName);
+		File encryptionFile = new File("c:\\temp\\" +fileName);
 		FileOutputStream f = new FileOutputStream(encryptionFile);
 
 		TransformerFactory factory = TransformerFactory.newInstance();
@@ -95,7 +95,7 @@ public class FileHelper {
 	public static void writeBytesToFile(byte[] byteContent, String fileName)
 			throws Exception {
 
-		File kekFile = new File(fileName);
+		File kekFile = new File("c:\\temp\\" +fileName);
 		FileOutputStream f = new FileOutputStream(kekFile);
 		f.write(byteContent);
 		f.close();
