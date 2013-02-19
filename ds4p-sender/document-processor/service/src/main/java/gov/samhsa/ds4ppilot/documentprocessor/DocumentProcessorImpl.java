@@ -44,6 +44,10 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.security.Key;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.activation.DataHandler;
@@ -591,7 +595,16 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 
 		try {
 			xmlDocument = XmlHelper.loadDocument(document);
-
+			
+			// current date
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+			Date date = new Date();
+			String xPathExprEffectiveDate = "//hl7:effectiveTime";
+			
+			Element dateElement = getElement(xmlDocument,
+					xPathExprEffectiveDate);
+			dateElement.setAttribute("value", dateFormat.format(date));
+			
 			for (RuleExecutionResponse response : ruleExecutionContainer
 					.getExecutionResponseList()) {
 				if (response.getItemAction().equals("REDACT")) {
@@ -604,7 +617,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 							displayName);
 
 					Element elementToBeRedacted = getElement(xmlDocument,
-							xPathExprDisplayName);
+							xPathExprDisplayName);	
 
 					elementToBeRedacted.getParentNode().removeChild(
 							elementToBeRedacted);
