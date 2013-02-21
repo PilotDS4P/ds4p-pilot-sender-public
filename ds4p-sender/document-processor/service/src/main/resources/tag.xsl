@@ -21,7 +21,7 @@
 
     <!--Get most restrictive entry-level confidentiality code in the problems section. This returns a double-->
     <xsl:variable name="problemsSectionConfidentialityCodeNumeric"
-        select="max(ds4p:mapConfCodeFromChartoNumber($ruleExecutionResponseContainer//impliedConfSection[preceding-sibling::c32SectionLoincCode='11450-4']))"/>
+        select="max(ds4p:mapConfCodeFromChartoNumber($ruleExecutionResponseContainer//impliedConfSection[preceding-sibling::c32SectionLoincCode='11450-4'  and following-sibling::itemAction != 'REDACT']))"/>
     
     <!--Map the most restrictive entry-level confidentiality code in the problems section to V, R, or N-->    
     <xsl:variable name="problemsSectionConfidentialityCode"
@@ -29,7 +29,7 @@
     
     <!--Get most restrictive entry-level confidentiality code in the medications section. This returns a double-->
     <xsl:variable name="medicationsSectionConfidentialityCodeNumeric"
-        select="max(ds4p:mapConfCodeFromChartoNumber($ruleExecutionResponseContainer//impliedConfSection[preceding-sibling::c32SectionLoincCode='10160-0']))"/>
+        select="max(ds4p:mapConfCodeFromChartoNumber($ruleExecutionResponseContainer//impliedConfSection[preceding-sibling::c32SectionLoincCode='10160-0' and following-sibling::itemAction != 'REDACT']))"/>
     
     <!--Map the most restrictive entry-level confidentiality code in the medications section to V, R, or N-->    
     <xsl:variable name="medicationsSectionConfidentialityCode"
@@ -52,7 +52,7 @@
             <xsl:when test="$confidentialityCodeNumeric = 3">V</xsl:when>
             <xsl:when test="$confidentialityCodeNumeric = 2">R</xsl:when>
             <xsl:when test="$confidentialityCodeNumeric = 1">N</xsl:when>
-            <xsl:otherwise>R</xsl:otherwise>
+            <xsl:otherwise>N</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
@@ -63,7 +63,7 @@
             <xsl:when test="$confidentialityCodeChar = 'V'">3</xsl:when>
             <xsl:when test="$confidentialityCodeChar = 'R'">2</xsl:when>
             <xsl:when test="$confidentialityCodeChar = 'N'">1</xsl:when>
-            <xsl:otherwise>2</xsl:otherwise>
+            <xsl:otherwise>1</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
    

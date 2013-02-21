@@ -78,6 +78,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import ch.qos.logback.core.joran.spi.XMLUtil;
+
 /**
  * The Class DocumentProcessorImpl.
  */
@@ -160,6 +162,9 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 		ProcessDocumentResponse processDocumentResponse = new ProcessDocumentResponse();
 
 		try {
+
+			document = setDocumentCreationDate(document);
+
 			FileHelper.writeStringToFile(document, "Original_C32.xml");
 
 			// extract factModel
@@ -193,8 +198,10 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 			String additonalMetadataGeneratorForProcessedC32 = additionalMetadataGeneratorForProcessedC32Impl
 					.generateMetadataXml(executionResponseContainer,
 							senderEmailAddress, recipientEmailAddress);
-			FileHelper.writeStringToFile(additonalMetadataGeneratorForProcessedC32, "additional_metadata.xml");
-			
+			FileHelper.writeStringToFile(
+					additonalMetadataGeneratorForProcessedC32,
+					"additional_metadata.xml");
+
 			processDocumentResponse
 					.setPostProcessingMetadata(additonalMetadataGeneratorForProcessedC32);
 
@@ -596,15 +603,6 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 		try {
 			xmlDocument = XmlHelper.loadDocument(document);
 			
-			// current date
-			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-			Date date = new Date();
-			String xPathExprEffectiveDate = "//hl7:effectiveTime";
-			
-			Element dateElement = getElement(xmlDocument,
-					xPathExprEffectiveDate);
-			dateElement.setAttribute("value", dateFormat.format(date));
-			
 			for (RuleExecutionResponse response : ruleExecutionContainer
 					.getExecutionResponseList()) {
 				if (response.getItemAction().equals("REDACT")) {
@@ -617,7 +615,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 							displayName);
 
 					Element elementToBeRedacted = getElement(xmlDocument,
-							xPathExprDisplayName);	
+							xPathExprDisplayName);
 
 					elementToBeRedacted.getParentNode().removeChild(
 							elementToBeRedacted);
@@ -770,6 +768,23 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 		Unmarshaller um = context.createUnmarshaller();
 		ByteArrayInputStream input = new ByteArrayInputStream(xml.getBytes());
 		return (T) um.unmarshal(input);
+	}
+
+	private String setDocumentCreationDate(String document) throws Exception,
+			XPathExpressionException, XMLEncryptionException {
+		Document xmlDocument;
+		xmlDocument = XmlHelper.loadDocument(document);
+
+		// current date
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+		Date date = new Date();
+		String xPathExprEffectiveDate = "//hl7:effectiveTime";
+
+		Element dateElement = getElement(xmlDocument, xPathExprEffectiveDate);
+		dateElement.setAttribute("value", dateFormat.format(date));
+
+		document = XmlHelper.converXmlDocToString(xmlDocument);
+		return document;
 	}
 
 	/**

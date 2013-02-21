@@ -146,7 +146,7 @@ public class HealthcareClassificationServiceImpl implements
 
 		StringWriter executionResponseContainerXML = new StringWriter();
 
-		System.out.println("factModelXmlString: " + factModelXmlString);
+		//System.out.println("factModelXmlString: " + factModelXmlString);
 
 		try {
 			// unmarshall factmodel
