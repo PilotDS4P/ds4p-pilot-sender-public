@@ -181,7 +181,7 @@ public class SAMLValidator implements SAMLAssertionValidator {
                        String authdecision = policyReturn.getPdpDecision();
                        //String authdecision = "Permit";
 
-                       if (authdecision.equals("Deny") || authdecision.equals("Not Applicable")) {
+                       if (!authdecision.equals("Permit")) {
                            //just like nwhin we throw and exception on deny....
                            Exception ex = new Exception(policyReturn.getPdpResponse());
                            throw new SAMLValidationException(ex);
