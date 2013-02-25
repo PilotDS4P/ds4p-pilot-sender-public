@@ -67,7 +67,11 @@
         </xsl:choose>
     </xsl:function>
    
-
+	<!--This function gets the implied confidentiality and sensitivity for the given observation -->
+    <xsl:function name="ds4p:getConfidentialityAndSensitivityCode" as="xs:string">
+        <xsl:param name="observationCode" />
+        <xsl:value-of select="concat(':', $ruleExecutionResponseContainer//impliedConfSection[preceding-sibling::code=$observationCode], ':', $ruleExecutionResponseContainer//sensitivity[preceding-sibling::code=$observationCode])"/>
+    </xsl:function>
 
     <xsl:template match="@*|node()">
         <xsl:copy>
@@ -153,17 +157,17 @@
 
     <!--Tag Acute HIV, Sickle Cell Anemia, and Substance Abuse Disorder entries : 
         entry-level tagging is pointing to external XACML document per DS4P IG.-->
-    <xsl:template match="observation">
+    <xsl:template match="observation/value">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <xsl:if
-                test="value[@code='111880001'] or value[@code='66214007'] or value[@code='234391009']">
+                test="@code='111880001' or @code='66214007' or @code='234391009'">
                 <reference typeCode="REFR" xmlns="urn:hl7-org:v3">
                     <seperatableInd value="false"/>
                     <externalDocument>
                         <id root="b50b7910-7ffb-4f4c-bbe4-177ed68cbbf3"/>
                         <text mediaType="text/xml">
-                            <reference value="{$privacyPoliciesExternalDocUrl}"/>
+                            <reference value="{concat($privacyPoliciesExternalDocUrl, ds4p:getConfidentialityAndSensitivityCode(@code))}"/>
                         </text>
                     </externalDocument>
                 </reference>
@@ -177,13 +181,13 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <xsl:if
-                test="descendant::code[@code='993536']">
+                test=".//@code='993536'">               
                 <reference typeCode="REFR" xmlns="urn:hl7-org:v3">
                     <seperatableInd value="false"/>
                     <externalDocument>
                         <id root="b50b7910-7ffb-4f4c-bbe4-177ed68cbbf3"/>
                         <text mediaType="text/xml">
-                            <reference value="{$privacyPoliciesExternalDocUrl}"/>
+                             <reference value="{concat($privacyPoliciesExternalDocUrl, ds4p:getConfidentialityAndSensitivityCode(.//@code))}"/>
                         </text>
                     </externalDocument>
                 </reference>
