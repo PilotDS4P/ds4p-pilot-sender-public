@@ -93,7 +93,7 @@ public class SecuredFilterC32ServiceImplEndpointTest {
 	 * client No wsimport/wsdl2java needed. Note works with full SOAP message
 	 * (Service.Mode.MESSAGE)
 	 */
-	
+	@Ignore
 	@Test
 	public void securedFilterC32WorksWithRawServiceAndDispatchOfSOAPMessage()
 			throws Exception {

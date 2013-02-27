@@ -161,13 +161,14 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <xsl:if
-                test="@code='111880001' or @code='66214007' or @code='234391009' or @code='67195008' or @code='370143000' or @code='1376001' or @code='56882008' or @code='66590003'">
+                test="@code='111880001' or @code='66214007' or @code='234391009' or @code='67195008' or @code='370143000' or @code='1376001' or @code='56882008' or @code='66590003'  or @code='69322001'  or @code='284591009'  or @code='44054006'  or @code='234391009'">
                 <reference typeCode="REFR" xmlns="urn:hl7-org:v3">
                     <seperatableInd value="false"/>
                     <externalDocument>
                         <id root="b50b7910-7ffb-4f4c-bbe4-177ed68cbbf3"/>
                         <text mediaType="text/xml">
-                            <reference value="{concat($privacyPoliciesExternalDocUrl, ds4p:getConfidentialityAndSensitivityCode(@code))}"/>
+                            <!-- <reference value="{concat($privacyPoliciesExternalDocUrl, ds4p:getConfidentialityAndSensitivityCode(@code))}"/> -->
+                            <reference value="{$privacyPoliciesExternalDocUrl}"/>
                         </text>
                     </externalDocument>
                 </reference>
@@ -181,13 +182,13 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <xsl:if
-                test=".//@code='993536' or .//@code='861066'">               
+                test=".//@code='993536' or .//@code='861066'  or .//@code='992691'  or .//@code='428759'  or .//@code='200342'">               
                 <reference typeCode="REFR" xmlns="urn:hl7-org:v3">
                     <seperatableInd value="false"/>
                     <externalDocument>
                         <id root="b50b7910-7ffb-4f4c-bbe4-177ed68cbbf3"/>
                         <text mediaType="text/xml">
-                             <reference value="{concat($privacyPoliciesExternalDocUrl, ds4p:getConfidentialityAndSensitivityCode(.//@code))}"/>
+                             <reference value="{$privacyPoliciesExternalDocUrl}"/>
                         </text>
                     </externalDocument>
                 </reference>
