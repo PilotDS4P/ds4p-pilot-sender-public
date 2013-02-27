@@ -161,7 +161,7 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <xsl:if
-                test="@code='111880001' or @code='66214007' or @code='234391009'">
+                test="@code='111880001' or @code='66214007' or @code='234391009' or @code='67195008' or @code='370143000' or @code='1376001' or @code='56882008' or @code='66590003'">
                 <reference typeCode="REFR" xmlns="urn:hl7-org:v3">
                     <seperatableInd value="false"/>
                     <externalDocument>
@@ -181,7 +181,7 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <xsl:if
-                test=".//@code='993536'">               
+                test=".//@code='993536' or .//@code='861066'">               
                 <reference typeCode="REFR" xmlns="urn:hl7-org:v3">
                     <seperatableInd value="false"/>
                     <externalDocument>
