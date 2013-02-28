@@ -73,7 +73,7 @@ public class SecuredFilterC32ServiceImpl implements
 
 		RetrieveDocumentSetResponse response = securedOrchestrator
 				.retrieveDocumentSetRequest(parameters.getDocumentUniqueId(),
-						parameters.getMessageId());
+						parameters.getMessageId(),  parameters.getIntendedRecipient());
 
 		return response;
 	}

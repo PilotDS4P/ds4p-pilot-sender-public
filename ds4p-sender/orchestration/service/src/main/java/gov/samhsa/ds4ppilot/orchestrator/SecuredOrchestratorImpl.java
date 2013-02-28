@@ -183,7 +183,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
-			String documentUniqueId, String messageId) {
+			String documentUniqueId, String messageId, String intendedRecipient) {
 		RetrieveDocumentSetResponse retrieveDocumentSetResponse = new RetrieveDocumentSetResponse();
 		RetrieveDocumentSetRequest retrieveDocumentSetRequest = new RetrieveDocumentSetRequest();
 		ihe.iti.xds_b._2007.RetrieveDocumentSetResponse xdsbRetrieveDocumentSetResponse = null;
@@ -232,7 +232,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 						.processDocument(originalDocument,
 								xacmlResponseXml.toString(), false, true,
 								"leo.smith@direct.obhita-stage.org",
-								subjectEmailAddress);
+								intendedRecipient);
 				processedPayload = dataHandlerToBytesConverter
 						.toByteArray(processDocumentResponse
 								.getProcessedDocument());

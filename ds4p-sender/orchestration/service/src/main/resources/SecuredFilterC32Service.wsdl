@@ -18,6 +18,8 @@
 					<xsd:sequence>
 						<xsd:element name="documentUniqueId" type="xsd:string" />
 						<xsd:element name="messageId" type="xsd:string" />
+						<xsd:element name="purposeOfUse" type="xsd:string"/>
+						<xsd:element name="intendedRecipient" type="xsd:string"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>

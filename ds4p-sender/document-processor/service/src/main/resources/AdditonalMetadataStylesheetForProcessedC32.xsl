@@ -16,6 +16,9 @@
 
 	<xsl:param name="intendedRecipient" as="xs:string"
 		select="''" />
+		
+		<xsl:param name="purposeOfUse" as="xs:string"
+		select="''" />
 
 	<xsl:param name="XDSDocumentEntry_uniqueId" as="xs:string"
 		select="'{$XDSDocumentEntry_uniqueId}'"></xsl:param>
@@ -48,14 +51,16 @@
 
 					<Slot name="urn:siframework.org:ds4p:purposeofuse">
 						<ValueList>
-							<Value>TREAT</Value>
+							<Value>
+								<xsl:value-of select=" $purposeOfUse" />
+							</Value>
 						</ValueList>
 					</Slot>
 
 					<Slot name="urn:siframework.org:ds4p:obligationpolicy">
 						<ValueList>
 							<xsl:for-each select="//executionResponse[itemAction != 'REDACT']">
-								<Value observationId="{observationId}">
+								<Value>
 									<xsl:value-of select="documentObligationPolicy" />
 								</Value>
 							</xsl:for-each>
@@ -65,14 +70,14 @@
 					<Slot name="urn:siframework.org:ds4p:refrainpolicy">
 						<ValueList>
 							<xsl:for-each select="//executionResponse[itemAction != 'REDACT']">
-								<Value observationId="{observationId}">
+								<Value >
 									<xsl:value-of select="documentRefrainPolicy" />
 								</Value>
 							</xsl:for-each>
 						</ValueList>
 					</Slot>
 
-					<Slot name="urn:siframework.org:ds4p:sensitivitypolicy">
+					<!-- <Slot name="urn:siframework.org:ds4p:sensitivitypolicy">
 						<ValueList>
 							<xsl:for-each select="//executionResponse[itemAction != 'REDACT']">
 								<Value observationId="{observationId}">
@@ -80,12 +85,12 @@
 								</Value>
 							</xsl:for-each>
 						</ValueList>
-					</Slot>
+					</Slot> -->
 
 					<Slot name="urn:siframework.org:ds4p:usprivacylaw">
 						<ValueList>
 							<xsl:for-each select="//executionResponse[itemAction != 'REDACT']">
-								<Value observationId="{observationId}">
+								<Value >
 									<xsl:value-of select="USPrivacyLaw" />
 								</Value>
 							</xsl:for-each>

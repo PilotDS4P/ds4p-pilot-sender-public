@@ -157,7 +157,7 @@ public class SecuredOrchestratorImplTest {
 		gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetResponse response = securedOrchestrator
 				.retrieveDocumentSetRequest(
 						"2132311954.131311.4101210.102100.89242147141011137",
-						"eed552d2-2ad4-4ae4-8e28-b8b0dee93495");
+						"eed552d2-2ad4-4ae4-8e28-b8b0dee93495", reciepientEmailAddress);
 
 		ihe.iti.xds_b._2007.RetrieveDocumentSetResponse testResponse = unmarshallFromXml(
 				ihe.iti.xds_b._2007.RetrieveDocumentSetResponse.class,

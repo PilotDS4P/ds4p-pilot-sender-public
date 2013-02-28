@@ -34,7 +34,7 @@ import gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetRespon
  */
 public interface SecuredOrchestrator {
 	
-	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String documentUniqueId, String messageId);
+	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String documentUniqueId, String messageId, String intendedRecipient);
 
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId, String messageId);
 }

@@ -57,7 +57,7 @@ public class AdditionalMetadataGeneratorForProcessedC32Impl implements
 	 */
 	@Override
 	public String generateMetadataXml(String ruleExecutionResponseContainer,
-			String senderEmailAddress, String recipientEmailAddress) {
+			String senderEmailAddress, String recipientEmailAddress, String purposeOfUse) {
 
 		StringWriter stringWriter = null;
 		InputStream inputStream = null;
@@ -82,6 +82,8 @@ public class AdditionalMetadataGeneratorForProcessedC32Impl implements
 					senderEmailAddress);
 			transformer
 					.setParameter("intendedRecipient", recipientEmailAddress);
+			transformer
+			.setParameter("purposeOfUse", purposeOfUse);
 
 			stringWriter = new StringWriter();
 			transformer.transform(new StreamSource(new StringReader(

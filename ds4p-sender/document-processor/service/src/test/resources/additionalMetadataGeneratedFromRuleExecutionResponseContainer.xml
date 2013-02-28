@@ -22,22 +22,17 @@
          </Slot>
          <Slot name="urn:siframework.org:ds4p:obligationpolicy">
             <ValueList>
-               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">ENCRYPT</Value>
+               <Value>ENCRYPT</Value>
             </ValueList>
          </Slot>
          <Slot name="urn:siframework.org:ds4p:refrainpolicy">
             <ValueList>
-               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">NORDSLCD</Value>
-            </ValueList>
-         </Slot>
-         <Slot name="urn:siframework.org:ds4p:sensitivitypolicy">
-            <ValueList>
-               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">HIV</Value>
+               <Value>NORDSLCD</Value>
             </ValueList>
          </Slot>
          <Slot name="urn:siframework.org:ds4p:usprivacylaw">
             <ValueList>
-               <Value observationId="d11275e7-67ae-11db-bd13-0800200c9a66">42CFRPart2</Value>
+               <Value>42CFRPart2</Value>
             </ValueList>
          </Slot>
          <ExternalIdentifier id="ei02"

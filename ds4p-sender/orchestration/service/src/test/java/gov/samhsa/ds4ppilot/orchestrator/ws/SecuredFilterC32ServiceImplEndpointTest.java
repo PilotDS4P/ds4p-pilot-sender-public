@@ -105,7 +105,7 @@ public class SecuredFilterC32ServiceImplEndpointTest {
 		SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null,
 				is);
 		when(
-				securedOrchrstratorMock.retrieveDocumentSetRequest(anyString(), anyString())).thenReturn(retrieveDocumentSetResponse);
+				securedOrchrstratorMock.retrieveDocumentSetRequest(anyString(), anyString(), anyString())).thenReturn(retrieveDocumentSetResponse);
 
 		SOAPMessage responseSOAPMessage = disp.invoke(reqMsg);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();

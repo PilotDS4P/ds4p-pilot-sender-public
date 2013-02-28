@@ -18,11 +18,12 @@ public class AdditonalMetadataGeneratorForProcessedC32ImplTest {
 		AdditionalMetadataGeneratorForProcessedC32Impl additionalMetadataGeneratorForProcessedC32Impl = new AdditionalMetadataGeneratorForProcessedC32Impl();
 		String senderEmailAddress = "sender@sender.com";
 		String recipientEmailAddress = "";
+		String purposeOfUse = "TREAT";
 
 		// Act
 		String result = additionalMetadataGeneratorForProcessedC32Impl
 				.generateMetadataXml(ruleExecutionResponseContainer,
-						senderEmailAddress, recipientEmailAddress);
+						senderEmailAddress, recipientEmailAddress, purposeOfUse);
 
 		// Assert
 		String expectedResult = readStringFromFile("additionalMetadataGeneratedFromRuleExecutionResponseContainer.xml");
