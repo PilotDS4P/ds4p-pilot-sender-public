@@ -26,6 +26,7 @@
 package gov.samhsa.ds4ppilot.documentprocessor;
 
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
+import gov.samhsa.ds4ppilot.common.utils.StringURIResolver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,13 +57,19 @@ public class AdditionalMetadataGeneratorForProcessedC32Impl implements
 	 * (java.lang.String, java.lang.String)
 	 */
 	@Override
-	public String generateMetadataXml(String ruleExecutionResponseContainer,
-			String senderEmailAddress, String recipientEmailAddress, String purposeOfUse) {
+	public String generateMetadataXml(String messageId, String document,String ruleExecutionResponseContainer,
+			String senderEmailAddress, String recipientEmailAddress,
+			String purposeOfUse, String xdsDocumentEntryUniqueId) {
 
 		StringWriter stringWriter = null;
 		InputStream inputStream = null;
 
 		try {
+			// add namespace execution response container for transformation
+			ruleExecutionResponseContainer = ruleExecutionResponseContainer.replace(
+					"<ruleExecutionContainer>",
+					"<ruleExecutionContainer xmlns=\"urn:hl7-org:v3\">");
+
 			inputStream = Thread
 					.currentThread()
 					.getContextClassLoader()
@@ -77,20 +84,29 @@ public class AdditionalMetadataGeneratorForProcessedC32Impl implements
 					.newTemplates(styleSheetStremSource);
 
 			Transformer transformer = template.newTransformer();
-
+			transformer.setURIResolver(new StringURIResolver().put(
+					"ruleExecutionResponseContainer",
+					ruleExecutionResponseContainer));
+			
 			transformer.setParameter("authorTelecommunication",
-					senderEmailAddress);
+					senderEmailAddress);		
+
 			transformer
 					.setParameter("intendedRecipient", recipientEmailAddress);
-			transformer
-			.setParameter("purposeOfUse", purposeOfUse);
+			
+			transformer.setParameter("purposeOfUse", purposeOfUse);
+			
+			transformer.setParameter("privacyPoliciesExternalDocUrl", messageId);
+			
+			transformer.setParameter("xdsDocumentEntryUniqueId", xdsDocumentEntryUniqueId);
 
 			stringWriter = new StringWriter();
 			transformer.transform(new StreamSource(new StringReader(
-					ruleExecutionResponseContainer)), new StreamResult(
+					document)), new StreamResult(
 					stringWriter));
 
 			String metadataXml = stringWriter.toString();
+			//System.out.println(metadataXml);
 
 			inputStream.close();
 			stringWriter.close();

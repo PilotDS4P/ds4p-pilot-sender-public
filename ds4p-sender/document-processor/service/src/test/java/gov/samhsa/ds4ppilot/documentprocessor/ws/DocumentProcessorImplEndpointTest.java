@@ -67,7 +67,7 @@ public class DocumentProcessorImplEndpointTest {
 		ProcessDocumentRequest request = new ProcessDocumentRequest();
 
 		when(documentProcessorMock.processDocument(null, null, false, false,
-				null, null))
+				null, null, null))
 				.thenReturn(processDocumentResponse);
 
 		ProcessDocumentResponse response = port.processDocument(request);

@@ -41,6 +41,6 @@ public interface AdditionalMetadataGeneratorForProcessedC32 {
 	 *            the recipient email address
 	 * @return the string
 	 */
-	public String generateMetadataXml(String ruleExecutionResponseContainer,
-			String senderEmailAddress, String recipientEmailAddress, String purposeOfUse);
+	public String generateMetadataXml(String messageId, String document, String ruleExecutionResponseContainer,
+			String senderEmailAddress, String recipientEmailAddress, String purposeOfUse, String xdsDocumentEntryUniqueId);
 }

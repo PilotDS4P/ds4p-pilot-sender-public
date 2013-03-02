@@ -62,6 +62,8 @@ public class DocumentProcessorClientTest {
 		request.setEncryptDocument(true);
 		request.setSenderEmailAddress("leo.smith@direct.obhita-stage.org");
 		request.setRecipientEmailAddress("Duane_Decouteau@direct.healthvault.com");
+		request.setXdsDocumentEntryUniqueId("123");
+		
 
 		ProcessDocumentResponse resp = createPort().processDocument(request);
 		validateResponse(resp);
@@ -77,6 +79,7 @@ public class DocumentProcessorClientTest {
 		boolean encryptDocument = true;
 		String senderEmailAddress = "leo.smith@direct.obhita-stage.org";
 		String recipientEmailAddress = "Duane_Decouteau@direct.healthvault.com";
+		String xdsDocumentEntryUniqueId = "123";
 
 		IDocumentProcessorImpl.returnedValueOfProcessDocument = returnedValueOfProcessDocument;
 
@@ -84,7 +87,7 @@ public class DocumentProcessorClientTest {
 				address);
 		ProcessDocumentResponse resp = wsc.processDocument(document,
 				enforcementPolicies, packageAsXdm, encryptDocument,
-				senderEmailAddress, recipientEmailAddress);
+				senderEmailAddress, recipientEmailAddress, xdsDocumentEntryUniqueId);
 		validateResponse(resp);
 	}
 

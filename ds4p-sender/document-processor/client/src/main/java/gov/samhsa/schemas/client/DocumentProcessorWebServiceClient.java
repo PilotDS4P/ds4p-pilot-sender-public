@@ -66,12 +66,13 @@ public class DocumentProcessorWebServiceClient {
 		boolean encryptDocument = true;
 		String senderEmailAddress = "leo.smith@direct.obhita-stage.org";
 		String recipientEmailAddress = "Duane_Decouteau@direct.healthvault.com";
+		String xdsDocumentEntryUniqueId = "123";
 
 		DocumentProcessorWebServiceClient documentProcessorService = new DocumentProcessorWebServiceClient(
 				null);
 		documentProcessorService.run(document, enforcementPolicies,
 				packageAsXdm, encryptDocument, senderEmailAddress,
-				recipientEmailAddress);
+				recipientEmailAddress, xdsDocumentEntryUniqueId);
 	}
 
 	/**
@@ -102,7 +103,8 @@ public class DocumentProcessorWebServiceClient {
 	public ProcessDocumentResponse processDocument(String document,
 			String enforcementPolicies, boolean packageAsXdm,
 			boolean encryptDocument, String senderEmailAddress,
-			String recipientEmailAddress) {
+			String recipientEmailAddress,
+			String xdsDocumentEntryUniqueId) {
 		ProcessDocumentServicePortType port;
 		if (StringUtils.hasText(this.endpointAddress)) {
 			port = createPort(endpointAddress);
@@ -113,7 +115,7 @@ public class DocumentProcessorWebServiceClient {
 		}
 		return processDocument(port, document, enforcementPolicies,
 				packageAsXdm, encryptDocument, senderEmailAddress,
-				recipientEmailAddress);
+				recipientEmailAddress, xdsDocumentEntryUniqueId);
 	}
 
 	/**
@@ -137,7 +139,7 @@ public class DocumentProcessorWebServiceClient {
 			ProcessDocumentServicePortType port, String document,
 			String enforcementPolicies, boolean packageAsXdm,
 			boolean encryptDocument, String senderEmailAddress,
-			String recipientEmailAddress) {
+			String recipientEmailAddress, String xdsDocumentEntryUniqueId) {
 		ProcessDocumentRequest request = new ProcessDocumentRequest();
 		request.setDocument(document);
 		request.setEnforcementPolicies(enforcementPolicies);
@@ -145,6 +147,7 @@ public class DocumentProcessorWebServiceClient {
 		request.setSenderEmailAddress(senderEmailAddress);
 		request.setRecipientEmailAddress(recipientEmailAddress);
 		request.setEncryptDocument(encryptDocument);
+		request.setXdsDocumentEntryUniqueId(xdsDocumentEntryUniqueId);
 		return port.processDocument(request);
 	}
 
@@ -196,7 +199,7 @@ public class DocumentProcessorWebServiceClient {
 	 */
 	private void run(String document, String enforcementPolicies,
 			boolean packageAsXdm, boolean encryptDocument,
-			String senderEmailAddress, String recipientEmailAddress) {
+			String senderEmailAddress, String recipientEmailAddress, String xdsDocumentEntryUniqueId) {
 		try {
 			LOGGER.debug("Creating DocumentProcessor service instance ...");
 			long start = new Date().getTime();
@@ -214,7 +217,7 @@ public class DocumentProcessorWebServiceClient {
 
 			ProcessDocumentResponse result = processDocument(port, document,
 					enforcementPolicies, packageAsXdm, encryptDocument,
-					senderEmailAddress, recipientEmailAddress);
+					senderEmailAddress, recipientEmailAddress, xdsDocumentEntryUniqueId);
 			end = new Date().getTime();
 			LOGGER.debug("Time required to invoke 'enforcePolicy': {} seconds",
 					(end - start) / 1000f);

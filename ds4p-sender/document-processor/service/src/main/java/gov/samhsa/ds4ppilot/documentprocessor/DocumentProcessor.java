@@ -43,6 +43,6 @@ public interface DocumentProcessor {
 	 * @return the process document response
 	 */
 	public ProcessDocumentResponse processDocument(String document, String enforcementPolicies, boolean packageAsXdm, boolean encryptDocument,
-			String senderEmailAddress, String recipientEmailAddress);
+			String senderEmailAddress, String recipientEmailAddress, String xdsDocumentEntryUniqueId);
 
 }

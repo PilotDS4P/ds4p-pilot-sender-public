@@ -232,7 +232,7 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 						.processDocument(originalDocument,
 								xacmlResponseXml.toString(), false, true,
 								"leo.smith@direct.obhita-stage.org",
-								intendedRecipient);
+								intendedRecipient, documentUniqueId);
 				processedPayload = dataHandlerToBytesConverter
 						.toByteArray(processDocumentResponse
 								.getProcessedDocument());

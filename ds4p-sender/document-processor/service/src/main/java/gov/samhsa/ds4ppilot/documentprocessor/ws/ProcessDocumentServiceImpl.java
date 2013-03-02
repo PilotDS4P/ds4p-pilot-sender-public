@@ -71,7 +71,7 @@ public class ProcessDocumentServiceImpl implements ProcessDocumentServicePortTyp
 	public ProcessDocumentResponse processDocument(
 			ProcessDocumentRequest parameters) {
 		ProcessDocumentResponse response = new ProcessDocumentResponse();
-		response = documentProcessor.processDocument(parameters.getDocument(), parameters.getEnforcementPolicies(), parameters.isPackageAsXdm(), parameters.isEncryptDocument(), parameters.getSenderEmailAddress(), parameters.getRecipientEmailAddress());
+		response = documentProcessor.processDocument(parameters.getDocument(), parameters.getEnforcementPolicies(), parameters.isPackageAsXdm(), parameters.isEncryptDocument(), parameters.getSenderEmailAddress(), parameters.getRecipientEmailAddress(), parameters.getXdsDocumentEntryUniqueId());
 		return response;
 	}	
 

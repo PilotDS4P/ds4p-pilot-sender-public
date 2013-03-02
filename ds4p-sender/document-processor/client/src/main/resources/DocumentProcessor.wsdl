@@ -16,6 +16,7 @@
 						<xsd:element name="encryptDocument" type="xsd:boolean" />
 						<xsd:element name="senderEmailAddress" type="xsd:string"/>
 						<xsd:element name="recipientEmailAddress" type="xsd:string"/>
+						<xsd:element name="xdsDocumentEntryUniqueId" type="xsd:string"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>

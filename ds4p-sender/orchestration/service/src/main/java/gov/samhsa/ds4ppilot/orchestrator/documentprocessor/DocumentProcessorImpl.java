@@ -51,13 +51,13 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	@Override
 	public ProcessDocumentResponse processDocument(String c32Document,
 			String enforcePolicyResponseXmlString, boolean packageAsXdm, boolean encryptDocument,
-			String senderEmailAddress, String recipientEmailAddress) {
+			String senderEmailAddress, String recipientEmailAddress, String xdsDocumentEntryUniqueId) {
 
 		DocumentProcessorWebServiceClient documentProcessorWebServiceClient = new DocumentProcessorWebServiceClient(
 				endpointAddress);
 		ProcessDocumentResponse response = documentProcessorWebServiceClient
 				.processDocument(c32Document, enforcePolicyResponseXmlString,
-						packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress);
+						packageAsXdm, encryptDocument, senderEmailAddress, recipientEmailAddress, xdsDocumentEntryUniqueId);
 
 		return response;
 	}

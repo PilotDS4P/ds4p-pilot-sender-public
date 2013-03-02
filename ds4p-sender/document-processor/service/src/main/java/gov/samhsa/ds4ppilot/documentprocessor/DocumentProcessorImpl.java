@@ -153,7 +153,7 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	public ProcessDocumentResponse processDocument(String document,
 			String enforcementPolicies, boolean packageAsXdm,
 			boolean encryptDocument, String senderEmailAddress,
-			String recipientEmailAddress) {
+			String recipientEmailAddress, String xdsDocumentEntryUniqueId) {
 		RuleExecutionContainer ruleExecutionContainer = null;
 		XacmlResult xacmlResult = null;
 		ByteArrayDataSource rawData = null;
@@ -196,8 +196,8 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 
 			AdditionalMetadataGeneratorForProcessedC32Impl additionalMetadataGeneratorForProcessedC32Impl = new AdditionalMetadataGeneratorForProcessedC32Impl();
 			String additonalMetadataGeneratorForProcessedC32 = additionalMetadataGeneratorForProcessedC32Impl
-					.generateMetadataXml(executionResponseContainer,
-							senderEmailAddress, recipientEmailAddress, xacmlResult.getSubjectPurposeOfUse());
+					.generateMetadataXml(xacmlResult.getMessageId(), document, executionResponseContainer,
+							senderEmailAddress, recipientEmailAddress, xacmlResult.getSubjectPurposeOfUse(), xdsDocumentEntryUniqueId);
 			FileHelper.writeStringToFile(
 					additonalMetadataGeneratorForProcessedC32,
 					"additional_metadata.xml");

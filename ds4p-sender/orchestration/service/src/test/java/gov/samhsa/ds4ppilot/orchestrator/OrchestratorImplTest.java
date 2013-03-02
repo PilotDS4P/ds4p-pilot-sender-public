@@ -92,6 +92,7 @@ public class OrchestratorImplTest {
 		packageXdm = true;
 		senderEmailAddress = "leo.smith@direct.obhita-stage.org";
 		reciepientEmailAddress = "Duane_Decouteau@direct.healthvault-stage.com";
+		
 	}
 
 	@Ignore("This test should be configured to run as an integration test.")
@@ -508,7 +509,7 @@ public class OrchestratorImplTest {
 		when(
 				documentProcessorMock.processDocument(eq(c32), anyString(),
 						eq(packageAsXdm), eq(encryptDocument),
-						eq(senderEmailAddress), eq(recipientEmailAddress)))
+						eq(senderEmailAddress), eq(recipientEmailAddress), anyString()))
 						.thenReturn(processDocumentResponseMock);
 
 		when(

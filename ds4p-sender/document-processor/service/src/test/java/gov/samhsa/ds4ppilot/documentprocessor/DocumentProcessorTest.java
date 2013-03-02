@@ -47,6 +47,7 @@ public class DocumentProcessorTest {
 	private static String recipientEmailAddress;
 	private static String endpointAddressForAuditServcie;
 	private static String endpointAddressForHealthcareClassificationService;
+	private static String xdsDocumentEntryUniqueId;
 
 	@BeforeClass
 	public static void setUp() {
@@ -59,6 +60,7 @@ public class DocumentProcessorTest {
 		homeCommunityId = "2.16.840.1.113883.3.467";
 		endpointAddressForAuditServcie = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService";
 		endpointAddressForHealthcareClassificationService = "http://localhost:90/HealthcareClassificationService/services/healthcareClassificationService";
+		xdsDocumentEntryUniqueId = "123";
 	}
 
 	@Ignore("This test should be configured to run as an integration test.")
@@ -72,7 +74,7 @@ public class DocumentProcessorTest {
 
 		ProcessDocumentResponse result = documentProcessor.processDocument(
 				c32Document.toString(), xacmlResult, false, true,
-				senderEmailAddress, recipientEmailAddress);
+				senderEmailAddress, recipientEmailAddress, xdsDocumentEntryUniqueId);
 
 		Assert.assertNotNull(result);
 	}

@@ -215,7 +215,7 @@ public class OrchestratorImpl implements Orchestrator {
 				ProcessDocumentResponse processDocumentResponse = documentProcessor
 						.processDocument(originalC32,
 								xacmlResponseXml.toString(), packageAsXdm,
-								true, senderEmailAddress, recipientEmailAddress);
+								true, senderEmailAddress, recipientEmailAddress, "");
 
 				processedPayload = dataHandlerToBytesConverter
 						.toByteArray(processDocumentResponse
@@ -552,7 +552,7 @@ public class OrchestratorImpl implements Orchestrator {
 									false, true,
 									"leo.smith@direct.obhita-stage.org",
 									enforcePolicy.getXspasubject()
-									.getSubjectEmailAddress());
+									.getSubjectEmailAddress(), "");
 					processedPayload = dataHandlerToBytesConverter
 							.toByteArray(processDocumentResponse
 									.getProcessedDocument());

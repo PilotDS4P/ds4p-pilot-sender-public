@@ -15,12 +15,7 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>DS4PCommonLibrary</groupId>
-			<artifactId>DS4PCommonLibrary</artifactId>
-			<version>1.0</version>
-			<scope>compile</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>healthcare-classification-client-jar-with-dependencies</groupId>
 			<artifactId>healthcare-classification-client-jar-with-dependencies</artifactId>
@@ -36,6 +31,12 @@
 			<artifactId>audit-service-client-jar-with-dependencies</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+                     <groupId>org.apache.ws.commons.axiom</groupId>
+                     <artifactId>axiom-api</artifactId>
+                     <version>1.2.5</version>
+              </dependency>
+		
 	</dependencies>
 
 	<build>
