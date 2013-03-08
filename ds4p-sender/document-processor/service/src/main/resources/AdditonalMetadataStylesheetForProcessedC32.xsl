@@ -26,9 +26,9 @@
 	<xsl:variable name="confidentialityCode"
 		select="//ClinicalDocument/confidentialityCode/@code" />
 	<xsl:variable name="documentRefrainPolicy"
-		select="$ruleExecutionResponseContainer//executionResponse[itemAction != 'REDACT']//documentRefrainPolicy[1]" />
+		select="$ruleExecutionResponseContainer//executionResponse[position()= 1]//documentRefrainPolicy" />
 	<xsl:variable name="documentObligationPolicy"
-		select="$ruleExecutionResponseContainer//executionResponse[itemAction != 'REDACT']//documentObligationPolicy[1]" />
+		select="$ruleExecutionResponseContainer//executionResponse[position()= 1]//documentObligationPolicy" />
 
 	<xsl:variable name="documentTypeInLoincCode" select="//ClinicalDocument/code/@code" />
 
