@@ -32,9 +32,11 @@ import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
 import gov.samhsa.ds4ppilot.common.exception.DS4PException;
 import gov.samhsa.ds4ppilot.hcs.clinicallyadaptiverules.ClinicallyAdaptiveRules;
 import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExecuteClinicalFactsResponse;
+import gov.va.ds4p.cas.RuleExecutionResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -54,7 +56,10 @@ import org.drools.definition.rule.Rule;
 import org.drools.event.rule.AfterActivationFiredEvent;
 import org.drools.event.rule.DefaultAgendaEventListener;
 import org.drools.io.ResourceFactory;
+import org.drools.runtime.Globals;
+import org.drools.runtime.KnowledgeRuntime;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.rule.FactHandle;
 
 /**
  * The Class HealthcareClassificationServiceImpl.
@@ -170,14 +175,33 @@ public class HealthcareClassificationServiceImpl implements
 			session.addEventListener(new DefaultAgendaEventListener() {
 				@Override
 				public void afterActivationFired(AfterActivationFiredEvent event) {
-					super.afterActivationFired(event);
-					final Rule rule = event.getActivation().getRule();
-					addRuleName(rule.getName());
-
+					super.afterActivationFired(event);					
+					final Rule rule = event.getActivation().getRule();		
+					String ruleName = "";
+					
+					KnowledgeRuntime knowledgeRuntime = event.getKnowledgeRuntime();
+					RuleExecutionContainer ruleExecutionResponseContainer = (RuleExecutionContainer) knowledgeRuntime.getGlobal("ruleExecutionContainer");
+					for (FactHandle factHandle : event.getActivation().getFactHandles()) {
+						Object fact = knowledgeRuntime.getObject(factHandle);
+						
+						if(fact instanceof ClinicalFact)
+						{
+							String observationId = ((ClinicalFact) fact).getObservationId();
+							
+							for (RuleExecutionResponse ruleExecutionResponse : ruleExecutionResponseContainer.getExecutionResponseList()) {
+								
+								if(observationId.equals(ruleExecutionResponse.getObservationId()))
+									ruleName = rule.getName() + " : " + ruleExecutionResponse.getObservationId() + " " + ruleExecutionResponse.getImpliedConfSection() + " " + ruleExecutionResponse.getSensitivity();
+							}							
+						}
+					}
+					
+					addRuleName(ruleName);
 				}
 			});
 
-			session.fireAllRules();
+			session.fireAllRules();			
+			
 
 			// log fired rules
 			auditService.updateAuthorizationEventWithExecRules(factModel
