@@ -1,12 +1,5 @@
-ds4p-pilot-public
+ds4p-pilot-sender-public
 =================
-
-Integrating the ds4p-sender Project with your EHR
-=================
-
-The ds4p-sender project provides a WSDL that can be used for plugging into an EHR: the FilterC32Service.wsdl located in the push-orchestration\service\src\main\resources folder which allows an EHR to send a patientId (among other parameters) and receive back a fully segmented document.
-
-The EHR must expose a WSDL for retrieving CDA document. In the ds4p-sender project, the C32Service.wsdl in the c32-service-client\src\main\resources folder is used for that purpose.
 
 Running the ds4p-sender Code
 =================
