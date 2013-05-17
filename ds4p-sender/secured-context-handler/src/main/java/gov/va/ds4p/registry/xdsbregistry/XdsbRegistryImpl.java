@@ -33,14 +33,27 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import org.hl7.v3.PRPAIN201301UV02;
 import org.hl7.v3.PRPAIN201302UV;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XdsbRegistryImpl.
+ */
 public class XdsbRegistryImpl implements XdsbRegistry {
 
+	/** The endpoint address. */
 	private final String endpointAddress;
 
+	/**
+	 * Instantiates a new xdsb registry impl.
+	 *
+	 * @param endpointAddress the endpoint address
+	 */
 	public XdsbRegistryImpl(String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.va.ds4p.registry.xdsbregistry.XdsbRegistry#registryStoredQuery(oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest)
+	 */
 	@Override
 	public AdhocQueryResponse registryStoredQuery(AdhocQueryRequest input) {
 		XdsbRegistryWebServiceClient client = new XdsbRegistryWebServiceClient(
@@ -49,6 +62,9 @@ public class XdsbRegistryImpl implements XdsbRegistry {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.va.ds4p.registry.xdsbregistry.XdsbRegistry#addPatientRegistryRecord(PRPAIN201301UV02)
+	 */
 	@Override
 	public String addPatientRegistryRecord(PRPAIN201301UV02 input) {
 		XdsbRegistryWebServiceClient client = new XdsbRegistryWebServiceClient(
@@ -62,6 +78,9 @@ public class XdsbRegistryImpl implements XdsbRegistry {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.va.ds4p.registry.xdsbregistry.XdsbRegistry#revisePatientRegistryRecord(PRPAIN201302UV)
+	 */
 	@Override
 	public String revisePatientRegistryRecord(PRPAIN201302UV input) {
 		XdsbRegistryWebServiceClient client = new XdsbRegistryWebServiceClient(

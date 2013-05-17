@@ -25,6 +25,7 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.documentprocessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface AdditionalMetadataGeneratorForProcessedC32.
  */
@@ -32,13 +33,14 @@ public interface AdditionalMetadataGeneratorForProcessedC32 {
 
 	/**
 	 * Generate metadata xml.
-	 * 
-	 * @param ruleExecutionResponseContainer
-	 *            the rule execution response container
-	 * @param senderEmailAddress
-	 *            the sender email address
-	 * @param recipientEmailAddress
-	 *            the recipient email address
+	 *
+	 * @param messageId the message id
+	 * @param document the document
+	 * @param ruleExecutionResponseContainer the rule execution response container
+	 * @param senderEmailAddress the sender email address
+	 * @param recipientEmailAddress the recipient email address
+	 * @param purposeOfUse the purpose of use
+	 * @param xdsDocumentEntryUniqueId the xds document entry unique id
 	 * @return the string
 	 */
 	public String generateMetadataXml(String messageId, String document, String ruleExecutionResponseContainer,

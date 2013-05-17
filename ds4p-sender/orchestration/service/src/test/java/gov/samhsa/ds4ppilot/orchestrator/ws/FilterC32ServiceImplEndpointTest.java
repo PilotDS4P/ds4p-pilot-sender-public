@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator.ws;
 
 import static org.junit.Assert.assertEquals;
@@ -38,24 +63,50 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FilterC32ServiceImplEndpointTest.
+ */
 public class FilterC32ServiceImplEndpointTest {
 
+	/** The wsdl url. */
 	private static URL wsdlURL;
+	
+	/** The address. */
 	private static String address;
+	
+	/** The service name. */
 	private static QName serviceName;
+	
+	/** The port name. */
 	private static QName portName;
 
+	/** The ep. */
 	private static Endpoint ep;
 
+	/** The filter c32 response. */
 	private static FilterC32Response filterC32Response;
+	
+	/** The retrieve document set response. */
 	private static RetrieveDocumentSetResponse retrieveDocumentSetResponse;
 
+	/** The filter c32 soap message string. */
 	private static String filterC32SOAPMessageString;
+	
+	/** The filter c32 soap message payload string. */
 	private static String filterC32SOAPMessagePayloadString;
+	
+	/** The Constant LENGTH. */
 	private static final int LENGTH = 1;
 
+	/** The orchrstrator mock. */
 	private static Orchestrator orchrstratorMock = mock(Orchestrator.class);
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@BeforeClass
 	public static void setUp() throws Exception {
 		serviceName = new QName(
@@ -85,6 +136,9 @@ public class FilterC32ServiceImplEndpointTest {
 				orchrstratorMock));
 	}
 
+	/**
+	 * Tear down.
+	 */
 	@AfterClass
 	public static void tearDown() {
 		try {
@@ -97,6 +151,11 @@ public class FilterC32ServiceImplEndpointTest {
 	/*
 	 * This test uses wsimport/wsdl2java generated artifacts, both service and
 	 * SEI
+	 */
+	/**
+	 * Filter c32 with generated service and sei.
+	 *
+	 * @throws MalformedURLException the malformed url exception
 	 */
 	@Test
 	public void filterC32WithGeneratedServiceAndSei()
@@ -123,6 +182,11 @@ public class FilterC32ServiceImplEndpointTest {
 	 * This test uses raw Service class for service, wsimport/wsdl2java *
 	 * generated SEI
 	 */
+	/**
+	 * Filter c32 works with raw service and sei.
+	 *
+	 * @throws MalformedURLException the malformed url exception
+	 */
 	@Test
 	public void filterC32WorksWithRawServiceAndSei()
 			throws MalformedURLException {
@@ -142,6 +206,11 @@ public class FilterC32ServiceImplEndpointTest {
 	/*
 	 * This test uses wsimport/wsdl2java generated artifacts, both service and
 	 * SEI
+	 */
+	/**
+	 * Retrieve document set with generated service and sei.
+	 *
+	 * @throws MalformedURLException the malformed url exception
 	 */
 	@Test
 	public void retrieveDocumentSetWithGeneratedServiceAndSei()
@@ -165,6 +234,11 @@ public class FilterC32ServiceImplEndpointTest {
 	 * This test uses raw Service class for service, wsimport/wsdl2java *
 	 * generated SEI
 	 */
+	/**
+	 * Retrieve document set works with raw service and sei.
+	 *
+	 * @throws MalformedURLException the malformed url exception
+	 */
 	@Test
 	public void retrieveDocumentSetWorksWithRawServiceAndSei()
 			throws MalformedURLException {
@@ -187,6 +261,11 @@ public class FilterC32ServiceImplEndpointTest {
 	 * This test uses raw Service class for service, Dispatch<SOAPMessage> for
 	 * client No wsimport/wsdl2java needed. Note works with full SOAP message
 	 * (Service.Mode.MESSAGE)
+	 */
+	/**
+	 * Filter c32 works with raw service and dispatch of soap message.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Ignore()
 	@Test
@@ -220,6 +299,11 @@ public class FilterC32ServiceImplEndpointTest {
 	 * MESSAGE. Note CXF supports other options such as Dispatch<DOMSource>,
 	 * Dispatch<SAXSource>, and Dispatch<StreamSource>, search CXF source code
 	 * for examples.
+	 */
+	/**
+	 * Filter c32 works with raw service and dispatch of source.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Ignore
 	@Test
@@ -283,6 +367,11 @@ public class FilterC32ServiceImplEndpointTest {
 	 * validateResponse(response); }
 	 */
 
+	/**
+	 * Validate response.
+	 *
+	 * @param response the response
+	 */
 	private void validateResponse(FilterC32Response response) {
 		assertEquals("Filter C32 Service not returning expected Patient ID",
 				filterC32Response.getPatientId(), response.getPatientId());
@@ -293,6 +382,11 @@ public class FilterC32ServiceImplEndpointTest {
 				LENGTH, response.getFilteredStreamBody().length);
 	}
 
+	/**
+	 * Validate retrieve document set response.
+	 *
+	 * @param response the response
+	 */
 	private void validateRetrieveDocumentSetResponse(
 			RetrieveDocumentSetResponse response) {
 		assertEquals("<ns3:RetrieveDocument",

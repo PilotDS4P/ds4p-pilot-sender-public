@@ -98,6 +98,7 @@ import org.hl7.v3.PatientIdentityFeedRequestType.Receiver;
 import org.hl7.v3.PatientIdentityFeedRequestType.Sender;
 import org.xml.sax.InputSource;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class OrchestratorImpl.
  */
@@ -147,15 +148,13 @@ public class OrchestratorImpl implements Orchestrator {
 
 	/**
 	 * Instantiates a new orchestrator impl.
-	 * 
-	 * @param contextHandler
-	 *            the context handler
-	 * @param c32Getter
-	 *            the C32 getter
-	 * @param documentProcessor
-	 *            the document processor
-	 * @param dataHandlerToBytesConverter
-	 *            the data handler to bytes converter
+	 *
+	 * @param contextHandler the context handler
+	 * @param c32Getter the C32 getter
+	 * @param documentProcessor the document processor
+	 * @param dataHandlerToBytesConverter the data handler to bytes converter
+	 * @param xdsbRepository the xdsb repository
+	 * @param xdsbRegistry the xdsb registry
 	 */
 	public OrchestratorImpl(ContextHandler contextHandler, C32Getter c32Getter,
 			DocumentProcessor documentProcessor,
@@ -236,6 +235,9 @@ public class OrchestratorImpl implements Orchestrator {
 		return c32Response;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.Orchestrator#saveDocumentSetToXdsRepository(java.lang.String)
+	 */
 	@Override
 	public boolean saveDocumentSetToXdsRepository(String documentSet) {
 
@@ -500,6 +502,9 @@ public class OrchestratorImpl implements Orchestrator {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.Orchestrator#retrieveDocumentSetRequest(java.lang.String, java.lang.String, java.lang.String, java.lang.String, gov.va.ehtac.ds4p.ws.EnforcePolicy)
+	 */
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			String homeCommunityId, String repositoryUniqueId,
@@ -602,6 +607,9 @@ public class OrchestratorImpl implements Orchestrator {
 		return retrieveDocumentSetResponse;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.Orchestrator#registeryStoredQueryRequest(java.lang.String, gov.va.ehtac.ds4p.ws.EnforcePolicy)
+	 */
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(
 			String patientId, EnforcePolicy enforcePolicy) {
@@ -799,7 +807,10 @@ public class OrchestratorImpl implements Orchestrator {
 	}
 
 	/**
-	 * @return
+	 * Sets the xspa resource.
+	 *
+	 * @param patientId the patient id
+	 * @return the enforce policy. xsparesource
 	 */
 	public EnforcePolicy.Xsparesource setXspaResource(String patientId) {
 		EnforcePolicy.Xsparesource xsparesource = new EnforcePolicy.Xsparesource();
@@ -811,7 +822,11 @@ public class OrchestratorImpl implements Orchestrator {
 	}
 
 	/**
-	 * @return
+	 * Sets the xspa subject.
+	 *
+	 * @param recipientEmailAddress the recipient email address
+	 * @param messageId the message id
+	 * @return the enforce policy. xspasubject
 	 */
 	public EnforcePolicy.Xspasubject setXspaSubject(
 			String recipientEmailAddress, String messageId) {
@@ -843,6 +858,13 @@ public class OrchestratorImpl implements Orchestrator {
 		return xacmlResult;
 	}
 
+	/**
+	 * Marshall.
+	 *
+	 * @param obj the obj
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	private static String marshall(Object obj) throws Throwable {
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 		Marshaller marshaller = context.createMarshaller();
@@ -853,6 +875,15 @@ public class OrchestratorImpl implements Orchestrator {
 		return stringWriter.toString();
 	}
 
+	/**
+	 * Unmarshall from xml.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param xml the xml
+	 * @return the t
+	 * @throws JAXBException the jAXB exception
+	 */
 	private static <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(clazz);
@@ -861,6 +892,13 @@ public class OrchestratorImpl implements Orchestrator {
 		return (T) um.unmarshal(input);
 	}
 
+	/**
+	 * Load xml from.
+	 *
+	 * @param xml the xml
+	 * @return the org.w3c.dom. document
+	 * @throws Exception the exception
+	 */
 	private static org.w3c.dom.Document loadXmlFrom(String xml)
 			throws Exception {
 		InputSource is = new InputSource(new StringReader(xml));
@@ -872,6 +910,12 @@ public class OrchestratorImpl implements Orchestrator {
 		return document;
 	}
 
+	/**
+	 * Gets the response with latest document entries for consent and nonconsent.
+	 *
+	 * @param adhocQueryResponse the adhoc query response
+	 * @return the response with latest document entries for consent and nonconsent
+	 */
 	private static AdhocQueryResponse getResponseWithLatestDocumentEntriesForConsentAndNonconsent(
 			AdhocQueryResponse adhocQueryResponse) {
 		int documentEntryCount = adhocQueryResponse.getRegistryObjectList()
@@ -994,6 +1038,12 @@ public class OrchestratorImpl implements Orchestrator {
 		return adhocQueryResponse;
 	}
 
+	/**
+	 * Checks if is consent document.
+	 *
+	 * @param originalDocument the original document
+	 * @return true, if is consent document
+	 */
 	private boolean isConsentDocument(String originalDocument) {
 		boolean consentDocumentExists = false;
 
@@ -1043,6 +1093,12 @@ public class OrchestratorImpl implements Orchestrator {
 		return consentDocumentExists;
 	}
 
+	/**
+	 * Patient exists in registy before adding.
+	 *
+	 * @param responseOfAddPatient the response of add patient
+	 * @return true, if successful
+	 */
 	public static boolean patientExistsInRegistyBeforeAdding(
 			String responseOfAddPatient) {
 

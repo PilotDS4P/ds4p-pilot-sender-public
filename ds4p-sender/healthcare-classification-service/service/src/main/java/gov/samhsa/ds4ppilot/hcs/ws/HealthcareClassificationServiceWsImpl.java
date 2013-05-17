@@ -32,6 +32,7 @@ import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExec
 import javax.jws.WebService;
 import gov.samhsa.ds4ppilot.contract.healthcareclassificationservice.*;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class HealthcareClassificationServiceWsImpl.
  */

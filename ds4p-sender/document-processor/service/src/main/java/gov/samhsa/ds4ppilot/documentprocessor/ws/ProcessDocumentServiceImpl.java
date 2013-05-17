@@ -33,6 +33,7 @@ import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ProcessDocumentServiceImpl.
  */
@@ -66,6 +67,12 @@ public class ProcessDocumentServiceImpl implements ProcessDocumentServicePortTyp
 
 	/* (non-Javadoc)
 	 * @see gov.samhsa.ds4ppilot.contract.documentprocessor.ProcessDocumentServicePortType#processDocument(gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentRequest)
+	 */
+	/**
+	 * Process document.
+	 *
+	 * @param parameters the parameters
+	 * @return the process document response
 	 */
 	@Override
 	public ProcessDocumentResponse processDocument(

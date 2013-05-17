@@ -27,6 +27,7 @@ package gov.samhsa.ds4ppilot.hcs.clinicallyadaptiverules;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface ClinicallyAdaptiveRules.
  */

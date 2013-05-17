@@ -31,6 +31,7 @@ import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import org.hl7.v3.PRPAIN201301UV02;
 import org.hl7.v3.PRPAIN201302UV;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface XdsbRegistry.
  */

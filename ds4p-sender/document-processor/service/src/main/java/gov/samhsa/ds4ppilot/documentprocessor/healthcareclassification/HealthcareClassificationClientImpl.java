@@ -29,6 +29,7 @@ import gov.samhsa.ds4ppilot.contract.healthcareclassificationservice.client.Heal
 import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExecuteClinicalFactsRequest;
 import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExecuteClinicalFactsResponse;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class HealthcareClassificationClientImpl.
  */

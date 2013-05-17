@@ -80,6 +80,7 @@ import org.w3c.dom.Node;
 
 import ch.qos.logback.core.joran.spi.XMLUtil;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class DocumentProcessorImpl.
  */
@@ -134,19 +135,14 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 	/**
 	 * ***************************************** Process document based on
 	 * drools directives ******************************************.
-	 * 
-	 * @param document
-	 *            the document
-	 * @param enforcementPolicies
-	 *            the enforcement policies
-	 * @param packageAsXdm
-	 *            the package as xdm
-	 * @param encryptDocument
-	 *            the encrypt document
-	 * @param senderEmailAddress
-	 *            the sender email address
-	 * @param recipientEmailAddress
-	 *            the recipient email address
+	 *
+	 * @param document the document
+	 * @param enforcementPolicies the enforcement policies
+	 * @param packageAsXdm the package as xdm
+	 * @param encryptDocument the encrypt document
+	 * @param senderEmailAddress the sender email address
+	 * @param recipientEmailAddress the recipient email address
+	 * @param xdsDocumentEntryUniqueId the xds document entry unique id
 	 * @return the process document response
 	 */
 	@Override
@@ -770,6 +766,15 @@ public class DocumentProcessorImpl implements DocumentProcessor {
 		return (T) um.unmarshal(input);
 	}
 
+	/**
+	 * Sets the document creation date.
+	 *
+	 * @param document the document
+	 * @return the string
+	 * @throws Exception the exception
+	 * @throws XPathExpressionException the x path expression exception
+	 * @throws XMLEncryptionException the xML encryption exception
+	 */
 	private String setDocumentCreationDate(String document) throws Exception,
 			XPathExpressionException, XMLEncryptionException {
 		Document xmlDocument;

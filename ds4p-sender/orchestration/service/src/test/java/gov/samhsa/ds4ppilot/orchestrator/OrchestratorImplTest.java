@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator;
 
 import static org.junit.Assert.assertEquals;
@@ -75,16 +100,33 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OrchestratorImplTest.
+ */
 public class OrchestratorImplTest {
 
+	/** The package xdm. */
 	private static boolean packageXdm;
+	
+	/** The patient id deny. */
 	private static String patientIdDeny;
+	
+	/** The patient id permit. */
 	private static String patientIdPermit;
+	
+	/** The sender email address. */
 	private static String senderEmailAddress;
+	
+	/** The reciepient email address. */
 	private static String reciepientEmailAddress;
 
+	/** The Constant PERMIT. */
 	private final static String PERMIT = "Permit";
 
+	/**
+	 * Sets the up.
+	 */
 	@Before
 	public void setUp() {
 		patientIdPermit = "PUI100010060001";
@@ -95,6 +137,9 @@ public class OrchestratorImplTest {
 		
 	}
 
+	/**
+	 * Test handle c32 request_ deny.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testHandleC32Request_Deny() {
@@ -140,6 +185,11 @@ public class OrchestratorImplTest {
 		assertEquals("Deny", c32Response.getPdpDecision());
 	}
 
+	/**
+	 * Test handle c32 request_ permit.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testHandleC32Request_Permit() throws Exception {
@@ -186,6 +236,9 @@ public class OrchestratorImplTest {
 		assertEquals(PERMIT, c32Response.getPdpDecision());
 	}
 
+	/**
+	 * Test retrieve document set request.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRetrieveDocumentSetRequest() {
@@ -242,6 +295,9 @@ public class OrchestratorImplTest {
 		assertNotNull(response);
 	}
 
+	/**
+	 * Test registery stored query request.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testRegisteryStoredQueryRequest() {
@@ -298,6 +354,11 @@ public class OrchestratorImplTest {
 
 	}
 
+	/**
+	 * Test add and revise patient registry record.
+	 *
+	 * @throws Throwable the throwable
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void testAddAndRevisePatientRegistryRecord() throws Throwable {
@@ -404,6 +465,9 @@ public class OrchestratorImplTest {
 		Assert.assertNotNull(revisePatientResponse);
 	}
 
+	/**
+	 * Test handle c32 request_ throws exception when context handler enforce policy throws exception.
+	 */
 	@Test(expected = DS4PException.class)
 	public void testHandleC32Request_ThrowsExceptionWhenContextHandlerEnforcePolicyThrowsException() {
 		// Arrange
@@ -431,6 +495,9 @@ public class OrchestratorImplTest {
 				isA(Xsparesource.class));
 	}
 
+	/**
+	 * Test handle c32 request_ works when having not permit decision.
+	 */
 	@Test
 	public void testHandleC32Request_WorksWhenHavingNotPermitDecision() {
 		// Arrange
@@ -465,6 +532,11 @@ public class OrchestratorImplTest {
 		assertEquals(patientId, c32Response.getPatientId());
 	}
 
+	/**
+	 * Test handle c32 request_ works when having permit decision.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	public void testHandleC32Request_WorksWhenHavingPermitDecision()
 			throws IOException {
@@ -528,6 +600,9 @@ public class OrchestratorImplTest {
 		assertEquals(patientId, c32Response.getPatientId());
 	}
 
+	/**
+	 * Test save document set to xds repository.
+	 */
 	@Ignore("")
 	@Test
 	public void testSaveDocumentSetToXdsRepository() {
@@ -558,6 +633,9 @@ public class OrchestratorImplTest {
 		System.out.println(result);
 	}
 
+	/**
+	 * Test patient exists in registy before adding.
+	 */
 	@Test
 	public void testPatientExistsInRegistyBeforeAdding() {
 		// Arrange
@@ -571,6 +649,11 @@ public class OrchestratorImplTest {
 		assertEquals(result, true);
 	}
 
+	/**
+	 * Display c32.
+	 *
+	 * @param xml the xml
+	 */
 	@SuppressWarnings("unused")
 	private static void displayC32(String xml) {
 		TransformerFactory tf = TransformerFactory.newInstance();
@@ -609,6 +692,13 @@ public class OrchestratorImplTest {
 		System.out.println("\n\n\r");
 	}
 
+	/**
+	 * Load xml from.
+	 *
+	 * @param xml the xml
+	 * @return the document
+	 * @throws Exception the exception
+	 */
 	private static Document loadXmlFrom(String xml) throws Exception {
 		InputSource is = new InputSource(new StringReader(xml));
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -620,9 +710,11 @@ public class OrchestratorImplTest {
 	}
 
 	/**
-	 * @param c32Response
-	 * @throws IOException
-	 * @throws FileNotFoundException
+	 * Write package to file.
+	 *
+	 * @param c32Response the c32 response
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws FileNotFoundException the file not found exception
 	 */
 	private void writePackageToFile(FilterC32Response c32Response)
 			throws IOException, FileNotFoundException {
@@ -637,6 +729,12 @@ public class OrchestratorImplTest {
 		}
 	}
 
+	/**
+	 * Gets the xml from xml file.
+	 *
+	 * @param xmlFileNameInResources the xml file name in resources
+	 * @return the xml from xml file
+	 */
 	private String getXmlFromXmlFile(String xmlFileNameInResources) {
 		InputStream in = null;
 		BufferedReader br = null;

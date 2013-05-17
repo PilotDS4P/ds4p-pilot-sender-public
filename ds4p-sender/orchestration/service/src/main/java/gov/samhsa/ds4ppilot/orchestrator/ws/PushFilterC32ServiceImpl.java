@@ -36,6 +36,7 @@ import gov.samhsa.ds4ppilot.schema.pushorchestrator.FilterC32Response;
 
 import javax.jws.WebService;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class FilterC32ServiceImpl.
  */
@@ -52,9 +53,8 @@ public class PushFilterC32ServiceImpl implements FilterC32ServicePortType {
 
 	/**
 	 * Instantiates a new filter C32 service implementation.
-	 * 
-	 * @param Orchestrator
-	 *            the orchestrator
+	 *
+	 * @param orchestrator the orchestrator
 	 */
 	public PushFilterC32ServiceImpl(Orchestrator orchestrator) {
 
@@ -66,6 +66,12 @@ public class PushFilterC32ServiceImpl implements FilterC32ServicePortType {
 	 * 
 	 * @see gov.samhsa.ds4ppilot.contract.orchestrator.FilterC32ServicePortType
 	 * #filterC32(gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Request)
+	 */
+	/**
+	 * Filter c32.
+	 *
+	 * @param parameters the parameters
+	 * @return the filter c32 response
 	 */
 	@Override
 	public FilterC32Response filterC32(FilterC32Request parameters) {

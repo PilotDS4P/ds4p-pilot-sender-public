@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package gov.samhsa.ds4ppilot.hcs.rules;
 
 import java.io.ByteArrayInputStream;
@@ -38,13 +63,30 @@ import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HealthcareClassificationServiceRulesTest.
+ */
 public class HealthcareClassificationServiceRulesTest {
+	
+	/** The knowledge base. */
 	private KnowledgeBase knowledgeBase;
+	
+	/** The kbuilder. */
 	private KnowledgeBuilder kbuilder;
+	
+	/** The knowledge session. */
 	private StatefulKnowledgeSession knowledgeSession;
+	
+	/** The clinical facts. */
 	private String clinicalFacts;
+	
+	/** The fact model. */
 	private FactModel factModel = new FactModel();
 
+	/**
+	 * Setup.
+	 */
 	@Before
 	public void setup() {
 		clinicalFacts = "<FactModel><xacmlResult><pdpDecision>Permit</pdpDecision><purposeOfUse>TREAT</purposeOfUse><messageId>71fe0397-3684-4acb-9811-6416c5c77b55</messageId><homeCommunityId>2.16.840.1.113883.3.467</homeCommunityId><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:us-privacy-law:42CFRPart2</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:org:refrain-policy:NORDSLCD</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:PSY</pdpObligation><pdpObligation>urn:oasis:names:tc:xspa:2.0:resource:patient:redact:ETH</pdpObligation></xacmlResult>"
@@ -85,6 +127,11 @@ public class HealthcareClassificationServiceRulesTest {
 		}
 	}
 
+	/**
+	 * Test rules fired.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testRulesFired() throws Exception {
 
@@ -99,6 +146,11 @@ public class HealthcareClassificationServiceRulesTest {
 		Assert.assertEquals(1, rulesFired);
 	}
 
+	/**
+	 * Test rules fired listener.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testRulesFiredListener() throws Exception {
 
@@ -120,6 +172,11 @@ public class HealthcareClassificationServiceRulesTest {
 				(AfterActivationFiredEvent) Mockito.anyObject());
 	}
 
+	/**
+	 * Test check binding values.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testCheckBindingValues() throws Exception {
 		// ***********************************************************
@@ -158,6 +215,9 @@ public class HealthcareClassificationServiceRulesTest {
 		Assert.assertEquals(fact.getC32SectionLoincCode(), "11450-4");
 	}
 
+	/**
+	 * Tear down.
+	 */
 	@After
 	public void tearDown() {
 		if (knowledgeSession != null) {
@@ -165,6 +225,15 @@ public class HealthcareClassificationServiceRulesTest {
 		}
 	}
 
+	/**
+	 * Unmarshall from xml.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param xml the xml
+	 * @return the t
+	 * @throws JAXBException the jAXB exception
+	 */
 	private <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(clazz);

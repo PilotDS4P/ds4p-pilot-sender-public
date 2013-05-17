@@ -1,4 +1,28 @@
-
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package ihe.iti.xds_b._2007;
 
 import java.util.ArrayList;
@@ -11,6 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for anonymous complex type.
  * 
@@ -55,18 +80,20 @@ import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 @XmlRootElement(name = "RetrieveDocumentSetResponse")
 public class RetrieveDocumentSetResponse {
 
+    /** The registry response. */
     @XmlElement(name = "RegistryResponse", namespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0", required = true)
     protected RegistryResponseType registryResponse;
+    
+    /** The document response. */
     @XmlElement(name = "DocumentResponse", required = true)
     protected List<RetrieveDocumentSetResponse.DocumentResponse> documentResponse;
 
     /**
      * Gets the value of the registryResponse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link RegistryResponseType }
-     *     
+     *
+     * @return the registry response
+     * possible object is
+     * {@link RegistryResponseType }
      */
     public RegistryResponseType getRegistryResponse() {
         return registryResponse;
@@ -96,15 +123,15 @@ public class RetrieveDocumentSetResponse {
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getDocumentResponse().add(newItem);
+     * getDocumentResponse().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
+     *
+     * @return the document response
      * {@link RetrieveDocumentSetResponse.DocumentResponse }
-     * 
-     * 
      */
     public List<RetrieveDocumentSetResponse.DocumentResponse> getDocumentResponse() {
         if (documentResponse == null) {
@@ -147,24 +174,32 @@ public class RetrieveDocumentSetResponse {
     })
     public static class DocumentResponse {
 
+        /** The home community id. */
         @XmlElement(name = "HomeCommunityId")
         protected String homeCommunityId;
+        
+        /** The repository unique id. */
         @XmlElement(name = "RepositoryUniqueId", required = true)
         protected String repositoryUniqueId;
+        
+        /** The document unique id. */
         @XmlElement(name = "DocumentUniqueId", required = true)
         protected String documentUniqueId;
+        
+        /** The mime type. */
         @XmlElement(required = true)
         protected String mimeType;
+        
+        /** The document. */
         @XmlElement(name = "Document", required = true)
         protected byte[] document;
 
         /**
          * Gets the value of the homeCommunityId property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
+         *
+         * @return the home community id
+         * possible object is
+         * {@link String }
          */
         public String getHomeCommunityId() {
             return homeCommunityId;
@@ -184,11 +219,10 @@ public class RetrieveDocumentSetResponse {
 
         /**
          * Gets the value of the repositoryUniqueId property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
+         *
+         * @return the repository unique id
+         * possible object is
+         * {@link String }
          */
         public String getRepositoryUniqueId() {
             return repositoryUniqueId;
@@ -208,11 +242,10 @@ public class RetrieveDocumentSetResponse {
 
         /**
          * Gets the value of the documentUniqueId property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
+         *
+         * @return the document unique id
+         * possible object is
+         * {@link String }
          */
         public String getDocumentUniqueId() {
             return documentUniqueId;
@@ -232,11 +265,10 @@ public class RetrieveDocumentSetResponse {
 
         /**
          * Gets the value of the mimeType property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
+         *
+         * @return the mime type
+         * possible object is
+         * {@link String }
          */
         public String getMimeType() {
             return mimeType;
@@ -256,10 +288,10 @@ public class RetrieveDocumentSetResponse {
 
         /**
          * Gets the value of the document property.
-         * 
-         * @return
-         *     possible object is
-         *     byte[]
+         *
+         * @return the document
+         * possible object is
+         * byte[]
          */
         public byte[] getDocument() {
             return document;

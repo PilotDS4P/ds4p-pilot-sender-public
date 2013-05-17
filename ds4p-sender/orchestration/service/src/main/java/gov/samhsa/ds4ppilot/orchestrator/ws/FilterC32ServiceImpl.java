@@ -36,6 +36,7 @@ import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
 
 import javax.jws.WebService;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class FilterC32ServiceImpl.
  */
@@ -53,9 +54,8 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 
 	/**
 	 * Instantiates a new filter C32 service implementation.
-	 * 
-	 * @param Orchestrator
-	 *            the orchestrator
+	 *
+	 * @param orchestrator the orchestrator
 	 */
 	public FilterC32ServiceImpl(Orchestrator orchestrator) {
 
@@ -68,6 +68,12 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 	 * @see gov.samhsa.ds4ppilot.contract.orchestrator.FilterC32ServicePortType
 	 * #filterC32(gov.samhsa.ds4ppilot.schema.orchestrator.FilterC32Request)
 	 */
+	/**
+	 * Filter c32.
+	 *
+	 * @param parameters the parameters
+	 * @return the filter c32 response
+	 */
 	@Override
 	public FilterC32Response filterC32(FilterC32Request parameters) {
 
@@ -79,6 +85,12 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 		return c32Response;
 	}
 
+	/**
+	 * Retrieve document set.
+	 *
+	 * @param parameters the parameters
+	 * @return the retrieve document set response
+	 */
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSet(
 			RetrieveDocumentSetRequest parameters) {
@@ -93,6 +105,12 @@ public class FilterC32ServiceImpl implements FilterC32ServicePortType {
 		return response;
 	}
 
+	/**
+	 * Registery stored query.
+	 *
+	 * @param parameters the parameters
+	 * @return the registery stored query response
+	 */
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQuery(
 			RegisteryStoredQueryRequest parameters) {

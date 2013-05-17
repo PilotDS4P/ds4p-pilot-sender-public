@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package gov.samhsa.ds4ppilot.orchestrator.ws;
 
 import static org.junit.Assert.assertEquals;
@@ -38,22 +63,45 @@ import org.junit.Test;
 import org.mvel2.ast.AssertNode;
 import org.w3c.dom.Document;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SecuredFilterC32ServiceImplEndpointTest.
+ */
 public class SecuredFilterC32ServiceImplEndpointTest {
 
+	/** The wsdl url. */
 	private static URL wsdlURL;
+	
+	/** The address. */
 	private static String address;
+	
+	/** The service name. */
 	private static QName serviceName;
+	
+	/** The port name. */
 	private static QName portName;
 
+	/** The ep. */
 	private static Endpoint ep;
 	
+	/** The retrieve document set response. */
 	private static gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetResponse retrieveDocumentSetResponse;
+	
+	/** The retrieve document set message string. */
 	private static String retrieveDocumentSetMessageString;
+	
+	/** The document unique id. */
 	private static String documentUniqueId = "16807046.11206.4380.81335.421575012145604";
 
 
+	/** The secured orchrstrator mock. */
 	private static SecuredOrchestrator securedOrchrstratorMock = mock(SecuredOrchestrator.class);
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@BeforeClass
 	public static void setUp() throws Exception {
 		serviceName = new QName(
@@ -77,6 +125,9 @@ public class SecuredFilterC32ServiceImplEndpointTest {
 				securedOrchrstratorMock));
 	}
 
+	/**
+	 * Tear down.
+	 */
 	@AfterClass
 	public static void tearDown() {
 		try {
@@ -92,6 +143,11 @@ public class SecuredFilterC32ServiceImplEndpointTest {
 	 * This test uses raw Service class for service, Dispatch<SOAPMessage> for
 	 * client No wsimport/wsdl2java needed. Note works with full SOAP message
 	 * (Service.Mode.MESSAGE)
+	 */
+	/**
+	 * Secured filter c32 works with raw service and dispatch of soap message.
+	 *
+	 * @throws Exception the exception
 	 */
 	@Ignore
 	@Test

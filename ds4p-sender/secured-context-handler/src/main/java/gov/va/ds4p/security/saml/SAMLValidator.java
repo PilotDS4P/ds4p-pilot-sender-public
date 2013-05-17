@@ -42,19 +42,27 @@ import org.w3c.dom.Node;
 import gov.va.ds4p.cas.constants.DS4PConstants;
 import gov.va.ds4p.security.xacml.XACMLContextHandler;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class SAMLValidator.
  *
  * @author Duane DeCouteau
  */
 public class SAMLValidator implements SAMLAssertionValidator {
     
+    /** The saml assertion. */
     private Element samlAssertion;
     
+    /** The ds. */
     private SimpleDateFormat ds = new SimpleDateFormat("MM/dd/yyyy");
     // todo move this out into config file
     
+    /** The handler. */
     private XACMLContextHandler handler = new XACMLContextHandler();
     
+    /* (non-Javadoc)
+     * @see com.sun.xml.wss.impl.callback.SAMLAssertionValidator#validate(org.w3c.dom.Element)
+     */
     public void validate(Element arg0) throws SAMLValidationException {
         try {
             samlAssertion = arg0;
@@ -65,6 +73,9 @@ public class SAMLValidator implements SAMLAssertionValidator {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.xml.wss.impl.callback.SAMLAssertionValidator#validate(javax.xml.stream.XMLStreamReader)
+     */
     public void validate(XMLStreamReader arg0) throws SAMLValidationException {
        try {
            samlAssertion = SAMLUtil.createSAMLAssertion(arg0);
@@ -75,6 +86,11 @@ public class SAMLValidator implements SAMLAssertionValidator {
        }
     }
 
+     /**
+      * Validate.
+      *
+      * @throws SAMLValidationException the sAML validation exception
+      */
      private void validate() throws SAMLValidationException {
          try {         
            SAMLAssertionFactory samlFactory = SAMLAssertionFactory.newInstance(SAMLAssertionFactory.SAML2_0);
@@ -214,18 +230,48 @@ public class SAMLValidator implements SAMLAssertionValidator {
        }
     }
 
+    /**
+     * Log request.
+     *
+     * @param xsubject the xsubject
+     * @param xresource the xresource
+     * @param samlAssertion the saml assertion
+     */
     private void logRequest(XspaSubject xsubject, XspaResource xresource, Element samlAssertion) {
         // log now from context handler
     }
+    
+    /**
+     * Log auth request and decision.
+     *
+     * @param orgacd the orgacd
+     * @param patientacd the patientacd
+     * @param resourceid the resourceid
+     * @param resourcename the resourcename
+     */
     private void logAuthRequestAndDecision(PolicyEnforcementObject orgacd, PolicyEnforcementObject patientacd, String resourceid, String resourcename) {
         // log now from context handler
     }
 
+    /**
+     * Dump node to string.
+     *
+     * @param node the node
+     * @return the string
+     */
     private String dumpNodeToString(Node node) {
         String res = "";
         return res;
     }
 
+    /**
+     * Validate.
+     *
+     * @param elmnt the elmnt
+     * @param map the map
+     * @param sbjct the sbjct
+     * @throws SAMLValidationException the sAML validation exception
+     */
     public void validate(Element elmnt, Map map, Subject sbjct) throws SAMLValidationException {
         throw new UnsupportedOperationException("Not supported yet.");
     }

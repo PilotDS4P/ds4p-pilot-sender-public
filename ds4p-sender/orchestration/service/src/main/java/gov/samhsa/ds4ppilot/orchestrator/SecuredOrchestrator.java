@@ -29,12 +29,28 @@ package gov.samhsa.ds4ppilot.orchestrator;
 import gov.samhsa.ds4ppilot.schema.securedorchestrator.RegisteryStoredQueryResponse;
 import gov.samhsa.ds4ppilot.schema.securedorchestrator.RetrieveDocumentSetResponse;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface SecuredOrchestrator.
  */
 public interface SecuredOrchestrator {
 	
+	/**
+	 * Retrieve document set request.
+	 *
+	 * @param documentUniqueId the document unique id
+	 * @param messageId the message id
+	 * @param intendedRecipient the intended recipient
+	 * @return the retrieve document set response
+	 */
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String documentUniqueId, String messageId, String intendedRecipient);
 
+	/**
+	 * Registery stored query request.
+	 *
+	 * @param patientId the patient id
+	 * @param messageId the message id
+	 * @return the registery stored query response
+	 */
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId, String messageId);
 }

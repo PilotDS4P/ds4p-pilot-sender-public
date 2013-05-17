@@ -98,6 +98,7 @@ import org.hl7.v3.PatientIdentityFeedRequestType.Receiver;
 import org.hl7.v3.PatientIdentityFeedRequestType.Sender;
 import org.xml.sax.InputSource;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class OrchestratorImpl.
  */
@@ -148,23 +149,25 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 	/** The resource action. */
 	private String resourceAction; // = "Execute";
 
+	/** The repository unique id. */
 	private String repositoryUniqueId;
 
+	/** The subject email address. */
 	private String subjectEmailAddress;
 
+	/** The home community id. */
 	private String homeCommunityId;
 
 	/**
 	 * Instantiates a new orchestrator impl.
-	 * 
-	 * @param contextHandler
-	 *            the context handler
-	 * @param c32Getter
-	 *            the C32 getter
-	 * @param documentProcessor
-	 *            the document processor
-	 * @param dataHandlerToBytesConverter
-	 *            the data handler to bytes converter
+	 *
+	 * @param contextHandler the context handler
+	 * @param c32Getter the C32 getter
+	 * @param documentProcessor the document processor
+	 * @param auditService the audit service
+	 * @param dataHandlerToBytesConverter the data handler to bytes converter
+	 * @param xdsbRepository the xdsb repository
+	 * @param xdsbRegistry the xdsb registry
 	 */
 	public SecuredOrchestratorImpl(ContextHandler contextHandler,
 			C32Getter c32Getter, DocumentProcessor documentProcessor,
@@ -181,6 +184,9 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		this.auditService = auditService;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.SecuredOrchestrator#retrieveDocumentSetRequest(String, String, String)
+	 */
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			String documentUniqueId, String messageId, String intendedRecipient) {
@@ -278,6 +284,9 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		return retrieveDocumentSetResponse;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.SecuredOrchestrator#registeryStoredQueryRequest(String, String)
+	 */
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(
 			String patientId, String messageId) {
@@ -408,26 +417,56 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		this.organizationId = organizationId;
 	}
 
+	/**
+	 * Gets the repository unique id.
+	 *
+	 * @return the repository unique id
+	 */
 	public String getRepositoryUniqueId() {
 		return repositoryUniqueId;
 	}
 
+	/**
+	 * Sets the repository unique id.
+	 *
+	 * @param repositoryUniqueId the new repository unique id
+	 */
 	public void setRepositoryUniqueId(String repositoryUniqueId) {
 		this.repositoryUniqueId = repositoryUniqueId;
 	}
 
+	/**
+	 * Gets the home community id.
+	 *
+	 * @return the home community id
+	 */
 	public String getHomeCommunityId() {
 		return homeCommunityId;
 	}
 
+	/**
+	 * Sets the home community id.
+	 *
+	 * @param homeCommunityId the new home community id
+	 */
 	public void setHomeCommunityId(String homeCommunityId) {
 		this.homeCommunityId = homeCommunityId;
 	}
 
+	/**
+	 * Gets the subject email address.
+	 *
+	 * @return the subject email address
+	 */
 	public String getSubjectEmailAddress() {
 		return subjectEmailAddress;
 	}
 
+	/**
+	 * Sets the subject email address.
+	 *
+	 * @param subjectEmailAddress the new subject email address
+	 */
 	public void setSubjectEmailAddress(String subjectEmailAddress) {
 		this.subjectEmailAddress = subjectEmailAddress;
 	}
@@ -489,6 +528,13 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		this.resourceAction = resourceAction;
 	}
 
+	/**
+	 * Marshall.
+	 *
+	 * @param obj the obj
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	private static String marshall(Object obj) throws Throwable {
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 		Marshaller marshaller = context.createMarshaller();
@@ -499,6 +545,15 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		return stringWriter.toString();
 	}
 
+	/**
+	 * Unmarshall from xml.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param xml the xml
+	 * @return the t
+	 * @throws JAXBException the jAXB exception
+	 */
 	private static <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(clazz);
@@ -507,6 +562,13 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		return (T) um.unmarshal(input);
 	}
 
+	/**
+	 * Load xml from.
+	 *
+	 * @param xml the xml
+	 * @return the org.w3c.dom. document
+	 * @throws Exception the exception
+	 */
 	private static org.w3c.dom.Document loadXmlFrom(String xml)
 			throws Exception {
 		InputSource is = new InputSource(new StringReader(xml));
@@ -518,6 +580,12 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		return document;
 	}
 
+	/**
+	 * Gets the response with latest document entries for consent and nonconsent.
+	 *
+	 * @param adhocQueryResponse the adhoc query response
+	 * @return the response with latest document entries for consent and nonconsent
+	 */
 	private static AdhocQueryResponse getResponseWithLatestDocumentEntriesForConsentAndNonconsent(
 			AdhocQueryResponse adhocQueryResponse) {
 		int documentEntryCount = adhocQueryResponse.getRegistryObjectList()
@@ -640,6 +708,12 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		return adhocQueryResponse;
 	}
 
+	/**
+	 * Checks if is consent document.
+	 *
+	 * @param originalDocument the original document
+	 * @return true, if is consent document
+	 */
 	private boolean isConsentDocument(String originalDocument) {
 		boolean consentDocumentExists = false;
 
@@ -689,6 +763,12 @@ public class SecuredOrchestratorImpl implements SecuredOrchestrator {
 		return consentDocumentExists;
 	}
 
+	/**
+	 * Patient exists in registy before adding.
+	 *
+	 * @param responseOfAddPatient the response of add patient
+	 * @return true, if successful
+	 */
 	public static boolean patientExistsInRegistyBeforeAdding(
 			String responseOfAddPatient) {
 

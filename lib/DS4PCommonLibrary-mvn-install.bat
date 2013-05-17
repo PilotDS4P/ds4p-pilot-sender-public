@@ -1,1 +1,0 @@
-mvn install:install-file -Dfile=DS4PCommonLibrary.jar -DgroupId=DS4PCommonLibrary -DartifactId=DS4PCommonLibrary -Dversion=2.0 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true

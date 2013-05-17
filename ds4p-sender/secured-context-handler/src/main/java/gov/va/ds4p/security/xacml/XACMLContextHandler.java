@@ -83,33 +83,56 @@ import org.oasis.names.tc.xspa.v2.XacmlStatusType;
 import org.oasis.names.tc.xspa.v2.XspaResource;
 import org.oasis.names.tc.xspa.v2.XspaSubject;
 
+// TODO: Auto-generated Javadoc
 /**
- * 
+ * The Class XACMLContextHandler.
+ *
  * @author Duane DeCouteau
  */
 public class XACMLContextHandler {
 
 	// for testing purposes create config file later....
+	/** The pdp endpoint. */
 	private String pdpEndpoint = "http://75.145.119.97/XACMLPolicyEvaluationService/soap?wsdl";
 	
 	/*  Modified by Burak Tasel 2/4/2013 - Added needed endpoints */
 	/* begin */
+	/** The audit endpoint. */
 	private String auditEndpoint = "http://174.78.146.228:8080/DS4PACSServices/DS4PAuditService?wsdl";
+	
+	/** The xdsb repository endpoint. */
 	private String xdsbRepositoryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsrepositoryb";	 
+	
+	/** The xdsb registry endpoint. */
 	private String xdsbRegistryEndpoint = "http://xds-demo.feisystems.com:8080/axis2/services/xdsregistryb";
 	/* end */
 	
+	/** The home community id. */
 	private String homeCommunityId = "2.16.840.1.113883.3.467";
+	
+	/** The repository id. */
 	private String repositoryId = "1.3.6.1.4.1.21367.2010.1.2.1040";
 
+	/** The decision object. */
 	private PolicyEnforcementObject decisionObject;
+	
+	/** The curr subject. */
 	private XspaSubject currSubject;
+	
+	/** The curr resource. */
 	private XspaResource currResource;
+	
+	/** The message id. */
 	private String messageId;
 
 	// xacml objects
+	/** The query. */
 	private RequestType query = new RequestType();
+	
+	/** The policy. */
 	private PolicySetType policy = new PolicySetType();
+	
+	/** The response. */
 	private ResponseType response = new ResponseType();
 
 	/** The xdsbRepository. */
@@ -119,19 +142,32 @@ public class XACMLContextHandler {
 	private XdsbRegistry xdsbRegistry;
 
 	// patient consent id
+	/** The document id. */
 	private String documentId;
+	
+	/** The Constant CONSENT_NOTE_TYPE. */
 	private static final String CONSENT_NOTE_TYPE = "Consent Notes";
+	
+	/** The Constant CONSENT_MEDIA_TYPE. */
 	private static final String CONSENT_MEDIA_TYPE = "application/xacml+xml";
 
+	/** The patient authorization. */
 	private String patientAuthorization = "";
+	
+	/** The requeststart. */
 	private Date requeststart;
+	
+	/** The requestcomplete. */
 	private Date requestcomplete;
 
 	// Clinical Document Transforms
+	/** The c provider. */
 	private ClinicalDocumentProvider cProvider = new ClinicalDocumentProvider();
 	// Vocabulary
+	/** The v provider. */
 	private VocabularyProvider vProvider = new VocabularyProvider();
 
+	/** The date fac. */
 	private static DatatypeFactory dateFac;
 	static {
 		try {
@@ -141,10 +177,20 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Instantiates a new xACML context handler.
+	 */
 	public XACMLContextHandler() {
 
 	}
 
+	/**
+	 * Enforce policy.
+	 *
+	 * @param subject the subject
+	 * @param resource the resource
+	 * @return the policy enforcement object
+	 */
 	public PolicyEnforcementObject enforcePolicy(XspaSubject subject,
 			XspaResource resource) {
 		decisionObject = new PolicyEnforcementObject();
@@ -190,6 +236,9 @@ public class XACMLContextHandler {
 		return decisionObject;
 	}
 
+	/**
+	 * Process decision.
+	 */
 	private void processDecision() {
 		ResultType xResult = response.getResult().get(0);
 		DecisionType d = xResult.getDecision();
@@ -230,6 +279,11 @@ public class XACMLContextHandler {
                 decisionObject.setMessageId(currSubject.getMessageId());
 	}
 
+	/**
+	 * Gets the and process patient consent.
+	 *
+	 * @return the and process patient consent
+	 */
 	private void getAndProcessPatientConsent() {
 		try {
 			String cdaR2 = getXDSbPatientConsent();
@@ -242,6 +296,11 @@ public class XACMLContextHandler {
 
 	}
 
+	/**
+	 * Process clinical document.
+	 *
+	 * @param doc the doc
+	 */
 	private void processClinicalDocument(POCDMT000040ClinicalDocument doc) {
 		// make this more eloquent later...
 		try {
@@ -288,6 +347,11 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Gets the xD sb patient consent.
+	 *
+	 * @return the xD sb patient consent
+	 */
 	private String getXDSbPatientConsent() {
 		String cdaR2 = "";
 		// get metadata
@@ -310,6 +374,12 @@ public class XACMLContextHandler {
 		return cdaR2;
 	}
 
+	/**
+	 * Gets the query response.
+	 *
+	 * @param mxml the mxml
+	 * @return the query response
+	 */
 	private AdhocQueryResponse getQueryResponse(String mxml) {
 		AdhocQueryResponse obj = null;
 		try {
@@ -329,6 +399,11 @@ public class XACMLContextHandler {
 
 	}
 
+	/**
+	 * Process meta data.
+	 *
+	 * @param objList the obj list
+	 */
 	private void processMetaData(RegistryObjectListType objList) {
 		List<JAXBElement<? extends IdentifiableType>> extrinsicObjects = objList
 				.getIdentifiable();
@@ -363,6 +438,12 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Gets the xACML policy set from string.
+	 *
+	 * @param policy the policy
+	 * @return the xACML policy set from string
+	 */
 	private PolicySetType getXACMLPolicySetFromString(String policy) {
 		PolicySetType res = null;
 
@@ -384,6 +465,9 @@ public class XACMLContextHandler {
 		return res;
 	}
 
+	/**
+	 * Sets the xacml request authorization.
+	 */
 	private void setXACMLRequestAuthorization() {
 
 		RequestType rt = new RequestType();
@@ -509,6 +593,12 @@ public class XACMLContextHandler {
 
 	}
 
+	/**
+	 * Extract document type.
+	 *
+	 * @param extrinsicObject the extrinsic object
+	 * @return the string
+	 */
 	private String extractDocumentType(ExtrinsicObjectType extrinsicObject) {
 		ClassificationType classification = extractClassification(
 				extrinsicObject,
@@ -519,6 +609,13 @@ public class XACMLContextHandler {
 		return documentTypeCode;
 	}
 
+	/**
+	 * Extract classification.
+	 *
+	 * @param extrinsicObject the extrinsic object
+	 * @param classificationScheme the classification scheme
+	 * @return the classification type
+	 */
 	private ClassificationType extractClassification(
 			ExtrinsicObjectType extrinsicObject, String classificationScheme) {
 		ClassificationType classification = null;
@@ -536,6 +633,12 @@ public class XACMLContextHandler {
 		return classification;
 	}
 
+	/**
+	 * Extract document id.
+	 *
+	 * @param extrinsicObject the extrinsic object
+	 * @return the string
+	 */
 	private String extractDocumentID(ExtrinsicObjectType extrinsicObject) {
 		String documentID = null;
 
@@ -552,6 +655,12 @@ public class XACMLContextHandler {
 	
 	/*  Modified by Burak Tasel 2/4/2013 - Extract most recent consent documentId */
 	/* begin */
+	/**
+	 * Extractcreation date time.
+	 *
+	 * @param extrinsicObjectType the extrinsic object type
+	 * @return the date
+	 */
 	private Date extractcreationDateTime(ExtrinsicObjectType extrinsicObjectType) {
 		Date creationDateTime = new Date(Long.MIN_VALUE);	
 
@@ -585,6 +694,13 @@ public class XACMLContextHandler {
 	}
 	/* end */
 
+	/**
+	 * Extract indentifier type.
+	 *
+	 * @param extrinsicObject the extrinsic object
+	 * @param identificationScheme the identification scheme
+	 * @return the external identifier type
+	 */
 	private ExternalIdentifierType extractIndentifierType(
 			ExtrinsicObjectType extrinsicObject, String identificationScheme) {
 		ExternalIdentifierType identifier = null;
@@ -602,6 +718,11 @@ public class XACMLContextHandler {
 		return identifier;
 	}
 
+	/**
+	 * Registery stored query request.
+	 *
+	 * @return the registery stored query response
+	 */
 	private RegisteryStoredQueryResponse registeryStoredQueryRequest() {
 		AdhocQueryRequest registryStoredQuery = new AdhocQueryRequest();
 
@@ -655,6 +776,12 @@ public class XACMLContextHandler {
 		return response;
 	}
 
+	/**
+	 * Retrieve document set request.
+	 *
+	 * @param documentUniqueId the document unique id
+	 * @return the retrieve document set response
+	 */
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			String documentUniqueId) {
 		RetrieveDocumentSetResponse response = new RetrieveDocumentSetResponse();
@@ -685,6 +812,14 @@ public class XACMLContextHandler {
 		return response;
 	}
 
+	/**
+	 * Marshall.
+	 *
+	 * @param obj the obj
+	 * @param classesToBeBound the classes to be bound
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	private String marshall(Object obj, Class<?>... classesToBeBound)
 			throws Throwable {
 		JAXBContext context = JAXBContext.newInstance(classesToBeBound);
@@ -698,6 +833,11 @@ public class XACMLContextHandler {
 		return stringWriter.toString();
 	}
 
+	/**
+	 * Dump request to string.
+	 *
+	 * @return the string
+	 */
 	private String dumpRequestToString() {
 		String res = "";
 		JAXBElement<RequestType> element = new JAXBElement<RequestType>(
@@ -717,6 +857,12 @@ public class XACMLContextHandler {
 		return res;
 	}
 
+	/**
+	 * Dump response to string.
+	 *
+	 * @param resp the resp
+	 * @return the string
+	 */
 	private String dumpResponseToString(ResultType resp) {
 		String res = "";
 		JAXBElement<ResultType> element = new JAXBElement<ResultType>(
@@ -737,6 +883,9 @@ public class XACMLContextHandler {
 		return res;
 	}
 
+	/**
+	 * Log event.
+	 */
 	private void logEvent() {
 		AuthLog log = new AuthLog();
 		// log.setDecision(d.value());
@@ -775,6 +924,11 @@ public class XACMLContextHandler {
 
 	}
 
+	/**
+	 * Log event.
+	 *
+	 * @param authlog the authlog
+	 */
 	private void logEvent(AuthLog authlog) {
 		try {
 			DS4PAuditService service = new DS4PAuditService();
@@ -787,6 +941,11 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Gets the current date time.
+	 *
+	 * @return the current date time
+	 */
 	private XMLGregorianCalendar getCurrentDateTime() {
 		XMLGregorianCalendar xgc = null;
 		try {
@@ -799,6 +958,15 @@ public class XACMLContextHandler {
 		return xgc;
 	}
 
+	/**
+	 * Unmarshall from xml.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param xml the xml
+	 * @return the t
+	 * @throws JAXBException the jAXB exception
+	 */
 	private <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(clazz);
@@ -807,6 +975,12 @@ public class XACMLContextHandler {
 		return (T) um.unmarshal(input);
 	}
 
+	/**
+	 * Convert date to xml gregorian calendar.
+	 *
+	 * @param dt the dt
+	 * @return the xML gregorian calendar
+	 */
 	private XMLGregorianCalendar convertDateToXMLGregorianCalendar(Date dt) {
 		XMLGregorianCalendar xcal = null;
 		try {
@@ -819,6 +993,9 @@ public class XACMLContextHandler {
 		return xcal;
 	}
 
+	/**
+	 * Process obligation requirements.
+	 */
 	private void processObligationRequirements() {
 		processRedactionObligations();
 		processMaskingObligations();
@@ -827,6 +1004,9 @@ public class XACMLContextHandler {
 		processDocumentHandlingObligations();
 	}
 
+	/**
+	 * Process redaction obligations.
+	 */
 	private void processRedactionObligations() {
 		ApplicableSensitivityCodes codes = vProvider
 				.getDataSegmentationObligations();
@@ -851,6 +1031,9 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Process masking obligations.
+	 */
 	private void processMaskingObligations() {
 		ApplicableSensitivityCodes codes = vProvider
 				.getDataSegmentationObligations();
@@ -875,6 +1058,9 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Process us privacy law obligations.
+	 */
 	private void processUSPrivacyLawObligations() {
 		ApplicableUSLaws codes = vProvider.getPrivacyLawObligations();
 		List<ActUSPrivacyLaw> codeList = codes.getActUSPrivacyLaw();
@@ -896,6 +1082,9 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Process refrain obligations.
+	 */
 	private void processRefrainObligations() {
 		ApplicableRefrainPolicies codes = vProvider.getRefrainObligations();
 		List<RefrainPolicy> codeList = codes.getRefrainPolicy();
@@ -917,6 +1106,9 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Process document handling obligations.
+	 */
 	private void processDocumentHandlingObligations() {
 		ApplicableObligationPolicies codes = vProvider
 				.getDocumentHandlingObligations();
@@ -939,6 +1131,14 @@ public class XACMLContextHandler {
 		}
 	}
 
+	/**
+	 * Creates the resource type for obligation decision.
+	 *
+	 * @param evaluationAttributeName the evaluation attribute name
+	 * @param value the value
+	 * @param serviceTypeName the service type name
+	 * @return the resource type
+	 */
 	private ResourceType createResourceTypeForObligationDecision(
 			String evaluationAttributeName, String value, String serviceTypeName) {
 		// Set Resource Attributes - Organization and Region
@@ -983,6 +1183,11 @@ public class XACMLContextHandler {
 
 	}
 
+	/**
+	 * Gets the obligation decision.
+	 *
+	 * @return the obligation decision
+	 */
 	private String getObligationDecision() {
 		String decision = "Deny"; // default
 		try {

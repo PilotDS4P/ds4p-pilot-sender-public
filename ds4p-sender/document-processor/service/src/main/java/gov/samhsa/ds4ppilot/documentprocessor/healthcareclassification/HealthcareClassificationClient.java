@@ -25,6 +25,7 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.documentprocessor.healthcareclassification;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface HealthcareClassificationClient.
  */

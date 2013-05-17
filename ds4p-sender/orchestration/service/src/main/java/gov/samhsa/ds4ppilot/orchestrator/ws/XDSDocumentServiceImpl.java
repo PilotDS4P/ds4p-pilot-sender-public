@@ -32,19 +32,38 @@ import gov.samhsa.ds4ppilot.schema.orchestrator.SaveDocumentSetToXdsRepositoryRe
 
 import javax.jws.WebService;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XDSDocumentServiceImpl.
+ */
 @WebService(targetNamespace = "http://www.samhsa.gov/ds4ppilot/contract/orchestrator", portName = "XDSDocumentServicePort", serviceName = "XDSDocumentService", endpointInterface = "gov.samhsa.ds4ppilot.contract.orchestrator.XDSDocumentServicePortType")
 public class XDSDocumentServiceImpl implements XDSDocumentServicePortType {
 
+	/** The orchestrator. */
 	private Orchestrator orchestrator;
 
+	/**
+	 * Instantiates a new xDS document service impl.
+	 */
 	public XDSDocumentServiceImpl() {
 	}
 
+	/**
+	 * Instantiates a new xDS document service impl.
+	 *
+	 * @param orchestrator the orchestrator
+	 */
 	public XDSDocumentServiceImpl(Orchestrator orchestrator) {
 
 		this.orchestrator = orchestrator;
 	}
 
+	/**
+	 * Save document set to xds repository.
+	 *
+	 * @param parameters the parameters
+	 * @return the save document set to xds repository response
+	 */
 	@Override
 	public SaveDocumentSetToXdsRepositoryResponse saveDocumentSetToXdsRepository(
 			SaveDocumentSetToXdsRepositoryRequest parameters) {
@@ -57,10 +76,20 @@ public class XDSDocumentServiceImpl implements XDSDocumentServicePortType {
 		return response;
 	}
 
+	/**
+	 * Sets the orchestrator.
+	 *
+	 * @param orchestrator the new orchestrator
+	 */
 	public void setOrchestrator(Orchestrator orchestrator) {
 		this.orchestrator = orchestrator;
 	}
 
+	/**
+	 * After properties set.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void afterPropertiesSet() throws Exception {
 		if (orchestrator == null) {
 			throw new IllegalArgumentException(

@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Open Behavioral Health Information Technology Architecture (OBHITA.org)
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ******************************************************************************/
 package gov.samhsa.ds4ppilot.documentprocessor;
 
 import gov.samhsa.ds4ppilot.common.beans.RuleExecutionContainer;
@@ -36,19 +61,45 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DocumentProcessorTest.
+ */
 public class DocumentProcessorTest {
 
+	/** The xacml result. */
 	private static String xacmlResult;
+	
+	/** The rule execution response container. */
 	private static String ruleExecutionResponseContainer;
+	
+	/** The c32 document. */
 	private static String c32Document;
+	
+	/** The package as xdm. */
 	private static boolean packageAsXdm;
+	
+	/** The home community id. */
 	private static String homeCommunityId;
+	
+	/** The sender email address. */
 	private static String senderEmailAddress;
+	
+	/** The recipient email address. */
 	private static String recipientEmailAddress;
+	
+	/** The endpoint address for audit servcie. */
 	private static String endpointAddressForAuditServcie;
+	
+	/** The endpoint address for healthcare classification service. */
 	private static String endpointAddressForHealthcareClassificationService;
+	
+	/** The xds document entry unique id. */
 	private static String xdsDocumentEntryUniqueId;
 
+	/**
+	 * Sets the up.
+	 */
 	@BeforeClass
 	public static void setUp() {
 		c32Document = LoadXMLAsString("c32.xml");
@@ -63,6 +114,9 @@ public class DocumentProcessorTest {
 		xdsDocumentEntryUniqueId = "123";
 	}
 
+	/**
+	 * Process document_ process_ document.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_Process_Document() {
@@ -79,6 +133,9 @@ public class DocumentProcessorTest {
 		Assert.assertNotNull(result);
 	}
 
+	/**
+	 * Process document_ extract clinical facts.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_ExtractClinicalFacts() {
@@ -94,6 +151,11 @@ public class DocumentProcessorTest {
 
 	}
 
+	/**
+	 * Process document_ tag document.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_TagDocument() throws Exception {
@@ -110,6 +172,11 @@ public class DocumentProcessorTest {
 		Assert.assertNotSame(taggedDocument, c32Document);
 	}
 
+	/**
+	 * Process document_ metadata xml document.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_MetadataXmlDocument() throws Exception {
@@ -128,6 +195,9 @@ public class DocumentProcessorTest {
 		Assert.assertNotSame(metadataXmlDocument, c32Document);
 	}
 
+	/**
+	 * Process document_ encrypt document.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_EncryptDocument() {
@@ -158,6 +228,9 @@ public class DocumentProcessorTest {
 		Assert.assertNotSame(encryptedDocument, c32Document);
 	}
 
+	/**
+	 * Process document_ mask element.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_MaskElement() {
@@ -188,6 +261,9 @@ public class DocumentProcessorTest {
 		Assert.assertNotSame(encryptedDocument, c32Document);
 	}
 
+	/**
+	 * Process document_ redact element.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_RedactElement() {
@@ -218,6 +294,12 @@ public class DocumentProcessorTest {
 		Assert.assertNotSame(redactedDocument, c32Document);
 	}
 
+	/**
+	 * Load xml as string.
+	 *
+	 * @param xmlFileName the xml file name
+	 * @return the string
+	 */
 	private static String LoadXMLAsString(String xmlFileName) {
 		InputStream in = null;
 		StringBuilder c32Document = new StringBuilder();
@@ -243,6 +325,9 @@ public class DocumentProcessorTest {
 		return c32Document.toString();
 	}
 
+	/**
+	 * Process document_ decrypt document.
+	 */
 	@Ignore("This test should be configured to run as an integration test.")
 	@Test
 	public void processDocument_DecryptDocument() {
@@ -353,6 +438,9 @@ public class DocumentProcessorTest {
 		Assert.assertNotSame(document, c32Document);
 	}
 
+	/**
+	 * Process document_ decrypt document from zip.
+	 */
 	@Test
 	public void processDocument_DecryptDocumentFromZip() {
 
@@ -450,6 +538,14 @@ public class DocumentProcessorTest {
 		}
 	}
 
+	/**
+	 * Entry bytes from zip bytes.
+	 *
+	 * @param zip_inputstream the zip_inputstream
+	 * @param entryName the entry name
+	 * @return the byte[]
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private byte[] entryBytesFromZipBytes(ZipInputStream zip_inputstream,
 			String entryName) throws IOException {
 
@@ -472,6 +568,13 @@ public class DocumentProcessorTest {
 		return buf;
 	}
 
+	/**
+	 * Stream to output byte stream.
+	 *
+	 * @param zip_inputstream the zip_inputstream
+	 * @return the byte array output stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private ByteArrayOutputStream streamToOutputByteStream(
 			ZipInputStream zip_inputstream) throws IOException {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();

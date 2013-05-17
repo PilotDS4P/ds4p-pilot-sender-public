@@ -27,6 +27,7 @@ package gov.samhsa.ds4ppilot.hcs.service;
 
 import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExecuteClinicalFactsResponse;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface HealthcareClassificationService.
  */

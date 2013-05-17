@@ -27,6 +27,7 @@ package gov.samhsa.ds4ppilot.orchestrator.audit;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface AuditService.
  */
@@ -35,8 +36,7 @@ public interface AuditService {
 	/**
 	 * Update authorization event with exec rules.
 	 *
-	 * @param hie_msg_id the hie_msg_id
-	 * @param execRules the exec rules
+	 * @param messageId the message id
 	 * @return the boolean
 	 */
 	public List<String> getObligationsByMessageId(String messageId);
@@ -44,8 +44,7 @@ public interface AuditService {
 	/**
 	 * Update authorization event with annotated doc.
 	 *
-	 * @param hie_msg_id the hie_msg_id
-	 * @param doc the doc
+	 * @param messageId the message id
 	 * @return the boolean
 	 */
 	public String getPurposeOfUseByMessageId(String messageId) ;

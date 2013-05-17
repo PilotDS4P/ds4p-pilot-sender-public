@@ -46,6 +46,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class XdsbMetadataGeneratorImpl.
  */
@@ -131,6 +132,9 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.XdsbMetadataGenerator#generateMetadata(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public SubmitObjectsRequest generateMetadata(String document,
 			String homeCommunityId) {
@@ -147,6 +151,15 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		return submitObjectsRequest;
 	}
 
+	/**
+	 * Unmarshall from xml.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param xml the xml
+	 * @return the t
+	 * @throws JAXBException the jAXB exception
+	 */
 	@SuppressWarnings("unchecked")
 	private static <T> T unmarshallFromXml(Class<T> clazz, String xml)
 			throws JAXBException {
@@ -157,6 +170,13 @@ public class XdsbMetadataGeneratorImpl implements XdsbMetadataGenerator {
 		return (T) um.unmarshal(input);
 	}
 
+	/**
+	 * Marshall.
+	 *
+	 * @param obj the obj
+	 * @return the string
+	 * @throws Throwable the throwable
+	 */
 	private static String marshall(Object obj) throws Throwable {
 		final JAXBContext context = JAXBContext.newInstance(obj.getClass());
 

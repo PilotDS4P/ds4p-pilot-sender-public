@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class DocumentProcessorWebServiceClient.
  */
@@ -87,17 +88,14 @@ public class DocumentProcessorWebServiceClient {
 
 	/**
 	 * Process document.
-	 * 
-	 * @param document
-	 *            the document
-	 * @param enforcementPolicies
-	 *            the enforcement policies
-	 * @param packageAsXdm
-	 *            the package as xdm
-	 * @param senderEmailAddress
-	 *            the sender email address
-	 * @param recipientEmailAddress
-	 *            the recipient email address
+	 *
+	 * @param document the document
+	 * @param enforcementPolicies the enforcement policies
+	 * @param packageAsXdm the package as xdm
+	 * @param encryptDocument the encrypt document
+	 * @param senderEmailAddress the sender email address
+	 * @param recipientEmailAddress the recipient email address
+	 * @param xdsDocumentEntryUniqueId the xds document entry unique id
 	 * @return the process document response
 	 */
 	public ProcessDocumentResponse processDocument(String document,
@@ -120,19 +118,15 @@ public class DocumentProcessorWebServiceClient {
 
 	/**
 	 * Process document.
-	 * 
-	 * @param port
-	 *            the port
-	 * @param document
-	 *            the document
-	 * @param enforcementPolicies
-	 *            the enforcement policies
-	 * @param packageAsXdm
-	 *            the package as xdm
-	 * @param senderEmailAddress
-	 *            the sender email address
-	 * @param recipientEmailAddress
-	 *            the recipient email address
+	 *
+	 * @param port the port
+	 * @param document the document
+	 * @param enforcementPolicies the enforcement policies
+	 * @param packageAsXdm the package as xdm
+	 * @param encryptDocument the encrypt document
+	 * @param senderEmailAddress the sender email address
+	 * @param recipientEmailAddress the recipient email address
+	 * @param xdsDocumentEntryUniqueId the xds document entry unique id
 	 * @return the process document response
 	 */
 	private ProcessDocumentResponse processDocument(
@@ -185,17 +179,14 @@ public class DocumentProcessorWebServiceClient {
 
 	/**
 	 * Run.
-	 * 
-	 * @param document
-	 *            the document
-	 * @param enforcementPolicies
-	 *            the enforcement policies
-	 * @param packageAsXdm
-	 *            the package as xdm
-	 * @param senderEmailAddress
-	 *            the sender email address
-	 * @param recipientEmailAddress
-	 *            the recipient email address
+	 *
+	 * @param document the document
+	 * @param enforcementPolicies the enforcement policies
+	 * @param packageAsXdm the package as xdm
+	 * @param encryptDocument the encrypt document
+	 * @param senderEmailAddress the sender email address
+	 * @param recipientEmailAddress the recipient email address
+	 * @param xdsDocumentEntryUniqueId the xds document entry unique id
 	 */
 	private void run(String document, String enforcementPolicies,
 			boolean packageAsXdm, boolean encryptDocument,

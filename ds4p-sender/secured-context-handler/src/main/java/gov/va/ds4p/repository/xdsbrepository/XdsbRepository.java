@@ -30,11 +30,27 @@ import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponse;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface XdsbRepository.
+ */
 public interface XdsbRepository {
 
+	/**
+	 * Provide and register document set request.
+	 *
+	 * @param provideAndRegisterDocumentSetRequest the provide and register document set request
+	 * @return the registry response
+	 */
 	public RegistryResponse provideAndRegisterDocumentSetRequest(
 			ProvideAndRegisterDocumentSetRequest provideAndRegisterDocumentSetRequest);
 
+	/**
+	 * Retrieve document set request.
+	 *
+	 * @param retrieveDocumentSetRequest the retrieve document set request
+	 * @return the retrieve document set response
+	 */
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(
 			RetrieveDocumentSetRequest retrieveDocumentSetRequest);
 }

@@ -28,6 +28,7 @@ package gov.samhsa.ds4ppilot.orchestrator.audit;
 import java.util.List;
 
 import gov.samhsa.schemas.client.AuditWebServiceClient;
+// TODO: Auto-generated Javadoc
 /**
  * The Class AuditServiceImpl.
  */
@@ -46,6 +47,9 @@ public class AuditServiceImpl implements AuditService {
 		this.endpointAddress = endpointAddress;
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.audit.AuditService#getObligationsByMessageId(java.lang.String)
+	 */
 	public List<String> getObligationsByMessageId(String messageId) {
 		AuditWebServiceClient auditWebServiceClient = new AuditWebServiceClient(
 				endpointAddress);
@@ -55,6 +59,9 @@ public class AuditServiceImpl implements AuditService {
 
 
 	
+	/* (non-Javadoc)
+	 * @see gov.samhsa.ds4ppilot.orchestrator.audit.AuditService#getPurposeOfUseByMessageId(java.lang.String)
+	 */
 	public String getPurposeOfUseByMessageId(String messageId) {
 		AuditWebServiceClient auditWebServiceClient = new AuditWebServiceClient(
 				endpointAddress);

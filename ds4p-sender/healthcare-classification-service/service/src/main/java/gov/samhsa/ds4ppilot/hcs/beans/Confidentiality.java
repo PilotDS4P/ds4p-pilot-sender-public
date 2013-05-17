@@ -25,14 +25,27 @@
  ******************************************************************************/
 package gov.samhsa.ds4ppilot.hcs.beans;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Enum Confidentiality.
  */
 public enum Confidentiality {
+	
+	/** The l. */
 	L,
+	
+	/** The m. */
 	M,
+	
+	/** The n. */
 	N,
+	
+	/** The r. */
 	R,
+	
+	/** The u. */
 	U,
+	
+	/** The v. */
 	V
 }

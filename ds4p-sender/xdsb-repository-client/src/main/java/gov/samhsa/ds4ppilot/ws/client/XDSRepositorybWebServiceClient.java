@@ -40,6 +40,7 @@ import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponse;
 import org.springframework.util.StringUtils;
 import org.tempuri.DocumentRepositoryService;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class XDSRepositorybWebServiceClient.
  */

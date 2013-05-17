@@ -26,13 +26,27 @@ import gov.samhsa.ds4ppilot.contract.healthcareclassificationservice.HealthcareC
 import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExecuteClinicalFactsRequest;
 import gov.samhsa.ds4ppilot.schema.healthcareclassificationservice.AssertAndExecuteClinicalFactsResponse;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HealthcareClassificationWebServiceClientTest.
+ */
 public class HealthcareClassificationWebServiceClientTest {
+	
+	/** The ep. */
 	protected static Endpoint ep;
+	
+	/** The address. */
 	protected static String address;
 
+	/** The Constant returnedValueOfAssertAndExecuteClinicalFacts. */
 	private static final AssertAndExecuteClinicalFactsResponse returnedValueOfAssertAndExecuteClinicalFacts = new AssertAndExecuteClinicalFactsResponse();
+	
+	/** The Constant ruleExecutionResponseContaine. */
 	private static final String ruleExecutionResponseContaine = "RuleExecutionResponseContaine";
 
+	/**
+	 * Sets the up.
+	 */
 	@BeforeClass
 	public static void setUp() {
 		address = "http://localhost:9000/services/C32Service";
@@ -44,6 +58,9 @@ public class HealthcareClassificationWebServiceClientTest {
 		HealthcareClassificationServicePortTypeImpl.returnedValueOfAssertAndExecuteClinicalFacts = returnedValueOfAssertAndExecuteClinicalFacts;
 	}
 
+	/**
+	 * Tear down.
+	 */
 	@AfterClass
 	public static void tearDown() {
 		try {
@@ -54,6 +71,9 @@ public class HealthcareClassificationWebServiceClientTest {
 	}
 
 	// Test if the stub web service activate properly
+	/**
+	 * Test stub web service works.
+	 */
 	@Test
 	public void testStubWebServiceWorks() {
 		AssertAndExecuteClinicalFactsResponse resp = createPort().assertAndExecuteClinicalFacts(new AssertAndExecuteClinicalFactsRequest());
@@ -61,6 +81,9 @@ public class HealthcareClassificationWebServiceClientTest {
 	}
 
 	// Test if the SOAP client calling the stub web service correctly?
+	/**
+	 * Test ws client soap call works.
+	 */
 	@Test
 	public void testWSClientSOAPCallWorks() {
 		HealthcareClassificationWebServiceClient wsc = new HealthcareClassificationWebServiceClient(
@@ -69,6 +92,11 @@ public class HealthcareClassificationWebServiceClientTest {
 		validateResponse(resp);
 	}
 
+	/**
+	 * Validate response.
+	 *
+	 * @param andExecuteClinicalFactsResponse the and execute clinical facts response
+	 */
 	private void validateResponse(
 			AssertAndExecuteClinicalFactsResponse andExecuteClinicalFactsResponse) {
 		Assert.assertEquals(
@@ -79,6 +107,11 @@ public class HealthcareClassificationWebServiceClientTest {
 						.getRuleExecutionResponseContainer());
 	}
 
+	/**
+	 * Creates the port.
+	 *
+	 * @return the healthcare classification service port type
+	 */
 	private HealthcareClassificationServicePortType createPort() {
 		final URL WSDL_LOCATION = this.getClass().getClassLoader()
 				.getResource("HealthcareClassificationService.wsdl");

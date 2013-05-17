@@ -27,6 +27,7 @@ package gov.samhsa.ds4ppilot.orchestrator.documentprocessor;
 
 import gov.samhsa.ds4ppilot.schema.documentprocessor.ProcessDocumentResponse;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface DocumentProcessor.
  */
@@ -38,8 +39,10 @@ public interface DocumentProcessor {
 	 * @param c32Document the C32 document
 	 * @param enforcePolicyResponseXmlString the enforce policy response XML string
 	 * @param packageAsXdm the package as XDM
+	 * @param encryptDocument the encrypt document
 	 * @param senderEmailAddress the sender email address
 	 * @param recipientEmailAddress the recipient email address
+	 * @param xdsDocumentEntryUniqueId the xds document entry unique id
 	 * @return the process document response
 	 */
 	public ProcessDocumentResponse processDocument(String c32Document, String enforcePolicyResponseXmlString, boolean packageAsXdm, boolean encryptDocument,

@@ -74,6 +74,7 @@ import org.hl7.v3.PatientIdentityFeedRequestType.Sender;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class XdsbRegistryWebServiceClient.
  */

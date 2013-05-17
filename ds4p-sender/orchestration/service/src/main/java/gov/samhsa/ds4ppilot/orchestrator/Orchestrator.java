@@ -31,6 +31,7 @@ import gov.samhsa.ds4ppilot.schema.orchestrator.RetrieveDocumentSetResponse;
 import gov.va.ehtac.ds4p.ws.EnforcePolicy;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface Orchestrator.
  */
@@ -47,9 +48,32 @@ public interface Orchestrator {
 	 */
 	public FilterC32Response handleC32Request(String patientId, boolean packageAsXdm, String senderEmailAddress, String recipientEmailAddress);
 
+	/**
+	 * Retrieve document set request.
+	 *
+	 * @param homeCommunityId the home community id
+	 * @param repositoryUniqueId the repository unique id
+	 * @param documentUniqueId the document unique id
+	 * @param messageId the message id
+	 * @param enforcePolicy the enforce policy
+	 * @return the retrieve document set response
+	 */
 	public RetrieveDocumentSetResponse retrieveDocumentSetRequest(String homeCommunityId, String repositoryUniqueId, String documentUniqueId, String messageId, EnforcePolicy enforcePolicy);
 
+	/**
+	 * Registery stored query request.
+	 *
+	 * @param patientId the patient id
+	 * @param enforcePolicy the enforce policy
+	 * @return the registery stored query response
+	 */
 	public RegisteryStoredQueryResponse registeryStoredQueryRequest(String patientId, EnforcePolicy enforcePolicy);
 
+	/**
+	 * Save document set to xds repository.
+	 *
+	 * @param documentSet the document set
+	 * @return true, if successful
+	 */
 	public boolean saveDocumentSetToXdsRepository(String documentSet);
 }

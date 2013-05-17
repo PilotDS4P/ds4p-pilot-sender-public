@@ -38,6 +38,7 @@ import javax.xml.ws.soap.Addressing;
 
 import org.apache.cxf.annotations.EndpointProperties;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class FilterC32ServiceImpl.
  */
@@ -58,15 +59,20 @@ public class SecuredFilterC32ServiceImpl implements
 
 	/**
 	 * Instantiates a new filter C32 service implementation.
-	 * 
-	 * @param Orchestrator
-	 *            the orchestrator
+	 *
+	 * @param securedOrchestrator the secured orchestrator
 	 */
 	public SecuredFilterC32ServiceImpl(SecuredOrchestrator securedOrchestrator) {
 
 		this.securedOrchestrator = securedOrchestrator;
 	}
 
+	/**
+	 * Retrieve document set.
+	 *
+	 * @param parameters the parameters
+	 * @return the retrieve document set response
+	 */
 	@Override
 	public RetrieveDocumentSetResponse retrieveDocumentSet(
 			RetrieveDocumentSetRequest parameters) {
@@ -78,6 +84,12 @@ public class SecuredFilterC32ServiceImpl implements
 		return response;
 	}
 
+	/**
+	 * Registery stored query.
+	 *
+	 * @param parameters the parameters
+	 * @return the registery stored query response
+	 */
 	@Override
 	public RegisteryStoredQueryResponse registeryStoredQuery(
 			RegisteryStoredQueryRequest parameters) {
@@ -90,9 +102,8 @@ public class SecuredFilterC32ServiceImpl implements
 
 	/**
 	 * Sets the orchestrator.
-	 * 
-	 * @param orchestrator
-	 *            the new orchestrator
+	 *
+	 * @param securedOrchestrator the new orchestrator
 	 */
 	public void setOrchestrator(SecuredOrchestrator securedOrchestrator) {
 		this.securedOrchestrator = securedOrchestrator;
